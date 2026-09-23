@@ -1,0 +1,1143 @@
+[
+ {
+  "id": "nl1-word-welkom-in",
+  "kind": "word",
+  "front": "welkom (in)",
+  "back": "welcome (to)",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-goedemorgen",
+  "kind": "word",
+  "front": "goedemorgen",
+  "back": "good morning",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-allemaal",
+  "kind": "word",
+  "front": "allemaal",
+  "back": "everyone",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-cursus",
+  "kind": "word",
+  "front": "de cursus",
+  "back": "course",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de",
+  "kind": "word",
+  "front": "de",
+  "back": "the",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-nederlands",
+  "kind": "word",
+  "front": "Nederlands",
+  "back": "Dutch",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-ik",
+  "kind": "word",
+  "front": "ik",
+  "back": "I",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-ben-zijn",
+  "kind": "word",
+  "front": "ben (zijn)",
+  "back": "am",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-en",
+  "kind": "word",
+  "front": "en",
+  "back": "and",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-jullie",
+  "kind": "word",
+  "front": "jullie",
+  "back": "your (plural)",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-docent",
+  "kind": "word",
+  "front": "de docent",
+  "back": "teacher",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-docenten-docent",
+  "kind": "word",
+  "front": "docenten (docent)",
+  "back": "teachers",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-hebben-hebben",
+  "kind": "word",
+  "front": "hebben (hebben)",
+  "back": "have",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-twee",
+  "kind": "word",
+  "front": "twee",
+  "back": "two",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-andere",
+  "kind": "word",
+  "front": "andere",
+  "back": "other",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-is-zijn",
+  "kind": "word",
+  "front": "is (zijn)",
+  "back": "is",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-hij",
+  "kind": "word",
+  "front": "hij",
+  "back": "he",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-geeft-les-lesgeven",
+  "kind": "word",
+  "front": "geeft les (lesgeven)",
+  "back": "teaches",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-dagen-de-dag",
+  "kind": "word",
+  "front": "dagen (de dag)",
+  "back": "days",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-drie",
+  "kind": "word",
+  "front": "drie",
+  "back": "three",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-we",
+  "kind": "word",
+  "front": "we",
+  "back": "we",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-beginnen-beginnen",
+  "kind": "word",
+  "front": "beginnen (beginnen)",
+  "back": "begin / start",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-met",
+  "kind": "word",
+  "front": "met",
+  "back": "with",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-kennismaken",
+  "kind": "word",
+  "front": "kennismaken",
+  "back": "get to know",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-wie",
+  "kind": "word",
+  "front": "wie",
+  "back": "who",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-jij",
+  "kind": "word",
+  "front": "jij",
+  "back": "you",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-wat",
+  "kind": "word",
+  "front": "wat",
+  "back": "what",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-jouw",
+  "kind": "word",
+  "front": "jouw",
+  "back": "your (singular)",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-naam",
+  "kind": "word",
+  "front": "de naam",
+  "back": "name",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-mijn",
+  "kind": "word",
+  "front": "mijn",
+  "back": "my",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-dag",
+  "kind": "word",
+  "front": "dag",
+  "back": "day",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-je",
+  "kind": "word",
+  "front": "je",
+  "back": "your (singular)",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-voornaam",
+  "kind": "word",
+  "front": "de voornaam",
+  "back": "first name",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-achternaam",
+  "kind": "word",
+  "front": "de achternaam",
+  "back": "surname",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-uit",
+  "kind": "word",
+  "front": "uit",
+  "back": "from",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-welk",
+  "kind": "word",
+  "front": "welk",
+  "back": "which",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-het-land",
+  "kind": "word",
+  "front": "het land",
+  "back": "country",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-engeland",
+  "kind": "word",
+  "front": "Engeland",
+  "back": "England",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-kom-komen",
+  "kind": "word",
+  "front": "kom (komen)",
+  "back": "come",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-buurman",
+  "kind": "word",
+  "front": "de buurman",
+  "back": "neighbour",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-van",
+  "kind": "word",
+  "front": "van",
+  "back": "of",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-hoe",
+  "kind": "word",
+  "front": "hoe",
+  "back": "how (what)",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-hoe-heet-jij",
+  "kind": "word",
+  "front": "hoe heet jij?",
+  "back": "what’s your name?",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-heet-heten",
+  "kind": "word",
+  "front": "heet (heten)",
+  "back": "is called",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-waar-vandaan",
+  "kind": "word",
+  "front": "waar … vandaan",
+  "back": "where … from",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-waar",
+  "kind": "word",
+  "front": "waar",
+  "back": "where",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-china",
+  "kind": "word",
+  "front": "China",
+  "back": "China",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-woon-wonen",
+  "kind": "word",
+  "front": "woon (wonen)",
+  "back": "live",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-nu",
+  "kind": "word",
+  "front": "nu",
+  "back": "now",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-het-adres",
+  "kind": "word",
+  "front": "het adres",
+  "back": "address",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-het-nummer",
+  "kind": "word",
+  "front": "het nummer",
+  "back": "number",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-het-antwoord",
+  "kind": "word",
+  "front": "het antwoord",
+  "back": "answer",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-nee",
+  "kind": "word",
+  "front": "nee",
+  "back": "no",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-postcode",
+  "kind": "word",
+  "front": "de postcode",
+  "back": "postal code",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-u",
+  "kind": "word",
+  "front": "u",
+  "back": "you",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-mevrouw",
+  "kind": "word",
+  "front": "mevrouw",
+  "back": "Ms / Mrs",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-woont-wonen",
+  "kind": "word",
+  "front": "woont (wonen)",
+  "back": "live",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-ook",
+  "kind": "word",
+  "front": "ook",
+  "back": "also",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-in",
+  "kind": "word",
+  "front": "in",
+  "back": "in",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-zeg-zeggen",
+  "kind": "word",
+  "front": "zeg (zeggen)",
+  "back": "call (say)",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-maar",
+  "kind": "word",
+  "front": "maar",
+  "back": "but (just)",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-hoor",
+  "kind": "word",
+  "front": "hoor",
+  "back": "(for friendliness, usually not translated)",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-ja",
+  "kind": "word",
+  "front": "ja",
+  "back": "yes",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-hier",
+  "kind": "word",
+  "front": "hier",
+  "back": "here",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-al",
+  "kind": "word",
+  "front": "al",
+  "back": "already",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-twintig",
+  "kind": "word",
+  "front": "twintig",
+  "back": "twenty",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-het-jaar",
+  "kind": "word",
+  "front": "het jaar",
+  "back": "year",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-gaan-verder-verdergaan",
+  "kind": "word",
+  "front": "gaan verder (verdergaan)",
+  "back": "go on (continue)",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-les",
+  "kind": "word",
+  "front": "de les",
+  "back": "lesson",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-heeft-hebben",
+  "kind": "word",
+  "front": "heeft (hebben)",
+  "back": "has",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-iedereen",
+  "kind": "word",
+  "front": "iedereen",
+  "back": "everyone",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-het-boek",
+  "kind": "word",
+  "front": "het boek",
+  "back": "book",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-het",
+  "kind": "word",
+  "front": "het",
+  "back": "the",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-tekst",
+  "kind": "word",
+  "front": "de tekst",
+  "back": "text",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-een",
+  "kind": "word",
+  "front": "één",
+  "back": "one",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-op",
+  "kind": "word",
+  "front": "op",
+  "back": "on",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-bladzijde",
+  "kind": "word",
+  "front": "de bladzijde",
+  "back": "page",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-acht",
+  "kind": "word",
+  "front": "acht",
+  "back": "eight",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-luisteren",
+  "kind": "word",
+  "front": "luisteren",
+  "back": "listen",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-naar",
+  "kind": "word",
+  "front": "naar",
+  "back": "to",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-lezen",
+  "kind": "word",
+  "front": "lezen",
+  "back": "read",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-stoppen-stoppen",
+  "kind": "word",
+  "front": "stoppen (stoppen)",
+  "back": "stop",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-even",
+  "kind": "word",
+  "front": "even",
+  "back": "for a moment",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-het-is",
+  "kind": "word",
+  "front": "het is",
+  "back": "it is",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-de-pauze",
+  "kind": "word",
+  "front": "de pauze",
+  "back": "break",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-tot-straks",
+  "kind": "word",
+  "front": "tot straks",
+  "back": "see you later",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-word-straks",
+  "kind": "word",
+  "front": "straks",
+  "back": "soon / later",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-wie-ben-jij",
+  "kind": "phrase",
+  "front": "Wie ben jij?",
+  "back": "Ik ben Susy Wall.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-wat-is-jouw-naam",
+  "kind": "phrase",
+  "front": "Wat is jouw naam?",
+  "back": "Mijn naam is Susy Wall.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-wat-is-je-voornaam",
+  "kind": "phrase",
+  "front": "Wat is je voornaam?",
+  "back": "Mijn voornaam is Susy.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-wat-is-je-achternaam",
+  "kind": "phrase",
+  "front": "Wat is je achternaam?",
+  "back": "Mijn achternaam is Wall.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-hoe-heet-jij",
+  "kind": "phrase",
+  "front": "Hoe heet jij?",
+  "back": "Ik heet Susy.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-wat-is-jouw-je-adres",
+  "kind": "phrase",
+  "front": "Wat is jouw / je adres?",
+  "back": "Mijn adres is Hofstraat 22, 3581 TW Utrecht.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-waar-woon-jij-je",
+  "kind": "phrase",
+  "front": "Waar woon jij / je?",
+  "back": "Ik woon in Utrecht.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-uit-welk-land-kom-je",
+  "kind": "phrase",
+  "front": "Uit welk land kom je?",
+  "back": "Ik kom uit Engeland.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-waar-kom-je-vandaan",
+  "kind": "phrase",
+  "front": "Waar kom je vandaan?",
+  "back": "Ik kom uit China.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-ik-kom-uit-nederland",
+  "kind": "phrase",
+  "front": "Ik kom uit Nederland.",
+  "back": "Ik spreek Nederlands. / Ik ben Nederlander / Nederlandse.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-ik-kom-uit-engeland",
+  "kind": "phrase",
+  "front": "Ik kom uit Engeland.",
+  "back": "Ik spreek Engels. / Ik ben Engelsman / Engelse.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-phrase-ik-kom-uit-china",
+  "kind": "phrase",
+  "front": "Ik kom uit China.",
+  "back": "Ik spreek Chinees. / Ik ben Chinees / Chinese.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-goedemorgen",
+  "kind": "greeting",
+  "front": "goedemorgen",
+  "back": "good morning",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-goedemiddag",
+  "kind": "greeting",
+  "front": "goedemiddag",
+  "back": "good afternoon",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-goedenavond",
+  "kind": "greeting",
+  "front": "goedenavond",
+  "back": "good evening",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-goedendag",
+  "kind": "greeting",
+  "front": "goedendag",
+  "back": "good day",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-dag",
+  "kind": "greeting",
+  "front": "dag",
+  "back": "hello",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-hoi",
+  "kind": "greeting",
+  "front": "hoi",
+  "back": "hi / hello",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-hallo",
+  "kind": "greeting",
+  "front": "hallo",
+  "back": "hello",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-daag",
+  "kind": "greeting",
+  "front": "daag",
+  "back": "bye",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-doeg",
+  "kind": "greeting",
+  "front": "doeg",
+  "back": "bye",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-doei",
+  "kind": "greeting",
+  "front": "doei",
+  "back": "bye",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-tot-zo",
+  "kind": "greeting",
+  "front": "tot zo",
+  "back": "see you soon",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-tot-straks",
+  "kind": "greeting",
+  "front": "tot straks",
+  "back": "see you later",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-tot-morgen",
+  "kind": "greeting",
+  "front": "tot morgen",
+  "back": "see you tomorrow",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-greeting-tot-ziens",
+  "kind": "greeting",
+  "front": "tot ziens",
+  "back": "goodbye, so long",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-nul",
+  "kind": "number",
+  "front": "nul",
+  "back": "0",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-een",
+  "kind": "number",
+  "front": "één",
+  "back": "1",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-twee",
+  "kind": "number",
+  "front": "twee",
+  "back": "2",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-drie",
+  "kind": "number",
+  "front": "drie",
+  "back": "3",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-vier",
+  "kind": "number",
+  "front": "vier",
+  "back": "4",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-vijf",
+  "kind": "number",
+  "front": "vijf",
+  "back": "5",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-zes",
+  "kind": "number",
+  "front": "zes",
+  "back": "6",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-zeven",
+  "kind": "number",
+  "front": "zeven",
+  "back": "7",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-acht",
+  "kind": "number",
+  "front": "acht",
+  "back": "8",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-negen",
+  "kind": "number",
+  "front": "negen",
+  "back": "9",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-tien",
+  "kind": "number",
+  "front": "tien",
+  "back": "10",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-elf",
+  "kind": "number",
+  "front": "elf",
+  "back": "11",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-twaalf",
+  "kind": "number",
+  "front": "twaalf",
+  "back": "12",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-dertien",
+  "kind": "number",
+  "front": "dertien",
+  "back": "13",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-veertien",
+  "kind": "number",
+  "front": "veertien",
+  "back": "14",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-vijftien",
+  "kind": "number",
+  "front": "vijftien",
+  "back": "15",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-zestien",
+  "kind": "number",
+  "front": "zestien",
+  "back": "16",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-zeventien",
+  "kind": "number",
+  "front": "zeventien",
+  "back": "17",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-achttien",
+  "kind": "number",
+  "front": "achttien",
+  "back": "18",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-negentien",
+  "kind": "number",
+  "front": "negentien",
+  "back": "19",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-twintig",
+  "kind": "number",
+  "front": "twintig",
+  "back": "20",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-eenentwintig",
+  "kind": "number",
+  "front": "eenentwintig",
+  "back": "21",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-tweeentwintig",
+  "kind": "number",
+  "front": "tweeëntwintig",
+  "back": "22",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-dertig",
+  "kind": "number",
+  "front": "dertig",
+  "back": "30",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-veertig",
+  "kind": "number",
+  "front": "veertig",
+  "back": "40",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-vijftig",
+  "kind": "number",
+  "front": "vijftig",
+  "back": "50",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-zestig",
+  "kind": "number",
+  "front": "zestig",
+  "back": "60",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-zeventig",
+  "kind": "number",
+  "front": "zeventig",
+  "back": "70",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-tachtig",
+  "kind": "number",
+  "front": "tachtig",
+  "back": "80",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-negentig",
+  "kind": "number",
+  "front": "negentig",
+  "back": "90",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-honderd",
+  "kind": "number",
+  "front": "honderd",
+  "back": "100",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-honderdvierentwintig",
+  "kind": "number",
+  "front": "honderdvierentwintig",
+  "back": "124",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-number-duizend",
+  "kind": "number",
+  "front": "duizend",
+  "back": "1000",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-verb-ik-luisteren-hebben-zijn",
+  "kind": "verb",
+  "front": "ik + luisteren / hebben / zijn",
+  "back": "luister · heb · ben",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-verb-jij-je-luisteren-hebben-zijn",
+  "kind": "verb",
+  "front": "jij / je + luisteren / hebben / zijn",
+  "back": "luistert · hebt · bent",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-verb-u-luisteren-hebben-zijn",
+  "kind": "verb",
+  "front": "u + luisteren / hebben / zijn",
+  "back": "luistert · hebt / heeft · bent",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-verb-hij-zij-ze-het-luisteren-hebben-zijn",
+  "kind": "verb",
+  "front": "hij, zij / ze, het + luisteren / hebben / zijn",
+  "back": "luistert · heeft · is",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-verb-wij-we-luisteren-hebben-zijn",
+  "kind": "verb",
+  "front": "wij / we + luisteren / hebben / zijn",
+  "back": "luisteren · hebben · zijn",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-verb-jullie-luisteren-hebben-zijn",
+  "kind": "verb",
+  "front": "jullie + luisteren / hebben / zijn",
+  "back": "luisteren · hebben · zijn",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-verb-zij-ze-luisteren-hebben-zijn",
+  "kind": "verb",
+  "front": "zij / ze + luisteren / hebben / zijn",
+  "back": "luisteren · hebben · zijn",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-dialogue-kom-je-uit-nederland",
+  "kind": "dialogue",
+  "front": "Kom je uit Nederland?",
+  "back": "Nee, ik kom uit Hongarije.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-dialogue-heet-je-buurman-peter",
+  "kind": "dialogue",
+  "front": "Heet je buurman Peter?",
+  "back": "Nee, mijn docent heet Peter.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-dialogue-woon-je-in-de-hofstraat",
+  "kind": "dialogue",
+  "front": "Woon je in de Hofstraat?",
+  "back": "Nee, ik woon in de Kerkstraat.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-dialogue-woon-je-in-groningen",
+  "kind": "dialogue",
+  "front": "Woon je in Groningen?",
+  "back": "Nee, ik woon in Leeuwarden.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-dialogue-woont-u-hier-al-twintig-jaar",
+  "kind": "dialogue",
+  "front": "Woont u hier al twintig jaar?",
+  "back": "Nee, ik woon hier al dertig jaar.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-dialogue-is-je-postcode-3581-tb",
+  "kind": "dialogue",
+  "front": "Is je postcode 3581 TB?",
+  "back": "Nee, mijn postcode is 3581 TW.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-dialogue-ben-jij-lily-lander",
+  "kind": "dialogue",
+  "front": "Ben jij Lily Lander?",
+  "back": "Nee, ik ben Sara Lander.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-dialogue-beginnen-we-met-tekst-2",
+  "kind": "dialogue",
+  "front": "Beginnen we met tekst 2?",
+  "back": "Nee, we beginnen met tekst 1.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-dialogue-is-abdul-je-voornaam",
+  "kind": "dialogue",
+  "front": "Is Abdul je voornaam?",
+  "back": "Nee, Abdul is mijn achternaam.",
+  "chapter": 1
+ },
+ {
+  "id": "nl1-dialogue-is-het-pauze",
+  "kind": "dialogue",
+  "front": "Is het pauze?",
+  "back": "Ja, het is pauze.",
+  "chapter": 1
+ }
+]

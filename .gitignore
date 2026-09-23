@@ -1,0 +1,11 @@
+# secrets — the two API keys live here and nowhere else
+.env
+
+# the publisher's own scan and everything cut straight out of it.
+# This repo is public: the redesigned chapters go up, the source scan does not.
+hard.pdf
+book/ch*/source/
+
+__pycache__/
+*.pyc
+.DS_Store

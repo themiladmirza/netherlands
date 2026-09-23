@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nederlands in gang — redesigned</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="book/shared/style.css">
+<style>
+  /* This page is the only one not built by build.py, so it carries its own
+     layout. It reuses the book's tokens from style.css so the two match. */
+  .site{ max-width:960px; margin:0 auto; padding:16mm 6mm 22mm; }
+  .site-head{ margin-bottom:12mm; }
+  .site-kicker{ font-family:var(--disp); font-weight:800; font-size:8pt;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--orange);
+    margin-bottom:3mm; }
+  .site-title{ font-family:var(--disp); font-weight:800; font-size:34pt;
+    letter-spacing:-.035em; line-height:1.02; color:var(--ink); margin-bottom:4mm; }
+  .site-intro{ font-family:var(--body); font-size:12pt; line-height:1.55;
+    color:var(--ink-soft); max-width:30em; }
+  .site-intro a{ color:var(--teal); }
+
+  .chapters{ display:grid; gap:7mm;
+    grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); }
+  .ch{ background:var(--paper); border:.7pt solid var(--rule); border-radius:3mm;
+    overflow:hidden; display:flex; flex-direction:column;
+    box-shadow:0 1mm 3mm rgba(60,44,26,.10); }
+  .ch img{ display:block; width:100%; aspect-ratio:17/13; object-fit:cover;
+    object-position:50% 28%; background:var(--tint); }
+  .ch-body{ padding:5mm 5mm 5.5mm; display:flex; flex-direction:column; flex:1; }
+  .ch-num{ font-family:var(--disp); font-weight:800; font-size:8pt;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--orange); }
+  .ch-name{ font-family:var(--disp); font-weight:800; font-size:17pt;
+    letter-spacing:-.02em; color:var(--ink); margin:1.5mm 0 2mm; }
+  .ch-meta{ font-family:var(--body); font-size:9.4pt; color:var(--ink-faint);
+    margin-bottom:5mm; }
+  .ch-links{ margin-top:auto; display:flex; gap:2.5mm; flex-wrap:wrap; }
+  .ch-links a{ font-family:var(--body); font-weight:600; font-size:9.6pt;
+    text-decoration:none; padding:2.2mm 4.5mm; border-radius:2mm;
+    border:.7pt solid var(--rule); color:var(--ink-soft); }
+  .ch-links a.primary{ background:var(--teal); border-color:var(--teal); color:#fff; }
+  .ch-links a:hover{ border-color:var(--ink-faint); }
+  .ch-links a.primary:hover{ background:#0f4a52; border-color:#0f4a52; }
+
+  .note{ margin-top:14mm; padding-top:6mm; border-top:.7pt solid var(--rule);
+    font-family:var(--body); font-size:9.6pt; line-height:1.6;
+    color:var(--ink-faint); max-width:34em; }
+  .note strong{ color:var(--ink-soft); }
+</style>
+
+<div class="site">
+  <header class="site-head">
+    <div class="site-kicker">Coutinho · 3rd revised edition</div>
+    <h1 class="site-title">Nederlands in gang</h1>
+    <p class="site-intro">
+      A personal redesign of the Dutch coursebook — the same content, typeset from
+      scratch with original illustrations, recorded dialogues, hover translations
+      and a practice deck built from each chapter's word list.
+    </p>
+  </header>
+
+  <div class="chapters">
+    <article class="ch">
+      <img src="book/ch01-welcome/art/opener.png" alt="Chapter 1 opener">
+      <div class="ch-body">
+        <div class="ch-num">Hoofdstuk 1</div>
+        <h2 class="ch-name">Welkom</h2>
+        <div class="ch-meta">20 pages · 86 cards · 10 illustrations · 4 recordings</div>
+        <div class="ch-links">
+          <a class="primary" href="book/ch01-welcome/index.html">Read</a>
+          <a href="book/ch01-welcome/ch01-welcome.pdf">PDF</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="ch">
+      <img src="book/ch02-in-the-canteen/art/opener.png" alt="Chapter 2 opener">
+      <div class="ch-body">
+        <div class="ch-num">Hoofdstuk 2</div>
+        <h2 class="ch-name">In de kantine</h2>
+        <div class="ch-meta">25 pages · 75 cards · 7 illustrations · 2 recordings</div>
+        <div class="ch-links">
+          <a class="primary" href="book/ch02-in-the-canteen/index.html">Read</a>
+          <a href="book/ch02-in-the-canteen/ch02-in-the-canteen.pdf">PDF</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="ch">
+      <img src="book/ch03-in-the-cafe/art/opener.png" alt="Chapter 3 opener">
+      <div class="ch-body">
+        <div class="ch-num">Hoofdstuk 3</div>
+        <h2 class="ch-name">In het café</h2>
+        <div class="ch-meta">20 pages · 51 cards · 6 illustrations · 3 recordings</div>
+        <div class="ch-links">
+          <a class="primary" href="book/ch03-in-the-cafe/index.html">Read</a>
+          <a href="book/ch03-in-the-cafe/ch03-in-the-cafe.pdf">PDF</a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <p class="note">
+    <strong>Not affiliated with the publisher.</strong> <em>Nederlands in gang</em>
+    is © Coutinho. This is a personal study rebuild made alongside a purchased copy,
+    shared for personal use. The publisher's own scans are not included here. If you
+    are studying Dutch, buy the book — it comes with the audio this cannot replace.
+  </p>
+</div>
+</html>
