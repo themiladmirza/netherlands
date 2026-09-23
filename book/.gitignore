@@ -1,4 +1,7 @@
 __pycache__/
 *.pyc
-index.html
+
+# _check.html is the transient probe build.py writes to measure page overflow.
+# index.html is NOT ignored: it is a build artifact, but it is also exactly what
+# GitHub Pages serves, so it has to be committed.
 _check.html
