@@ -203,11 +203,28 @@ class Chapter:
     tip.style.left = (x + window.scrollX) + "px";
     tip.style.top  = (y + window.scrollY) + "px";
   }
+  // Mouse: hover. Touch: tap to open, tap again or elsewhere to close — a phone
+  // has no hover, so without this the translations are simply unreachable there.
+  var touched = false;
+
   document.addEventListener("mouseover", function (e) {
+    if (touched) return;
     var g = e.target.closest(".gloss"); if (g) show(g);
   });
   document.addEventListener("mouseout", function (e) {
+    if (touched) return;
     if (e.target.closest(".gloss")) tip.hidden = true;
+  });
+
+  document.addEventListener("touchstart", function () { touched = true; }, {passive: true});
+  document.addEventListener("click", function (e) {
+    if (!touched) return;
+    var g = e.target.closest(".gloss");
+    if (!g) { tip.hidden = true; return; }
+    // tapping the open word closes it again
+    if (!tip.hidden && tip.dataset.for === g.dataset.en) { tip.hidden = true; return; }
+    tip.dataset.for = g.dataset.en;
+    show(g);
   });
 })();
 </script>"""
@@ -250,7 +267,11 @@ class Chapter:
                 + "".join(self.pages[last + 1:]))
 
     def html(self):
+        # Without the viewport meta a phone lays the page out at ~980px and then
+        # zooms the whole thing out — the sheet is legible only by pinching. It
+        # costs nothing in print, where @page decides the size.
         return (f'<meta charset="utf-8">'
+                f'<meta name="viewport" content="width=device-width, initial-scale=1">'
                 f'<title>Nederlands in gang — Hoofdstuk {self.number}: {self.title}</title>'
                 f'<link rel="stylesheet" href="{self.css}">'
                 + self.body() + self.PLAYER + self.deck_html())
