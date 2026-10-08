@@ -3,23 +3,22 @@
 """Build one chapter into a PDF.
 
     python3 book/build.py ch01-welcome
+    python3 book/build.py ch01-welcome --compare   # must match what HEAD has
+
+--compare is for changes that should not change the output — a refactor of
+pages.py, layout.py or style.css. Every page is rendered and compared pixel for
+pixel with the PDF committed at HEAD, and index.html with HEAD's (whitespace
+ignored). Any difference fails the build and names the page.
 
 Pipeline: pages.py -> index.html -> Chrome (print-to-pdf) -> bookmarks + metadata.
 Afterwards it checks every page for content spilling outside the trim size.
 """
-import glob, importlib.util, os, re, subprocess, sys, tempfile
+import glob, importlib.util, json, os, re, subprocess, sys, tempfile
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 PAGE_HEIGHT_PX = 907     # 240 mm at 96 dpi
 FOOTER_MARGIN  = 30      # space reserved at the bottom for the running foot
-
-def load(path, name):
-    spec = importlib.util.spec_from_file_location(name, path)
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules[name] = mod
-    spec.loader.exec_module(mod)
-    return mod
 
 LAYOUT_CHECK = """
 <script>addEventListener("load",()=>{
@@ -44,8 +43,12 @@ LAYOUT_CHECK = """
   });
   const split=Object.keys(keeps).filter(n=>new Set(keeps[n]).size>1)
         .map(n=>n+"@p"+[...new Set(keeps[n])].join("+p"));
-  document.title="R over="+over.join(",")+"|split="+split.join(",")
-                +"|mixed="+mixed.join(",")+"|keeps="+Object.keys(keeps).length;
+  // The result travels back as JSON in a script element, read from --dump-dom.
+  const out=document.createElement("script");
+  out.type="application/json"; out.id="layout-result";
+  out.textContent=JSON.stringify({over, split, mixed, keeps:Object.keys(keeps).length,
+                                  answers: window.__answerReport || null});
+  document.body.appendChild(out);
 });</script>
 """ % (PAGE_HEIGHT_PX, FOOTER_MARGIN)
 
@@ -96,7 +99,12 @@ def build_deck(cdir, ch):
     sys.path.insert(0, os.path.join(ROOT, "shared", "lib"))
     from glossary import load_chapter_content
     import cloze
-    ch.deck = cloze.deck(load_chapter_content(cdir), ch.number)
+    content = load_chapter_content(cdir)
+    ch.deck = cloze.deck(content, ch.number)
+    unknown = cloze.unclassified(content)
+    if unknown:
+        print(f"  CARDS     : content.py name(s) not classified for cards: {', '.join(unknown)}"
+              "\n              add each to cloze.PROSE (mined for sentences) or cloze.NOT_PROSE")
 
     # <chapter>/translations.py holds the English for the quoted sentences. It is
     # the one file here whose text is not the book's, so it is kept separate from
@@ -145,6 +153,8 @@ def build_deck(cdir, ch):
         nums = sorted(int(n) for n in ch.answers)
         print(f"  answers   : {len(nums)} of {len(set(re.findall(r'data-opdracht=.([0-9]+).', ch.html())))}"
               f" Opdrachten (from Bijlage 8): " + ", ".join(str(n) for n in nums))
+    if unknown:
+        return ch.deck, True
     if wrong_blank:
         print(f"  CLOZE     : {len(wrong_blank)} card(s) whose answer is not the "
               f"text removed from the sentence:")
@@ -160,11 +170,86 @@ def build_deck(cdir, ch):
     return ch.deck, False
 
 
+def git_head(path):
+    """The bytes of `path` as committed at HEAD, or None."""
+    top = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=ROOT,
+                         capture_output=True, text=True).stdout.strip()
+    if not top:
+        return None
+    rel = os.path.relpath(path, top)
+    r = subprocess.run(["git", "show", f"HEAD:{rel}"], cwd=top, capture_output=True)
+    return r.stdout if r.returncode == 0 else None
+
+
+def compare_with_head(pdf_path, html_path):
+    """Pixel-compare the new PDF, and compare index.html, with HEAD's."""
+    import fitz
+    problems = False
+    old = git_head(pdf_path)
+    if old is None:
+        print("  compare   : PROBLEM, no committed PDF at HEAD to compare with")
+        return True
+    a, b = fitz.open(stream=old, filetype="pdf"), fitz.open(pdf_path)
+    if a.page_count != b.page_count:
+        print(f"  compare   : PROBLEM, {a.page_count} pages at HEAD, {b.page_count} now")
+        problems = True
+    differ = []
+    for i in range(min(a.page_count, b.page_count)):
+        pa, pb = a[i].get_pixmap(dpi=100), b[i].get_pixmap(dpi=100)
+        if (pa.width, pa.height) != (pb.width, pb.height) or pa.samples != pb.samples:
+            differ.append(f"p{i+1}")
+    print("  compare   :", "PDF pixel-identical to HEAD" if not differ
+          else "PROBLEM, pages differ from HEAD: " + " ".join(differ))
+    problems = problems or bool(differ)
+
+    norm = lambda t: re.sub(r">\s+<", "><", re.sub(r"\s+", " ", t))
+    old_html = git_head(html_path)
+    new_html = norm(open(html_path, encoding="utf-8").read())
+    if old_html is not None and norm(old_html.decode("utf-8")) != new_html:
+        old_html = norm(old_html.decode("utf-8"))
+        at = next((i for i, (x, y) in enumerate(zip(old_html, new_html)) if x != y),
+                  min(len(old_html), len(new_html)))
+        print(f"              PROBLEM, index.html differs from HEAD near: "
+              f"{new_html[max(0, at-50):at+50]!r}")
+        problems = True
+    elif old_html is not None:
+        print("              index.html identical to HEAD")
+    return problems
+
+
+def report_answers(ch, report):
+    """Every answer in answers.py must land on its question.
+
+    answers.js chooses a spot by the shape of the exercise. A new shape it does
+    not know falls back to a block under the exercise, and an answer whose
+    Opdracht is missing from the page is dropped — both silently, in the browser.
+    The report it leaves behind makes them a build failure instead.
+    """
+    if not ch.answers:
+        return False
+    if report is None:
+        print("  answers   : PROBLEM, answers.js did not report — is it linked?")
+        return True
+    bad = []
+    if report["missing"]:
+        bad.append("no Opdracht on the page for " + ", ".join(report["missing"]))
+    if report["block"]:
+        bad.append("not placed on the question (fell back to a block): "
+                   + ", ".join(report["block"]))
+    print("  answer fit:", f"{len(report['inline'])} placed on their question"
+          if not bad else "PROBLEM, " + "; ".join(bad))
+    return bool(bad)
+
+
 def main():
     problems = False
     if len(sys.argv) < 2:
         print(__doc__); sys.exit(1)
-    chapter = sys.argv[1].rstrip("/")
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    compare = "--compare" in sys.argv
+    if not args:
+        print(__doc__); sys.exit(1)
+    chapter = args[0].rstrip("/")
     cdir = os.path.join(ROOT, chapter)
     if not os.path.isdir(cdir):
         sys.exit(f"no such directory: {cdir}")
@@ -184,20 +269,22 @@ def main():
         dom = subprocess.run([CHROME, "--headless", "--disable-gpu", "--no-sandbox",
                               "--virtual-time-budget=20000", "--dump-dom", "file://" + probe],
                              capture_output=True, text=True, timeout=180).stdout
-        m = re.search(r"<title>R ([^<]*)</title>", dom)
-        if m:
-            parts = dict(kv.split("=", 1) for kv in m.group(1).split("|"))
-            over  = [x for x in parts.get("over", "").split(",") if x]
-            split = [x for x in parts.get("split", "").split(",") if x]
+        m = re.search(r'<script type="application/json" id="layout-result">(.*?)</script>', dom, re.S)
+        if not m:
+            print("  layout    : PROBLEM, Chrome returned no result — the checks did not run")
+            problems = True
+        else:
+            r = json.loads(m.group(1))
+            over, split, mixed = r["over"], r["split"], r["mixed"]
             print("  overflow  :", "clean" if not over
                   else "PROBLEM, past the trim: " + " ".join(over))
-            mixed = [x for x in parts.get("mixed", "").split(",") if x]
-            print(f"  keep-blocks: {parts.get('keeps','0')} checked,",
+            print(f"  keep-blocks: {r['keeps']} checked,",
                   "none split" if not split
                   else "PROBLEM, split across pages: " + " ".join(split))
             print("  section mix:", "clean" if not mixed
                   else "PROBLEM, exercises above a new section heading on " + " ".join(mixed))
             problems = problems or bool(over or split or mixed)
+            problems = report_answers(ch, r["answers"]) or problems
     finally:
         os.path.exists(probe) and os.remove(probe)
 
@@ -263,6 +350,8 @@ def main():
     print(f"  {os.path.basename(out)}: {final.page_count} pages, "
           f"{os.path.getsize(out)//1024} KB, {len(final.get_toc())} bookmarks, "
           f"{words} searchable words")
+    if compare:
+        problems = compare_with_head(out, html) or problems
     if problems:
         print("  -> problems above; the PDF was still written so you can look at it")
         sys.exit(1)

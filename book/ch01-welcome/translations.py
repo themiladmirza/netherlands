@@ -68,6 +68,8 @@ SENTENCES = {
         "We are going to read the text as well.",
     "We gaan naar de tekst luisteren.":
         "We are going to listen to the text.",
+    "We stoppen even, het is pauze.":
+        "We'll stop for a moment, it's the break.",
     "Welkom in de cursus Nederlands.":
         "Welcome to the Dutch course.",
     "Wie ben jij?":

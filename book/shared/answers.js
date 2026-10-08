@@ -215,9 +215,12 @@
 
   /* ---------- attach ---------- */
   var placed = 0, inline = 0;
+  // What happened to each answer, read by build.py's layout check: an answer
+  // that lands nowhere, or only in a fallback block, fails the build.
+  var report = window.__answerReport = { inline: [], block: [], missing: [] };
   Object.keys(ANSWERS).forEach(function (num) {
     var task = document.querySelector('.task[data-opdracht="' + num + '"]');
-    if (!task) return;
+    if (!task) { report.missing.push(num); return; }
     var raw = ANSWERS[num];
     var items = numbered(raw);
 
@@ -228,8 +231,9 @@
                markSingle(task, raw) ||
                prefixArticles(task, raw);
 
-    if (done) { inline++; }
+    if (done) { inline++; report.inline.push(num); }
     else {
+      report.block.push(num);
       // model answers and rewritten sentences have nowhere to sit inside the
       // question, and a block is the honest shape for them
       task.appendChild(el("div", "answer",

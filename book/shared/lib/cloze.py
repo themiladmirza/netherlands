@@ -28,8 +28,34 @@ from text import plain, slugify                        # noqa: E402
 
 # Attributes holding running Dutch prose, mined for cloze sentences. Exercise
 # prompts and grammar tables are excluded: a cloze wants a sentence someone says.
-PROSE = ("DIALOOG", "DIALOOG_INTRO", "DIALOOG_2", "DIALOOG_3", "TEKST", "CULTUUR",
-         "PRAKTIJK", "DATING", "BESTELLEN", "AFREKENEN", "BEDANKEN", "BESCHRIJVEN")
+PROSE = ("DIALOOG", "DIALOOG_INTRO", "DIALOOG_2", "DIALOOG_3", "DIALOOG_END", "TEKST",
+         "CULTUUR", "PRAKTIJK", "DATING", "BESTELLEN", "AFREKENEN", "BEDANKEN",
+         "BESCHRIJVEN")
+
+# Everything in a content.py that is deliberately NOT mined: word lists, tables,
+# reference cards, page furniture. Exercises (OPD1, OPD4_INTRO, …) are excluded
+# by name pattern. A name in neither list fails the build — ch1's DIALOOG_END
+# went unmined for three chapters because nothing asked about it.
+NOT_PROSE = {
+    "VOC", "OBJECTIVES", "REFLECTIE", "VERDIEPING",
+    # ch1
+    "AFSCHEID", "BEGROETEN", "CULTUUR_ROWS", "FORM", "INFORMATIE", "LANDEN",
+    "NUMS_A", "NUMS_B", "NUMS_C", "NUMS_D", "SURNAMES", "VERBS", "VOORSTELLEN", "ZINSACCENT",
+    # ch2
+    "DAGEN", "DATING_NOTE", "DUUR", "FAMILIE_A", "FAMILIE_B", "HOOFDZIN", "JANEE", "KLOK",
+    "KLOK_FACES", "MAANDEN", "POSSESSIEF", "SEIZOENEN", "VRAAGWOORD_A", "VRAAGWOORD_B",
+    # ch3
+    "ARTIKEL", "ARTIKEL_EX", "CULTUUR_VRAAG", "DIMINUTIEF", "INVERSIE",
+    "RANG_A", "RANG_B", "RANG_C", "WOORDWOLK",
+}
+_EXERCISE = re.compile(r"^OPD\d+(?:_[A-Z]+)?$")
+
+
+def unclassified(mod):
+    """content.py names that are neither mined for cards nor listed as not mined."""
+    return sorted(n for n in vars(mod)
+                  if n.isupper() and not n.startswith("_")
+                  and n not in PROSE and n not in NOT_PROSE and not _EXERCISE.match(n))
 
 _SENT = re.compile(r"[^.!?…]*[.!?…]")
 _PAREN = re.compile(r"\s*\([^)]*\)\s*$")
