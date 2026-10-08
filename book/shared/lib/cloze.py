@@ -116,6 +116,7 @@ def _card(chapter, kind, front, back, dutch):
         "chapter":  chapter,
         "sentence": None,
         "cloze":    None,
+        "blank":    None,
         "meaning":  None,
     }
 
@@ -159,6 +160,13 @@ def deck(mod, chapter):
             if m:
                 card["sentence"] = candidate
                 card["cloze"] = _blank(candidate, m)
+                # What the learner must type is exactly the text taken out of
+                # the sentence — not the dictionary headword. The word list says
+                # "de naam", but the blank in "Wat is jouw ______?" is "naam";
+                # demanding the article there asks for "Wat is jouw de naam?".
+                # Where the sentence does carry the article, the blank carries
+                # it too, and the de/het drill survives on exactly those cards.
+                card["blank"] = candidate[m.start():m.end()]
                 break
         cards.append(card)
 

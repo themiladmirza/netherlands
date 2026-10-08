@@ -173,8 +173,12 @@ and grade yourself *Nog niet* / *Gewust*.
 
 Once a translate card reaches box 3, it unlocks a **production** card: the same
 sentence with the word blanked out, and you type the Dutch. That is where typing
-earns its keep — nouns keep their article, so `de verjaardag` is also the de/het
-drill and `verjaardag` alone is marked wrong. A one-character slip counts as close.
+earns its keep. What you type is whatever the sentence is missing: in
+`Wat is jouw ______?` that is `naam`, not the word list's `de naam` — demanding
+the article there would be asking for *Wat is jouw de naam?*. Where the sentence
+does print the article (`Welkom in ______ Nederlands.`) the answer is `de cursus`
+and `cursus` alone is wrong, so the de/het drill lands on exactly the cards that
+can carry it. A one-character slip counts as close.
 
 Recognition flips rather than types on purpose: making you spell the *English* for
 a Dutch word tests the wrong language. Typing is reserved for producing Dutch.

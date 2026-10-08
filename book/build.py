@@ -111,10 +111,28 @@ def build_deck(cdir, ch):
     missing = cloze.attach_meaning(ch.deck, translations)
     voc = len(getattr(load_chapter_content(cdir), "VOC", []) or [])
     produce = sum(1 for c in ch.deck if c["cloze"])
+    # A production card is answered with the text taken out of the sentence.
+    # If `blank` ever drifts from what the cloze actually removed, the card
+    # becomes unpassable — that shipped once, for 14 cards in chapter 1.
+    wrong_blank = []
+    for c in ch.deck:
+        if not c["cloze"]:
+            continue
+        pre, _, post = c["cloze"].partition("______")
+        removed = c["sentence"][len(pre):len(c["sentence"]) - len(post)]
+        if (c["blank"] or "") != removed:
+            wrong_blank.append(f'{c["front"]}: blank={c["blank"]!r} removed={removed!r}')
+
     withmeaning = sum(1 for c in ch.deck if c["meaning"])
     print(f"  cards     : {len(ch.deck)} from {voc} Woordenlijst entries")
     print(f"              {produce} unlock a typed production card, "
           f"{withmeaning} carry a translated sentence")
+    if wrong_blank:
+        print(f"  CLOZE     : {len(wrong_blank)} card(s) whose answer is not the "
+              f"text removed from the sentence:")
+        for line in wrong_blank[:5]:
+            print(f"              {line}")
+        return ch.deck, True
     if missing:
         print(f"  MEANINGS  : {len(missing)} sentence(s) with no entry in "
               f"translations.py — add them:")

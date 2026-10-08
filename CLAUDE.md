@@ -305,6 +305,13 @@ pack. `build.py` needs PyMuPDF (already present).
   entry, losing a meaning the book teaches.
 - Cloze sentences are lifted from the chapter's own prose, never written for the
   card. A word the book never uses in running text gets recognition only.
+- **A cloze is answered with the text that was removed (`card.blank`), never the
+  word list's headword.** The list says *de naam*; the blank in
+  "Wat is jouw ______?" is *naam*, and checking against the headword made 14
+  chapter-1 cards unpassable — the only accepted answer was the ungrammatical
+  "Wat is jouw de naam?". Where the sentence itself prints the article, the blank
+  contains it and the de/het drill still applies; across ch1-3 that is 6 cards.
+  Build-time check: for every card, `sentence` minus `cloze` must equal `blank`.
 - **`flashcards.js` is linked, not inlined.** That is the whole point of the
   component — edit it once and all eighteen chapters change on reload, with no
   rebuild. Only new *cards* need `build.py`. Don't inline it "for convenience".

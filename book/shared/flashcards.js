@@ -117,11 +117,15 @@
     }
     return prev[b.length];
   }
-  // "de man / de echtgenoot" accepts either side; the article is never optional.
+  // A production card is answered with the exact text the sentence is missing,
+  // which is card.blank — "naam", not the headword "de naam". Only where the
+  // sentence itself carries the article does the answer include it.
+  // "de man / de echtgenoot" still accepts either side.
   function answers(card) {
-    return String(card.dutch).split(/\s*\/\s*|\s+·\s+/)
+    return String(card.blank || card.dutch).split(/\s*\/\s*|\s+·\s+/)
       .map(norm).filter(Boolean);
   }
+  function wanted(card) { return card.blank || card.dutch; }
   function check(typed, card) {
     var got = norm(typed);
     if (!got) return "empty";
@@ -278,7 +282,9 @@
       el.context.innerHTML = '<span class="deck-en">' + esc(card.back) + "</span>";
       el.input.hidden = false;
       el.input.placeholder = "in Dutch…";
-      el.hint.textContent = "include the article · enter to check";
+      el.hint.textContent = /^(de|het)\s/i.test(wanted(card))
+        ? "include the article · enter to check"
+        : "enter to check";
       button("Check", "go", judge);
       say("");        // the sentence contains the answer — silent until checked
       el.input.focus();
@@ -320,11 +326,11 @@
     el.card.classList.add(verdict === "close" ? "is-close"
                           : right ? "is-right" : "is-wrong");
     el.back.innerHTML = verdict === "right"
-      ? '<span class="deck-answer">✓ ' + esc(card.dutch) + "</span>"
+      ? '<span class="deck-answer">✓ ' + esc(wanted(card)) + "</span>"
       : verdict === "close"
-        ? '<span class="deck-answer">≈ ' + esc(card.dutch) +
+        ? '<span class="deck-answer">≈ ' + esc(wanted(card)) +
           ' <span class="deck-en">bijna — telt mee</span></span>'
-        : '<span class="deck-answer">✗ ' + esc(card.dutch) + "</span>";
+        : '<span class="deck-answer">✗ ' + esc(wanted(card)) + "</span>";
     if (card.sentence)
       el.back.innerHTML += '<div class="deck-said">' + esc(card.sentence) + "</div>"
                          + meaningHtml(card);
