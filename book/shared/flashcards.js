@@ -296,7 +296,7 @@
     el.front.innerHTML = '<span class="deck-nl">' + esc(card.front) + "</span>";
     el.context.innerHTML = card.sentence
       ? '<span class="deck-sentence">' + esc(card.sentence) + "</span>" : "";
-    el.hint.textContent = "recall it, then flip";
+    el.hint.textContent = "recall it, then space to flip";
     button("Flip", "go", flip, "space");
     say(card.dutch);
   }
@@ -308,9 +308,9 @@
     el.actions.innerHTML = "";
     el.back.innerHTML = '<span class="deck-answer">' + esc(card.back) + "</span>"
                       + meaningHtml(card);
-    el.hint.textContent = "did you know it?";
+    el.hint.textContent = "did you know it? \u00b7 space = yes";
     button("Not yet", "no", function () { score(false); }, "1");
-    button("Got it", "yes", function () { score(true); }, "2");
+    button("Got it", "yes", function () { score(true); }, "space");
     say(card.dutch);
   }
 
@@ -360,25 +360,49 @@
   // the first click anywhere in the deck counts as consent to speak
   mount.addEventListener("click", function () { armed = true; });
 
-  /* keyboard: space flips, 1/2 grade, enter checks and advances */
-  mount.addEventListener("keydown", function (e) {
-    var typing = !el.input.hidden && !el.input.disabled;
+  /* ---------- keyboard ----------
+   * Bound to the document, not the panel: nothing inside the deck has focus when
+   * the page loads, so a panel-scoped listener never saw the key and the browser
+   * just scrolled. Scrolling still has to work everywhere else, so the deck only
+   * claims these keys while it is actually on screen.
+   *
+   * Space does the whole round single-handed: reveal, then "I knew it, next".
+   * On a typed card it is left alone while you are in the box, and afterwards it
+   * only advances — the grade was already decided by what you typed.
+   */
+  function onScreen() {
+    var r = mount.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    return r.bottom > vh * 0.15 && r.top < vh * 0.85;
+  }
+
+  function click(sel) {
+    var b = el.actions.querySelector(sel);
+    if (b) b.click();
+    return !!b;
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    var typing = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable);
+
     if (e.key === "Enter") {
+      if (!typing && !onScreen()) return;
       e.preventDefault();
-      var go = el.actions.querySelector(".deck-btn--go");
-      if (go) go.click();
+      click(".deck-btn--go");
       return;
     }
-    if (typing) return;
+    if (typing || !onScreen()) return;   // a space in the answer box is a space
+
     if (e.key === " ") {
-      e.preventDefault();
-      var first = el.actions.querySelector(".deck-btn--go");
-      if (first) first.click();
+      e.preventDefault();                 // otherwise the page scrolls
+      if (!shown) click(".deck-btn--go");          // reveal (or check)
+      else if (!click(".deck-btn--yes")) click(".deck-btn--go");  // knew it, or just next
+      return;
     }
-    if (shown && (e.key === "1" || e.key === "2")) {
-      var b = el.actions.querySelector(e.key === "1" ? ".deck-btn--no" : ".deck-btn--yes");
-      if (b) b.click();
-    }
+    if (shown && (e.key === "1" || e.key === "2"))
+      click(e.key === "1" ? ".deck-btn--no" : ".deck-btn--yes");
   });
 
   function esc(s) {

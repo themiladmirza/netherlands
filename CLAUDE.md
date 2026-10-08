@@ -361,6 +361,13 @@ problem — every file is already 44.1 kHz / 128 kbps.
   "Wat is jouw de naam?". Where the sentence itself prints the article, the blank
   contains it and the de/het drill still applies; across ch1-3 that is 6 cards.
   Build-time check: for every card, `sentence` minus `cloze` must equal `blank`.
+- **Deck shortcuts are bound to the document, but only act while the deck is on
+  screen.** A panel-scoped listener never fired — nothing inside the deck has focus
+  on load, so the browser just scrolled the page instead of flipping the card.
+  Binding to the document fixes that, and the on-screen test keeps space working
+  as scroll everywhere else in a 24-page chapter. Space is the whole round: reveal,
+  then "knew it, next". In the answer box a space is just a space, and after a
+  typed answer space only advances — the grade came from what was typed.
 - **`flashcards.js` is linked, not inlined.** That is the whole point of the
   component — edit it once and all eighteen chapters change on reload, with no
   rebuild. Only new *cards* need `build.py`. Don't inline it "for convenience".
