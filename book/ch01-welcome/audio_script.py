@@ -63,7 +63,10 @@ ITEMS = [
           "honderdvierentwintig. duizend."},
 
  # ---------------------------------------------------------------- 1.6 Het alfabet
- {"id": "alfabet", "kind": "speech", "voice": "docent", "label": "Het alfabet",
+ # Stays on v3. v4 duplicated a run of letters in 7 of 9 takes ("a b c d e f g
+ # a b c d e f g …"); of the other two, one may read the Greek y as "i", and the
+ # cleanest still needs an ear — speech-to-text cannot tell ij from y.
+ {"id": "alfabet", "model": "eleven_v3", "kind": "speech", "voice": "docent", "label": "Het alfabet",
   "text": "[clearly, slowly, pausing between each letter, as a teacher reciting the alphabet] "
           "a. b. c. d. e. f. g. h. i. j. k. l. m. "
           "n. o. p. q. r. s. t. u. v. w. x. y. z. "

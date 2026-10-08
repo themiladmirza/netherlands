@@ -66,6 +66,22 @@ the rest of chapter 1 is v4. The clarity gain came from the *voice*, not the
 model: v3 with the new teacher measures -16.3 dB against v4's -16.8. When a
 track is a list of short tokens, prefer v3 and diff the transcript.
 
+**The move to v4 everywhere (2026-10-08).** v4 became the default. The four tracks
+still on v3 — all lists of short tokens — got three v4 takes each, every take
+transcribed and diffed word by word against the script:
+
+| track | v3 (kept as reference) | v4, 3 takes | decision |
+|---|---|---|---|
+| ch2 `opdracht16` (a/aa words) | 30/30 | 30/30 ×3 | v4 |
+| ch3 `opdracht13` (o/oo words) | 30/30 | 30/30 ×3 | v4 |
+| ch3 `opdracht11` (word stress) | 18/18 | 17/18 ×3 — *pauze* missing | v3 |
+| ch1 `alfabet` | 38/38 | one duplicated "a…g", two complete | v3 |
+
+*pauze* was not a transcription miss: word timestamps put 0.65 s between
+"adres" and "familie", the same as every other gap, so the word was never
+spoken. Three of three is a pattern, not noise. The alphabet's complete takes
+still hit the ij / y blind spot below, so they need an ear before adoption.
+
 **Do not judge a take by the match score alone** — it called a broken alphabet
 "ok" at 87%. Diff the transcript against the script word by word. Doing that
 overturned two conclusions drawn from scores: the v4 dialogue looked like it had

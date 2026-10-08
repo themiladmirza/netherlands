@@ -303,10 +303,10 @@ The key loads from `.env` automatically; export one only to override it.
 `shared/lib/voices.py` holds the cast — keep a character on one voice across all
 eighteen chapters so the teacher always sounds like the teacher.
 
-**Models.** Dialogues and card sentences use `eleven_v4`, which reads a
-conversation far more naturally; lists of short tokens (the alphabet) stay on
-`eleven_v3`, which recites them reliably. An `audio_script.py` entry can pin its
-own `"model"`. Why, with the numbers: `LESSONS.md`.
+**Models.** Everything uses `eleven_v4` (`voices.MODEL`), which reads Dutch far
+more naturally. An `audio_script.py` entry can pin its own `"model"`, and two do:
+ch1's alphabet and ch3's Opdracht 11 stay on `eleven_v3`, because v4 repeated
+letters in one and dropped a word from the other. Why, with the numbers: `LESSONS.md`.
 
 **Emotion tags.** Both models interpret tags: writing `[warmly] Goedemorgen`
 shapes the delivery and is not read aloud (verified — tagged and untagged renders

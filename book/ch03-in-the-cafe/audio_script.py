@@ -59,7 +59,9 @@ ITEMS = [
               "Het tweede rondje betaalt hij."),
   ]},
 
- {"id": "opdracht11", "kind": "speech", "voice": "docent", "label": "Opdracht 11 — woordaccent",
+ # Stays on v3: v4 silently skipped "pauze" in 3 of 3 takes (word timestamps
+ # show no room for it between "adres" and "familie").
+ {"id": "opdracht11", "model": "eleven_v3", "kind": "speech", "voice": "docent", "label": "Opdracht 11 — woordaccent",
   "text": "[stressing each accent] "
           "voornaam. docent. Nederlands. adres. pauze. familie. "
           "vandaag. minuut. februari. moment. vakantie. gezin. "

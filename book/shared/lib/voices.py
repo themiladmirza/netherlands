@@ -8,12 +8,13 @@ Swap an id here and every chapter follows.
 All native Dutch voices from the ElevenLabs shared library; they can be used by
 id directly, no import step needed.
 
-MODEL is eleven_v3 because it is the one that interprets emotion tags —
-`[warmly] Goedemorgen` shapes the delivery, it does not read the bracket aloud
-(verified: tagged and untagged renders are the same length).
+MODEL is eleven_v4 (since 2026-10-08): it reads Dutch far more naturally, and it
+interprets emotion tags as v3 does — `[warmly] Goedemorgen` shapes the delivery,
+the bracket is never read aloud. An audio_script.py item that v4 cannot read
+cleanly pins "model": "eleven_v3" with the reason beside it; see LESSONS.md.
 """
 
-MODEL = "eleven_v3"
+MODEL = "eleven_v4"
 
 VOICES = {
     # role        voice id                name     who
