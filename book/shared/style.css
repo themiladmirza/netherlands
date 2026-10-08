@@ -297,7 +297,8 @@ ol.choice-items .opt span{ font-family:var(--disp); font-weight:700; color:var(-
  * Hidden in EVERY medium by default and switched on only under @media screen,
  * the same rule the practice deck follows: print-to-pdf runs the script too, and
  * an unstyled answer block would land in the PDF and spoil the workbook. */
-.answers-toggle, .answer, .answer-fill, .answer-article{ display:none; }
+.answers-toggle, .answer, .answer-fill, .answer-article,
+.answer-inline, .answer-note{ display:none; }
 
 @media screen{
   /* Answers sit ON the question: in the blank, on the chosen option, in front of
@@ -318,6 +319,14 @@ ol.choice-items .opt span{ font-family:var(--disp); font-weight:700; color:var(-
   html.answers-on .dutch.is-answer + div{ color:#2F5138; font-weight:600; }
   /* the lettered label on a photograph */
   html.answers-on .photolabels span.is-answer{ background:#3F6B4A; color:#fff; }
+
+  /* an answer sitting under the question it answers */
+  html.answers-on .answer-inline{ display:block; font-family:var(--body);
+    font-weight:400; font-size:9.4pt; line-height:1.45; color:#3F6B4A;
+    margin:.8mm 0 1.5mm; padding-left:3mm;
+    border-left:.8mm solid #BACCB9; }
+  html.answers-on .answer-note{ display:block; font-family:var(--body);
+    font-style:italic; font-size:9pt; color:var(--ink-faint); margin:0 0 2mm; }
 
   /* the fallback block, for model answers that have nowhere to sit in the question */
   .answer{ display:none; margin-top:3mm; padding:3mm 4mm;

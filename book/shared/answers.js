@@ -50,16 +50,24 @@
    * sentence answers and "Mogelijke antwoorden" out of the in-place path. */
   function numbered(raw) {
     var text = clean(decoded(raw).textContent);
-    if (/^mogelijke/i.test(text)) return null;
-    var parts = text.split(/\s[–—-]\s/);
+    // "Mogelijke antwoorden:" marks a sample answer, not the only one. Keep the
+    // caveat and parse the list behind it rather than giving up on placing it.
+    var note = "";
+    var m0 = /^(mogelijke\s+(?:antwoorden|vragen)\s*:)\s*([\s\S]+)$/i.exec(text);
+    if (m0) { note = m0[1]; text = m0[2]; }
+    var parts = text.split(/\s[\u2013\u2014-]\s/);
     var out = [];
     for (var i = 0; i < parts.length; i++) {
       var m = /^(\d+)\s+([\s\S]+)$/.exec(parts[i].trim());
       if (!m || parseInt(m[1], 10) !== i + 1) return null;
-      out.push(m[2].trim().replace(/\.$/, ""));
+      out.push(m[2].trim());
     }
-    return out.length > 1 ? out : null;
+    if (out.length < 2) return null;
+    out.note = note;
+    return out;
   }
+
+  function bare(v) { return v.replace(/\.$/, ""); }
 
   /* ---------- shape 1: fill the blanks ---------- */
   function fillBlanks(task, items) {
@@ -71,7 +79,7 @@
       if (!blanks.length) return false;
       // a comma inside one item's answer means that item has several blanks
       // ("1 op, om"); a slash does not ("jij / je" is one answer).
-      var vals = items[i].split(/,\s*/);
+      var vals = items[i].split(/,\s*/).map(bare);
       if (blanks.length !== vals.length) return false;
       plan.push([blanks, vals]);
     }
@@ -105,6 +113,7 @@
   function markChoices(task, items) {
     var lis = task.querySelectorAll("ol.choice-items > li");
     if (!lis.length || lis.length !== items.length) return false;
+    items = items.map(bare);
     if (!items.every(function (v) { return /^[a-z]$/i.test(v); })) return false;
     var hits = 0;
     for (var i = 0; i < lis.length; i++) {
@@ -118,6 +127,23 @@
       }
     }
     return hits === lis.length;
+  }
+
+  /* ---------- shape: an answer under each numbered question ----------
+   * "Answer the questions" has no blank to fill and no option to tick, but its
+   * answers are numbered 1..N against N questions, so each one belongs under the
+   * question it answers rather than in a list at the foot of the exercise. */
+  function answerPerItem(task, items) {
+    var lis = task.querySelectorAll("ol.items > li");
+    if (!lis.length || lis.length !== items.length) return false;
+    for (var i = 0; i < lis.length; i++)
+      lis[i].appendChild(el("span", "answer-inline", items[i]));
+    if (items.note) {
+      var head = task.querySelector(".ins") || task.querySelector("ol.items");
+      head.parentNode.insertBefore(el("div", "answer-note", items.note),
+                                   task.querySelector("ol.items"));
+    }
+    return true;
   }
 
   /* ---------- shape 3: a single a / b / c, in a plain grid ---------- */
@@ -198,6 +224,7 @@
     var done = (items && fillBlanks(task, items)) ||
                (items && markChoiceForms(task, items)) ||
                (items && markChoices(task, items)) ||
+               (items && answerPerItem(task, items)) ||
                markSingle(task, raw) ||
                prefixArticles(task, raw);
 

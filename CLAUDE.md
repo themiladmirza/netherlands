@@ -412,7 +412,14 @@ problem — every file is already 44.1 kHz / 128 kbps.
   | `ol.choice-items` a/b | the correct `.opt` is marked |
   | a/b/c grid, or photo labels | the right letter is marked |
   | bare nouns in a grid | *de* / *het* in front of each |
-  | "Mogelijke antwoorden: …" | a block underneath — correct for prose |
+  | numbered questions, numbered answers | each answer under the question it answers |
+  | "Mogelijke antwoorden: …" | same, with the caveat kept above the list |
+
+  Nothing falls back to a block any more. "Answer the questions" looked
+  unplaceable until you notice its eleven answers are numbered against eleven
+  questions — so each one goes under its own question. Check that before deciding
+  an answer has nowhere to sit. The "Mogelijke antwoorden" caveat is kept, printed
+  once above the list, so a sample answer is never shown as the only one.
 
   A comma inside one item's answer means that item has several blanks
   ("1 op, om"); a slash does not ("jij / je" is one answer). An exercise's
