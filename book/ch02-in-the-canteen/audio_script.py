@@ -28,7 +28,7 @@ Generate:  python3 book/generate_audio.py ch02-in-the-canteen
 
 ITEMS = [
  # ---------------------------------------------------------------- 2.1 Dialoog
- {"id": "dialoog", "kind": "dialogue", "label": "Susy en Edit in de kantine",
+ {"id": "dialoog", "model": "eleven_v4", "gap": 0.45, "kind": "dialogue", "label": "Susy en Edit in de kantine",
   "lines": [
    ("susy", "[politely, a little tentative] Is deze plaats vrij?"),
    ("edit", "[warmly] Ja hoor."),

@@ -101,6 +101,20 @@ and retries up to six times. Expect a chapter's art to take a few minutes.
 **Audio: emotion tags need v3 or v4.** On the older models `[warmly]` risks
 being read aloud. Verified on both v3 and v4: the tag is acted on, never spoken.
 
+**Dialogues use `eleven_v4` with `"gap": 0.45`.** v4 reads a conversation far more
+naturally than v3 — the user's words were "much more real" — but it runs the turns
+together: 0.29 s of silence between speakers against v3's 0.69 s, too quick to
+follow. `pad_gaps()` lengthens each silence after generation, so v4's delivery is
+untouched and only the pacing changes. Gaps are *extended*, not normalised, so a
+thinking pause stays longer than a quick "Ja, graag". All three chapters now land
+near 0.7 s.
+
+**The audio metrics cannot hear whether a voice sounds real.** Energy above 8 kHz
+and words-per-minute said v3 won on chapter 3's dialogue, and listening said the
+opposite, emphatically. Those numbers catch a *broken* take — a duplicated run of
+letters, a swallowed word — and nothing about naturalness. Use them to reject, never
+to choose: for anything a learner listens to, play both.
+
 **`eleven_v4` is high-variance on letter recitation — take the best of N.** v4
 does Dutch, costs the same as v3, honours `[emotion]` tags (verified: not read
 aloud) and works on `/v1/text-to-dialogue`. Chapter 1 runs entirely on it, pinned

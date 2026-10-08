@@ -19,7 +19,7 @@ Every file is verified by transcribing it back (speech-to-text) and comparing to
 the script with the emotion tags stripped. That catches a voice mangling Dutch or
 reading a tag aloud — it will not catch a merely ugly read, so listen too.
 """
-import argparse, difflib, importlib.util, json, os, re, sys, time, urllib.error, urllib.request
+import argparse, difflib, importlib.util, json, os, re, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "shared", "lib"))
@@ -48,6 +48,57 @@ def post(url, payload, key, tries=6):
             wait = int(e.headers.get("retry-after") or (2 ** attempt) * 5)
             print(f"        {e.code} — waiting {wait}s", flush=True)
             time.sleep(wait)
+
+def pad_gaps(path, add):
+    """Lengthen the pauses between speaker turns, leaving the speech untouched.
+
+    eleven_v4 reads a dialogue far better than v3 but runs the turns together:
+    on chapter 3 its mean gap was 0.29 s against v3's 0.69 s, which is too quick
+    to follow as a learner. Padding each silence keeps v4's delivery and restores
+    classroom pacing. Each gap is *extended* rather than set to a fixed length,
+    so a thinking pause before an answer stays longer than a quick "Ja, graag".
+    """
+    if not shutil.which("ffmpeg"):
+        print("        (ffmpeg not found — gaps left as generated)")
+        return
+    probe = subprocess.run(["ffmpeg", "-i", path, "-af",
+        "silencedetect=noise=-40dB:d=0.18", "-f", "null", "-"],
+        capture_output=True, text=True).stderr
+    starts = [float(x) for x in re.findall(r"silence_start: ([0-9.]+)", probe)]
+    ends = [float(x) for x in re.findall(r"silence_end: ([0-9.]+)", probe)]
+    gaps = [(a, b) for a, b in zip(starts, ends) if b - a >= 0.20]
+    if not gaps:
+        return
+    dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+        "format=duration", "-of", "default=nw=1:nk=1", path],
+        capture_output=True, text=True).stdout)
+
+    work = tempfile.mkdtemp(prefix="gap")
+    try:
+        bounds = [0.0] + [(a + b) / 2 for a, b in gaps] + [dur]
+        parts = []
+        for i in range(len(bounds) - 1):
+            seg = os.path.join(work, f"s{i:03d}.wav")
+            subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", path,
+                            "-ss", str(bounds[i]), "-to", str(bounds[i + 1]),
+                            "-ar", "44100", "-ac", "1", seg], check=True)
+            parts.append(seg)
+        pad = os.path.join(work, "pad.wav")
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i",
+                        "anullsrc=r=44100:cl=mono", "-t", str(add), pad], check=True)
+        listing = os.path.join(work, "list.txt")
+        with open(listing, "w") as f:
+            for i, seg in enumerate(parts):
+                f.write(f"file '{seg}'\n")
+                if i < len(parts) - 1:
+                    f.write(f"file '{pad}'\n")
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0",
+                        "-i", listing, "-codec:a", "libmp3lame", "-b:a", "128k",
+                        "-ar", "44100", path], check=True)
+        print(f"        gaps: {len(gaps)} padded by +{add}s")
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
 
 def spoken(text):
     """The script with [emotion tags] removed — what should actually be heard."""
@@ -168,6 +219,8 @@ def main():
                     "model_id": model, "text": item["text"],
                     "voice_settings": cast.SETTINGS}, key)
             open(path, "wb").write(data)
+            if item.get("gap"):
+                pad_gaps(path, item["gap"])
         if not os.path.exists(path):
             print(f"  {item['id']:<12} missing"); continue
         kb = os.path.getsize(path)//1024

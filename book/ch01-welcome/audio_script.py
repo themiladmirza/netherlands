@@ -22,7 +22,7 @@ Generate:  python3 book/generate_audio.py ch01-welcome
 
 ITEMS = [
  # ---------------------------------------------------------------- 1.1 Dialoog
- {"id": "dialoog", "model": "eleven_v4", "kind": "dialogue", "label": "De cursus begint",
+ {"id": "dialoog", "model": "eleven_v4", "gap": 0.45, "kind": "dialogue", "label": "De cursus begint",
   "lines": [
    ("docent", "[warmly] Goedemorgen allemaal. Welkom in de cursus Nederlands."),
    ("docent", "[friendly] Ik ben Karin Dijkstra en ik ben jullie docent. "

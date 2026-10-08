@@ -29,7 +29,7 @@ Generate:  python3 book/generate_audio.py ch03-in-the-cafe
 """
 
 ITEMS = [
- {"id": "dialoog", "kind": "dialogue", "label": "Edit viert haar verjaardag",
+ {"id": "dialoog", "model": "eleven_v4", "gap": 0.45, "kind": "dialogue", "label": "Edit viert haar verjaardag",
   "lines": [
    ("susy",   "[warmly, celebrating] Hoi Edit. Gefeliciteerd met je verjaardag."),
    ("edit",   "[pleased] Dank je wel. Dit is mijn broer Andres."),
