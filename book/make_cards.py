@@ -9,27 +9,11 @@ Reads each chapter's content.py (ch01-…, ch02-…) and turns words, phrases,
 greetings and numerals into short cards. One line per card, because the
 spinner shows them on a single line.
 """
-import argparse, glob, html, importlib.util, json, os, re, sys, unicodedata
+import argparse, glob, importlib.util, json, os, sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-
-def plain(s):
-    """Visible text of a cell: no tags, no entities, single spaces.
-
-    Line-breaking tags become a space before the rest are stripped — without that
-    "onze les<br>ons adres" collapsed into the non-word "onze lesons adres". And
-    entities are unescaped *before* whitespace is collapsed, not after, or the
-    &nbsp; padding in "de man /<br>&nbsp;&nbsp;&nbsp;de echtgenoot" survives as a
-    run of three spaces.
-    """
-    s = re.sub(r"<br\s*/?>|</(?:p|div|li|tr|h\d)>", " ", str(s), flags=re.I)
-    s = re.sub(r"<[^>]+>", "", s)
-    s = html.unescape(s.replace("&nbsp;", " "))
-    return re.sub(r"\s+", " ", s).strip()
-
-def slugify(s):
-    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
-    return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:48]
+sys.path.insert(0, os.path.join(ROOT, "shared", "lib"))
+from text import plain, slugify
 
 def load(path, name):
     spec = importlib.util.spec_from_file_location(name, path)

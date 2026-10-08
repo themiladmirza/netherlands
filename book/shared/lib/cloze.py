@@ -23,9 +23,8 @@ import os
 import re
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__)))))                      # book/ — for make_cards
-from make_cards import plain, slugify                  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from text import plain, slugify                        # noqa: E402
 
 # Attributes holding running Dutch prose, mined for cloze sentences. Exercise
 # prompts and grammar tables are excluded: a cloze wants a sentence someone says.
