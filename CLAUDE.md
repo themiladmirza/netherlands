@@ -101,25 +101,25 @@ and retries up to six times. Expect a chapter's art to take a few minutes.
 **Audio: emotion tags need v3 or v4.** On the older models `[warmly]` risks
 being read aloud. Verified on both v3 and v4: the tag is acted on, never spoken.
 
-**`eleven_v4` is not a drop-in upgrade — choose it per item.** v4 exists, does
-Dutch, costs the same as v3, honours `[emotion]` tags (verified: not read aloud)
-and works on `/v1/text-to-dialogue`. But on chapter 1 it was mixed, so
-`audio_script.py` items may carry their own `"model"` and `generate_audio.py`
-takes `--model`:
+**`eleven_v4` is high-variance on letter recitation — take the best of N.** v4
+does Dutch, costs the same as v3, honours `[emotion]` tags (verified: not read
+aloud) and works on `/v1/text-to-dialogue`. Chapter 1 runs entirely on it, pinned
+per item: `audio_script.py` entries carry `"model"`, and `generate_audio.py` takes
+`--model`.
 
-| item | v3 | v4 | kept |
-|---|---|---|---|
-| telwoorden | 99% | **100%**, 29% smaller | v4 |
-| zinsaccent | 89% (said *jij* for *je*) | 89%, word correct | v4 |
-| dialoog | **99%** | 95%, ~54 characters dropped | v3 |
-| alfabet | **100%** | 86-87%, broken | v3 |
+The catch is variance, not quality. Single rolls of the alphabet track came out
+broken twice — duplicated runs of letters ("A B C D E F G A B C D E F G…") and a
+33% larger file. Three takes, keeping the best by transcript match, produced a
+clean one at 96%. Do that for any track that is a list of short tokens.
 
-The alphabet failure is reproducible, not a wobble: across two renders v4
-duplicated runs of letters ("A B C D E F G A B C D E F G…") and read both *ij*
-and *ei* as "Y", destroying the one thing that track teaches. Twenty-six
-single letters after a long instruction tag is the shape it cannot handle.
-Before switching any chapter to v4, diff the transcript against the script —
-the match percentage alone called the broken alphabet "ok" at 87%.
+**Do not judge a take by the match score alone** — it called a broken alphabet
+"ok" at 87%. Diff the transcript against the script word by word. Doing that
+overturned two conclusions drawn from scores: the v4 dialogue looked like it had
+dropped ~54 characters, but all 197 words are present and the gap is STT writing
+*Suzy* for *Susy* and digits for spelled-out numbers (`tweeëntwintig` → "22",
+`drieëndertig eenentachtig T W` → "3381 TW"). And the alphabet's remaining
+mismatch is `ij` transcribed as "y", which proves nothing: Dutch *ij* and *y* are
+pronounced the same, so STT cannot separate them. That one needs an ear.
 
 **Audio verification scores wobble.** `generate_audio.py` transcribes each file
 back and diffs it against the script. The same untouched files scored 89 % and
