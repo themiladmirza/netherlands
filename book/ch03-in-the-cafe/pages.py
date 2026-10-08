@@ -58,20 +58,9 @@ ch.page(keep("dialoog-3.1", f'''
 {BREAK.format("(nog weer later)")}
 <dl class="dialogue tight">{turns(DIALOOG_3)}</dl>'''), section="3.1 Dialoog")
 
-# ---------------------------------------------------------------- 3  cast + luisteren
+# ---------------------------------------------------------------- 3  illustration + luisteren
 ch.page(f'''
-<img src="art/dialoog.png" class="img" style="height:52mm;object-fit:cover;margin-bottom:6mm">
-{card("Who's who in the dialogue",
- '<div style="display:grid;grid-template-columns:auto 1fr;gap:2.2mm 5mm;font-size:9.3pt">'
- '<div class="dutch" style="color:var(--orange)">Edit</div>'
- '<div>is jarig &nbsp;·&nbsp; trakteert &nbsp;·&nbsp; betaalt het eerste rondje</div>'
- '<div class="dutch" style="color:var(--orange)">Andres</div>'
- '<div>de broer van Edit &nbsp;·&nbsp; betaalt het tweede rondje</div>'
- '<div class="dutch" style="color:var(--orange)">Susy</div>'
- '<div>kent Edit van de cursus Nederlands</div>'
- '<div class="dutch" style="color:var(--orange)">de ober</div>'
- '<div>neemt de bestelling op</div>'
- '</div>')}
+<img src="art/dialoog.png" class="img" style="height:112mm;object-fit:cover;margin-bottom:7mm">
 <div class="sp"></div>
 {card("Listening", '<div style="display:flex;gap:3mm;align-items:flex-start">'+icon("web")+
  '<div>Listen to this dialogue at <b>coutinho.nl/nederlandsingang3</b> and repeat the sentences. '
@@ -291,7 +280,6 @@ ch.page(f'''
 ch.toc = [
  [1,"Hoofdstuk 3 — In het café",1],
  [2,"3.1  Dialoog — Edit viert haar verjaardag",2],
- [3,"Who's who in the dialogue",3],
  [2,"3.2  Woordenlijst",4],
  [3,"Opdracht 1",5],
  [2,"3.3  Bestellen",6],

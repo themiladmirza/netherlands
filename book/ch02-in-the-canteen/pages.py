@@ -42,30 +42,13 @@ ch.page(f'''
 
 # ---------------------------------------------------------------- 2  DIALOOG
 dl = "".join(f'<dt{" class=you" if s=="Susy" else ""}>{s}:</dt><dd>{t}</dd>' for s, t in DIALOOG)
-ch.page(keep("dialoog-2.1", f'''
+ch.page(f'''{keep("dialoog-2.1", f'''
 <h2 class="sec"><span class="num">2.1</span> Dialoog</h2>
 <div style="display:flex;align-items:center;gap:2.4mm;margin-bottom:3mm">
   {audio_icon("audio/dialoog.mp3","Susy en Edit in de kantine")}<div style="font-family:var(--disp);font-weight:700;font-size:10pt">Susy en Edit hebben pauze en zitten in de kantine.</div>
 </div>
-<dl class="dialogue">{dl}</dl>'''), section="2.1 Dialoog")
-
-# ---------------------------------------------------------------- 3  cast + luisteren
-ch.page(f'''
-<img src="art/dialoog.png" class="img" style="height:52mm;object-fit:cover;margin-bottom:6mm">
-{card("Who's who in the dialogue",
- '<div style="display:grid;grid-template-columns:auto 1fr;gap:2.2mm 5mm;font-size:9.3pt">'
- '<div class="dutch" style="color:var(--orange)">Susy</div>'
- '<div>cursist &nbsp;·&nbsp; woont pas drie dagen in Utrecht &nbsp;·&nbsp; jarig in december</div>'
- '<div class="dutch" style="color:var(--orange)">Edit</div>'
- '<div>cursist &nbsp;·&nbsp; morgen jarig &nbsp;·&nbsp; donker haar</div>'
- '<div class="dutch" style="color:var(--orange)">de broer van Edit</div>'
- '<div>jonger, maar wel langer &nbsp;·&nbsp; komt op bezoek</div>'
- '<div class="dutch" style="color:var(--orange)">de zus van Edit</div>'
- '<div>kort, blond haar &nbsp;·&nbsp; een heel ander type</div>'
- '<div class="dutch" style="color:var(--orange)">de ouders van Edit</div>'
- '<div>op dit moment in Indonesië &nbsp;·&nbsp; op vakantie en voor het werk</div>'
- '</div>')}
-<div class="sp"></div>
+<dl class="dialogue">{dl}</dl>''')}
+<img src="art/dialoog.png" class="img" style="height:36mm;object-fit:cover;margin-top:4mm">
 {card("Listening", '<div style="display:flex;gap:3mm;align-items:flex-start">'+icon("web")+
  '<div>Listen to this dialogue at <b>coutinho.nl/nederlandsingang3</b> and repeat the sentences. '
  'Each time you listen you will understand more.</div></div>', "teal")}''', section="2.1 Dialoog")
@@ -335,7 +318,6 @@ ch.page(f'''
 ch.toc = [
  [1,"Hoofdstuk 2 — In de kantine",1],
  [2,"2.1  Dialoog — in de kantine",2],
- [3,"Who's who in the dialogue",3],
  [2,"2.2  Woordenlijst",4],
  [3,"Opdracht 1",6],
  [2,"2.3  Familierelaties",7],

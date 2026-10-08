@@ -201,6 +201,16 @@ pack. `build.py` needs PyMuPDF (already present).
 
 ## Rules
 
+- **Transcribe, never invent — and that includes whole sections.** A card headed
+  "Who's who in the dialogue", summarising each speaker, shipped in chapters 2 and
+  3. It is nowhere in the book: every fact in it was true, lifted from the
+  dialogue, which is exactly why it survived review. The rule is not "is this
+  accurate" but "is this on the page". Before shipping a chapter, list its
+  headings and every `card()` title and check each one against the scan; an
+  English title on a card is the tell, because the book's own cards are Dutch.
+  (Still outstanding: the "Listening — listen at coutinho.nl" card in all three
+  chapters is also not in the book. The book points at the site from its
+  Verdiepingsmateriaal section instead.)
 - **Transcribe, never invent.** Every word must match the book. Read the cleaned
   scan images; `scan-text.txt` is an OCR draft with real errors (`naarde`,
   `jüj/je`, lone `I` → `[`). Verify counts against the original.
