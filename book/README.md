@@ -14,27 +14,41 @@ text, the words on the page, the titles printed in the PDF.
 ## Layout
 
     book/
-    ├── build.py            build one chapter into a PDF
+    ├── build.py            build one chapter: index.html + PDF, with checks
+    ├── extract_source.py   cut a chapter out of hard.pdf, clean it, OCR it
     ├── generate_art.py     generate a chapter's illustrations
+    ├── generate_audio.py   record a chapter's audio and card sentences
     ├── new_chapter.py      scaffold a new chapter folder
-    ├── make_cards.py       build study cards from the chapters
-    ├── practice.py         flashcard trainer
+    ├── make_cards.py       spinner tips from every chapter
+    ├── practice.py         terminal flashcard trainer
+    ├── autostudy.py        opens practice.py while Claude Code is busy
+    ├── LESSONS.md          why the rules in /CLAUDE.md exist
     │
     ├── shared/             ← one source of truth for the whole series
     │   ├── style.css       design system: palette, type, components
+    │   ├── flashcards.js   the practice deck (screen only)
+    │   ├── answers.js      the answer key toggle (screen only)
     │   ├── fonts/          Bricolage Grotesque + Source Sans 3 (SIL OFL)
     │   └── lib/
-    │       ├── layout.py   Chapter + building blocks (card, task, vocab_rows, …)
-    │       └── art_style.py shared illustration preamble + model choice
+    │       ├── layout.py   Chapter + page blocks (sec, card, task, items, …)
+    │       ├── cloze.py    Woordenlijst -> practice cards
+    │       ├── glossary.py first-occurrence hover translations
+    │       ├── art_style.py shared illustration preamble + model choice
+    │       ├── voices.py   the voice cast for all eighteen chapters
+    │       ├── modules.py  load a chapter file by path
+    │       ├── text.py     plain() and slugify()
+    │       └── env.py      loads the API keys from .env
     │
     ├── _template/          empty chapter to copy from
     │
     └── ch01-welcome/       ← one folder per chapter
-        ├── content.py      all of the chapter's text
-        ├── pages.py        page composition + bookmarks
+        ├── content.py      all of the chapter's text (the book)
+        ├── pages.py        which block goes on which page, plus bookmarks
         ├── art_prompts.py  the prompts that produced art/
-        ├── art/            the illustrations (PNG)
-        ├── cards.json      generated study cards
+        ├── audio_script.py what is spoken, by whom, how
+        ├── answers.py      the book's answer key (Bijlage 8)
+        ├── translations.py English for the card sentences (NOT the book's)
+        ├── art/ audio/     generated illustrations and recordings
         ├── index.html      generated — do not hand-edit
         ├── ch01-welcome.pdf the finished chapter
         ├── NOTES.md        decisions specific to this chapter
@@ -55,8 +69,16 @@ prints is set in `pages.py` (`Chapter(1, "Welkom")`).
     python3 book/build.py ch01-welcome
 
 Runs `pages.py` → `index.html` → Chrome print-to-pdf → bookmarks and metadata,
-then checks every page for content spilling past the trim and reports `OVERFLOW`
-if it finds any.
+and exits 1 if any check fails: content past the trim, a keep-block split across
+pages, a page mixing two sections, a bookmark not on its page, an answer that
+cannot be placed, an unclassified `content.py` name, a card sentence without a
+translation. The full list is in `/CLAUDE.md`.
+
+    python3 book/build.py ch01-welcome --compare
+
+For changes that should not change the output (a refactor of `pages.py`,
+`layout.py` or `style.css`): every PDF page is compared pixel for pixel with the
+PDF committed at HEAD, and `index.html` with HEAD's. Commit before you start.
 
 Trim size 170 × 240 mm. Text stays real vector (sharp at any zoom) and searchable.
 
@@ -196,10 +218,11 @@ book prints no English for its dialogue — so they live in
 wrong; nothing else depends on the wording. `build.py` fails if a quoted sentence
 has no translation.
 
-Pronunciation comes from the browser's own Dutch voice (macOS: Xander), so there
-are no audio files to generate. Press **▶ uitspraak** to hear it again. Nothing is
-spoken before you interact with the card, and a card never speaks an answer you
-have not revealed yet.
+A card plays its **sentence**, recorded by `generate_audio.py <chapter> --cards`
+(one clip per distinct sentence, shared by every card that quotes it). A word the
+book never uses in a sentence falls back to the browser's own Dutch voice (macOS:
+Xander). Press **▶ uitspraak** to hear it again. Nothing is spoken before you
+interact with the card, and a card never speaks an answer you have not revealed.
 
 Keys: space flips, 1 = nog niet, 2 = gewust, enter checks and advances.
 
@@ -208,8 +231,10 @@ Leitner boxes 1–5 (0 / 1 / 3 / 7 / 21 days). Progress lives in the browser und
 (`python3 -m http.server --directory book`) rather than opening them as `file://`,
 where Chrome may refuse to keep it. The panel says so if that happens.
 
-Cards come from `shared/lib/cloze.py`. To include a new chapter's lists, add them
-to its `LISTS` table; nothing else needs changing.
+Cards come from `shared/lib/cloze.py`: the words from `VOC`, the sentences from the
+`content.py` names listed in `cloze.PROSE`. Every other name must be listed in
+`cloze.NOT_PROSE`, or the build fails — so a new chapter's prose cannot be skipped
+silently (ch1's `DIALOOG_END` was, until this check existed).
 
 ### 3. Terminal trainer (`practice.py`)
 
@@ -278,9 +303,14 @@ The key loads from `.env` automatically; export one only to override it.
 `shared/lib/voices.py` holds the cast — keep a character on one voice across all
 eighteen chapters so the teacher always sounds like the teacher.
 
-**Emotion tags.** The model is `eleven_v3`, the one that interprets tags: writing
-`[warmly] Goedemorgen` shapes the delivery and is not read aloud (verified —
-tagged and untagged renders come out the same length). Tags are chosen to fit the
+**Models.** Dialogues and card sentences use `eleven_v4`, which reads a
+conversation far more naturally; lists of short tokens (the alphabet) stay on
+`eleven_v3`, which recites them reliably. An `audio_script.py` entry can pin its
+own `"model"`. Why, with the numbers: `LESSONS.md`.
+
+**Emotion tags.** Both models interpret tags: writing `[warmly] Goedemorgen`
+shapes the delivery and is not read aloud (verified — tagged and untagged renders
+come out the same length). Tags are chosen to fit the
 moment: the teacher opens warmly, Ning politely corrects a misheard house number,
 the teacher laughs off the formal *u*. In the zinsaccent drill every answer is a
 contrastive correction, so the answers are tagged emphatic — that stress pattern
