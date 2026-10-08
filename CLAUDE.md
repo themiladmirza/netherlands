@@ -107,10 +107,13 @@ aloud) and works on `/v1/text-to-dialogue`. Chapter 1 runs entirely on it, pinne
 per item: `audio_script.py` entries carry `"model"`, and `generate_audio.py` takes
 `--model`.
 
-The catch is variance, not quality. Single rolls of the alphabet track came out
-broken twice — duplicated runs of letters ("A B C D E F G A B C D E F G…") and a
-33% larger file. Three takes, keeping the best by transcript match, produced a
-clean one at 96%. Do that for any track that is a list of short tokens.
+The catch is variance on letter recitation. Across **six** v4 takes of the
+alphabet — two voices, best-of-N each — every one duplicated a run of letters
+("A B C D E F G A B C D E F G…"). v3 rendered the same script at 100% on three
+takes out of three, with the digraph names right. So `alfabet` stays on v3 while
+the rest of chapter 1 is v4. The clarity gain came from the *voice*, not the
+model: v3 with the new teacher measures -16.3 dB against v4's -16.8. When a
+track is a list of short tokens, prefer v3 and diff the transcript.
 
 **Do not judge a take by the match score alone** — it called a broken alphabet
 "ok" at 87%. Diff the transcript against the script word by word. Doing that
@@ -199,7 +202,20 @@ pack. `build.py` needs PyMuPDF (already present).
 - **Keys live in `.env` at the project root** (chmod 600, gitignored) and load
   automatically. Never commit it, never print a key into the transcript, and never
   copy one into a second file — `.env` is the only place they exist on disk.
-- **Never recast a recurring character.** `shared/lib/voices.py` is the cast for
+- **Voice clarity is measurable — check it before adopting a voice.** Four of the
+original eight were cloned from dull source audio and sounded, in the user's
+words, "like a very old recording on a walkman". Render one identical line per
+voice and compare the energy above 8 kHz against the whole band:
+
+    ffmpeg -i v.mp3 -af volumedetect -f null -                  # full band
+    ffmpeg -i v.mp3 -af "highpass=f=8000,volumedetect" -f null - # above 8 kHz
+
+The gap is the number that matters. The old teacher lost **46.9 dB** up there;
+her replacement loses 20.0. Anything past about -30 dB sounds muffled. Recasting
+took chapter 1's numerals from -41.0 to -14.5 dB. The format was never the
+problem — every file is already 44.1 kHz / 128 kbps.
+
+**Never recast a recurring character.** `shared/lib/voices.py` is the cast for
   all eighteen chapters; the teacher must always sound like the teacher. Same
   reasoning as `art_style.py`.
 - **Audio text must match `content.py` word for word.** It is the book read

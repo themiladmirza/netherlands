@@ -17,14 +17,19 @@ MODEL = "eleven_v3"
 
 VOICES = {
     # role        voice id                name     who
-    "docent":   "7kJ33vnB1HkX76L4U5km",  # Leonie — the teacher: female, warm, upbeat
+    # Four roles were recast once, in October 2026, for clarity — the originals
+    # were cloned from dull source audio and sounded, in the user's words, "like a
+    # very old recording on a walkman". Measured as the drop in energy above 8 kHz
+    # on an identical line: the old teacher lost 46.9 dB up there, the new one
+    # 20.0 dB. The three unchanged voices already sit in the -23 to -28 band.
+    "docent":   "3fjjbhBA9yI42Aoj0o18",  # Ariel  — the teacher: female, warm   (was Leonie, -46.9 dB)
     "susy":     "6e6TrJGLhrDGMKOy5x2i",  # Noa    — cursist from England: female, young
-    "ning":     "NZxSzTQSMSWwkdFLuZsv",  # Dean   — cursist from China: male, young
-    "edit":     "p4efl2GlWK0o6sAQEEkp",  # Fenna  — cursist, ch2: female, young, warm
+    "ning":     "awkQxhhcMytABHFHH3TX",  # Devin  — cursist from China: male, young (was Dean, -30.2 dB)
+    "edit":     "p4efl2GlWK0o6sAQEEkp",  # Fenna  — cursist, ch2: female, young
     "andres":   "Pk1wM1jtot5sJaptlRWQ",  # Robin  — Edit's brother, ch3: male, young
-    "ober":     "vojvEumHZHcjlpEPNZKW",  # Jan    — the waiter, ch3: male, middle-aged
-    "vraag":    "7kJ33vnB1HkX76L4U5km",  # Leonie — asks in the drills
-    "antwoord": "0qLmDzgqulxcvv0yf3kg",  # Remko  — answers: male, very clear diction
+    "ober":     "HGg2c3eDR1tMpbtDRAzL",  # Pieter — the waiter, ch3: male, middle-aged (was Jan, -34.3 dB)
+    "vraag":    "3fjjbhBA9yI42Aoj0o18",  # Ariel  — asks in the drills (same as docent)
+    "antwoord": "MkRWZTk4OBui6Jb2lgK0",  # Ruben  — answers: male, clearest measured (was Remko, -30.1 dB)
 }
 
 # Low stability keeps the emotion tags expressive; raising it flattens the read

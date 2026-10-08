@@ -56,7 +56,7 @@ ITEMS = [
           "honderdvierentwintig. duizend."},
 
  # ---------------------------------------------------------------- 1.6 Het alfabet
- {"id": "alfabet", "model": "eleven_v4", "kind": "speech", "voice": "docent", "label": "Het alfabet",
+ {"id": "alfabet", "kind": "speech", "voice": "docent", "label": "Het alfabet",
   "text": "[clearly, slowly, pausing between each letter, as a teacher reciting the alphabet] "
           "a. b. c. d. e. f. g. h. i. j. k. l. m. "
           "n. o. p. q. r. s. t. u. v. w. x. y. z. "
