@@ -11,6 +11,18 @@ book never prints — they exist only on the publisher's audio — so there is
 nothing to transcribe, and inventing them would be making up content. The
 exercise and its answer grid are kept; the icon is left inert.
 
+Both items stay on the default eleven_v3; neither pins a model. v4 was tried at
+three takes each. It read the dialogue word-perfect all three times but 1.6 dB
+duller above 8 kHz and 28% faster, and on Opdracht 16 it duplicated runs of words
+in 3 of 3 takes — the same failure it has on chapter 1's alphabet.
+
+Opdracht 16's emotion tag is deliberately just [slowly]. The original tag ran to
+fifteen words and v3 voiced its tail: every take opened with an English fragment
+("Contrast", "Lieven short", "De short en lang") and several also swallowed the
+first word, *acht*. Keep tags on word-list items to two or three words — the
+short/long 'a' contrast this exercise teaches is in the word list itself, not
+something the reader has to be told.
+
 Generate:  python3 book/generate_audio.py ch02-in-the-canteen
 """
 
@@ -45,7 +57,7 @@ ITEMS = [
 
  # ---------------------------------------------------------------- Opdracht 16
  {"id": "opdracht16", "kind": "speech", "voice": "docent", "label": "Opdracht 16 — a / aa",
-  "text": "[clearly and slowly, leaving a pause after every word, contrasting the short and long a] "
+  "text": "[slowly] "
           "acht. wat. ander. was. straks. dag. half. kantine. land. lang. "
           "jaar. plaats. maand. naar. naam. dagen. jarig. ja. vader. maken. "
           "acht. jaar. was. dagen. dag. plaats. straks. land. maken. vader."},

@@ -124,6 +124,17 @@ dropped ~54 characters, but all 197 words are present and the gap is STT writing
 mismatch is `ij` transcribed as "y", which proves nothing: Dutch *ij* and *y* are
 pronounced the same, so STT cannot separate them. That one needs an ear.
 
+**Keep emotion tags short on word-list items — a long one gets read aloud.**
+ch2's Opdracht 16 carried a fifteen-word tag, *[clearly and slowly, leaving a
+pause after every word, contrasting the short and long a]*. v3 voiced its tail:
+all six takes measured opened with an English fragment ("Contrast", "De short en
+lang"), and several also swallowed the first Dutch word. Cutting it to `[slowly]`
+removed the leak in 3 of 3 takes. Two or three words is the ceiling for a list of
+short tokens; whatever the exercise teaches is in the words themselves, not in
+something the reader needs to be told. Check the FIRST word of a new recording
+specifically — a leaked tag sits in front of the content, where a similarity
+score barely notices it.
+
 **Audio verification scores wobble.** `generate_audio.py` transcribes each file
 back and diffs it against the script. The same untouched files scored 89 % and
 then 99 % on consecutive runs — speech-to-text is non-deterministic, and letter
