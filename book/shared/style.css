@@ -293,6 +293,52 @@ ol.choice-items .opt span{ font-family:var(--disp); font-weight:700; color:var(-
   }
 }
 
+/* ---------- answer key (screen only; built at runtime, never in print) ----------
+ * Hidden in EVERY medium by default and switched on only under @media screen,
+ * the same rule the practice deck follows: print-to-pdf runs the script too, and
+ * an unstyled answer block would land in the PDF and spoil the workbook. */
+.answers-toggle, .answer{ display:none; }
+
+@media screen{
+  /* the answer sits inside its exercise, revealed by a class on <html> so one
+     toggle flips every exercise on the page at once */
+  .answer{ display:none; margin-top:3mm; padding:3mm 4mm;
+    background:var(--tint2); border-left:1.2mm solid var(--sage);
+    border-radius:0 2mm 2mm 0; }
+  html.answers-on .answer{ display:block; }
+
+  .answer-tag{ display:block; font-family:var(--disp); font-weight:800;
+    font-size:7.2pt; letter-spacing:.1em; text-transform:uppercase;
+    color:#4E6B4C; margin-bottom:1.5mm; }
+  .answer-body{ font-family:var(--body); font-size:9.4pt; line-height:1.5;
+    color:var(--ink); }
+  .answer-body em{ color:var(--ink-soft); }
+  .answer-cols{ display:grid; grid-template-columns:repeat(3,1fr);
+    grid-auto-flow:column; grid-template-rows:repeat(6,auto); gap:.6mm 4mm; }
+
+  /* fixed so it is reachable from any page of the chapter without scrolling back */
+  .answers-toggle{ display:inline-flex; align-items:center; gap:2mm;
+    position:fixed; right:5mm; bottom:5mm; z-index:80;
+    font-family:var(--body); font-weight:600; font-size:9.6pt; cursor:pointer;
+    color:var(--ink-soft); background:var(--paper);
+    border:.7pt solid var(--rule); border-radius:99px; padding:2.4mm 4.5mm;
+    box-shadow:0 1mm 3mm rgba(60,44,26,.18); }
+  .answers-toggle:hover{ border-color:var(--ink-faint); }
+  .answers-dot{ width:2.6mm; height:2.6mm; border-radius:50%;
+    background:var(--rule); border:.5pt solid var(--ink-faint); }
+  html.answers-on .answers-toggle{ color:#4E6B4C; border-color:#BACCB9;
+    background:#F0F4EF; }
+  html.answers-on .answers-dot{ background:var(--sage); border-color:#4E6B4C; }
+  .answers-count{ font-size:8pt; color:var(--ink-faint);
+    border:.5pt solid currentColor; border-radius:99px; padding:.3mm 1.6mm; }
+
+  @media (max-width:176mm){
+    .answers-toggle{ right:3mm; bottom:3mm; font-size:9pt; padding:2.2mm 4mm; }
+    .answer-cols{ grid-template-columns:repeat(2,1fr);
+      grid-template-rows:repeat(9,auto); }
+  }
+}
+
 /* ---------- practice cards (screen only; built at runtime, never in print) ----------
  * Hidden in EVERY medium by default and switched back on only under @media screen.
  * The script builds these nodes at runtime, so print-to-pdf runs it too: styling

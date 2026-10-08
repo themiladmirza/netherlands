@@ -49,7 +49,11 @@ def task(num, skill, title, instruction, body="", extra="", audio=None):
     mark = audio_icon(audio, f"Opdracht {num}") if audio else icon(skill)
     heading = f'Opdracht <span>{num}</span>' + (
         f' &nbsp;<span style="color:var(--ink-faint);font-weight:600">{title}</span>' if title else '')
-    return (f'<div class="task"><div class="oh">{mark}<div class="ttl">{heading}</div></div>'
+    # data-opdracht lets answers.js find this exercise at runtime and append the
+    # book's answer to it. Nothing is written into the markup here, so the PDF
+    # never contains an answer.
+    return (f'<div class="task" data-opdracht="{num}">'
+            f'<div class="oh">{mark}<div class="ttl">{heading}</div></div>'
             f'{f"<div class=ins>{instruction}</div>" if instruction else ""}{body}{extra}</div>')
 
 def card(title, inner, variant=""):
@@ -142,11 +146,14 @@ class Chapter:
     toc             -> [[level, label, page], ...] for the PDF bookmarks
     """
     def __init__(self, number, title, css="../shared/style.css",
-                 deck_js="../shared/flashcards.js"):
+                 deck_js="../shared/flashcards.js",
+                 answers_js="../shared/answers.js"):
         self.number, self.title, self.css = number, title, css
         self.deck_js = deck_js
+        self.answers_js = answers_js
         self.pages, self.toc = [], []
         self.deck = []          # set by build.py; cards for the practice overlay
+        self.answers = {}       # set by build.py; Opdracht number -> answer html
 
     def page(self, body, variant="", head=True, foot=True, section="", nogloss=False):
         """nogloss=True excludes the page from hover translations.
@@ -245,6 +252,19 @@ class Chapter:
                 + payload.replace("</", "<\\/") + "</script>"
                 + f'<script src="{self.deck_js}" defer></script>')
 
+    def answers_html(self):
+        """This chapter's answers as data, plus the script that reveals them.
+
+        Built at runtime like the practice deck, so the PDF stays an unanswered
+        workbook — printing a key into it would spoil every exercise.
+        """
+        if not self.answers:
+            return ""
+        payload = json.dumps(self.answers, ensure_ascii=False, separators=(",", ":"))
+        return ('<script type="application/json" id="nl-answers-data">'
+                + payload.replace("</", "<\\/") + "</script>"
+                + f'<script src="{self.answers_js}" defer></script>')
+
     def body(self):
         """Pages, with the practice panel sitting straight after the word list.
 
@@ -274,7 +294,7 @@ class Chapter:
                 f'<meta name="viewport" content="width=device-width, initial-scale=1">'
                 f'<title>Nederlands in gang — Hoofdstuk {self.number}: {self.title}</title>'
                 f'<link rel="stylesheet" href="{self.css}">'
-                + self.body() + self.PLAYER + self.deck_html())
+                + self.body() + self.PLAYER + self.deck_html() + self.answers_html())
 
     def write(self, path):
         open(path, "w", encoding="utf-8").write(self.html())

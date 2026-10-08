@@ -109,6 +109,20 @@ def build_deck(cdir, ch):
         spec.loader.exec_module(mod)
         translations = getattr(mod, "SENTENCES", {})
     missing = cloze.attach_meaning(ch.deck, translations)
+
+    # <chapter>/answers.py is the book's own Bijlage 8, transcribed. It is
+    # optional: most exercises have no printed answer and must stay that way.
+    apath = os.path.join(cdir, "answers.py")
+    if os.path.exists(apath):
+        spec = importlib.util.spec_from_file_location("answers", apath)
+        amod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(amod)
+        ch.answers = {str(k): v for k, v in getattr(amod, "ANSWERS", {}).items()}
+        # column answers keep the book's down-the-column reading order
+        for num, cols in getattr(amod, "ANSWER_COLUMNS", {}).items():
+            cells = "".join(f"<span>{c}</span>" for col in cols for c in col)
+            ch.answers[str(num)] = f'<div class="answer-cols">{cells}</div>'
+
     voc = len(getattr(load_chapter_content(cdir), "VOC", []) or [])
     produce = sum(1 for c in ch.deck if c["cloze"])
     # A production card is answered with the text taken out of the sentence.
@@ -127,6 +141,10 @@ def build_deck(cdir, ch):
     print(f"  cards     : {len(ch.deck)} from {voc} Woordenlijst entries")
     print(f"              {produce} unlock a typed production card, "
           f"{withmeaning} carry a translated sentence")
+    if ch.answers:
+        nums = sorted(int(n) for n in ch.answers)
+        print(f"  answers   : {len(nums)} of {len(set(re.findall(r'data-opdracht=.([0-9]+).', ch.html())))}"
+              f" Opdrachten (from Bijlage 8): " + ", ".join(str(n) for n in nums))
     if wrong_blank:
         print(f"  CLOZE     : {len(wrong_blank)} card(s) whose answer is not the "
               f"text removed from the sentence:")

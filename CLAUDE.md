@@ -355,6 +355,17 @@ problem — every file is already 44.1 kHz / 128 kbps.
   `practice.py` no longer owns it. The component re-reads before every round so two
   chapter tabs can't clobber each other, and falls back to memory (saying so on the
   summary screen) if storage is blocked, which Chrome does on some `file://` setups.
+- **Answers come from Bijlage 8 and are screen-only.** `<chapter>/answers.py` holds
+  the book's own key, keyed by Opdracht number; `layout.py` tags each exercise
+  `data-opdracht`, and `shared/answers.js` attaches the answers at runtime behind
+  a fixed toggle (press **a** anywhere). Built at runtime on purpose: an answer
+  printed into the PDF would spoil the workbook. `build.py` reports "N of M
+  Opdrachten"; the leak test is to search the built PDF for a six-word run of any
+  answer and find nothing.
+- **Most exercises have no answer, and that is correct.** The book answers 2 of
+  chapter 1's 12, 5 of chapter 2's 16, 4 of chapter 3's 13. Speaking and open
+  writing tasks have none. Leave them with no block at all — do not write one,
+  and do not add a "no answer" placeholder.
 - Vocabulary: infinitive small and grey after the stem.
 - Set `ch.toc` in `pages.py` — `build.py` turns it into PDF bookmarks.
 
@@ -375,7 +386,17 @@ problem — every file is already 44.1 kHz / 128 kbps.
 | 9 | Bij de huisarts | 126–141 | | 18 | Bij de politie | 250–260 |
 
 Standalone *Taalbiografie* pages sit at 68, 156 and 232 — not part of any chapter.
-Appendices run 261–310 (2 = grammar overview, 3 = irregular verbs, 8 = answer key).
+Appendices run 261–319: 1 = CEFR checklist, 2 = grammar overview, 3 = irregular
+verbs, 4 = sources, 6 = map, 7 = Register (thematic word list, 296–309),
+**8 = Antwoorden bij de opdrachten, 310 to the end**.
+
+**The answer key is selective — do not assume an exercise has one.** Hoofdstuk 1
+gets answers for Opdracht 2, 3 and 13 only; Hoofdstuk 2 for 1, 3, 4, 10;
+Hoofdstuk 3 for 1, 5, 6, 10. Open and speaking tasks either have none, or are
+given as *Mogelijke antwoorden* / *Mogelijke vragen* — a sample, not the answer.
+Reading those pages needs `page.get_pixmap(dpi=N)` with **no `clip`**: the pages
+carry `/Rotate 90` and a CropBox covering half the MediaBox, so passing
+`clip=page.cropbox` fights the rotation and silently returns half a page.
 
 Every chapter follows the same shape: Dialoog → Woordenlijst → numbered sections
 with Opdrachten → Tekst → Uitspraak → Cultuur → In de praktijk → Eigen vocabulaire

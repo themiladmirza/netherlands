@@ -9,6 +9,15 @@ NOT recorded: Opdracht 12. Like ch2's Opdracht 15, it plays word pairs the book
 never prints, so there is nothing to transcribe. Opdrachten 11 and 13 do print
 their words and are recorded.
 
+All three items stay on the default eleven_v3. eleven_v4 was tried here the way
+it was tried on chapter 1 — three takes per item, each transcribed back — and it
+won nothing: it swallowed "pauze" in Opdracht 11 in 3 of 3 takes (reading the
+word as a direction to pause), and in 1 of 3 takes of Opdracht 13 it repeated a
+run of six words and cleared its throat. On the dialogue it matched v3 for
+accuracy but came out ~1.5 dB duller above 8 kHz and 30 % faster, which is the
+wrong direction for a chapter learners listen to. Don't re-pin v4 without
+re-measuring.
+
 Generate:  python3 book/generate_audio.py ch03-in-the-cafe
 """
 
