@@ -134,9 +134,123 @@ def keep(name, html):
     """
     return f'<div class="keep" data-keep="{name}">{html}</div>'
 
-def lines(count):
+def lines(count, style=""):
     """`count` blank writing lines."""
-    return '<div class="lines">' + '<div class="ln"></div>'*count + '</div>'
+    st = f' style="{style}"' if style else ""
+    return f'<div class="lines"{st}>' + '<div class="ln"></div>'*count + '</div>'
+
+
+# ---------------------------------------------------------------- recurring blocks
+# Every block below appeared hand-written, near-identically, in at least two
+# chapters. A chapter's pages.py should read as a list of these, with raw HTML
+# left only for what is genuinely one of a kind (a clock, a word cloud, a form).
+
+def sec(num, title):
+    """A numbered section heading: `3.1 Dialoog`."""
+    return f'<h2 class="sec"><span class="num">{num}</span> {title}</h2>'
+
+def kicker_head(kicker, title):
+    """The heading of an unnumbered closing section: Cultuur, In de praktijk, …"""
+    return (f'<div class="kicker">{kicker}</div>\n'
+            f'<h2 class="sec" style="font-size:15pt">{title}</h2>')
+
+def img(name, height, margin=""):
+    """A chapter illustration from art/, cropped to `height` mm."""
+    m = f";margin{margin}" if margin else ""
+    return f'<img src="art/{name}.png" class="img" style="height:{height}mm;object-fit:cover{m}">'
+
+def web_note(html, variant="", title=None):
+    """A card pointing at the publisher's site, with the globe icon."""
+    return card(title, '<div style="display:flex;gap:3mm;align-items:flex-start">'
+                + icon("web") + f'<div>{html}</div></div>', variant)
+
+WORDLIST_NOTE = ('<div class="note" style="margin-bottom:3.5mm">The words appear in the order '
+                 'they occur in the dialogue.\nThe infinitive or singular form is given in brackets.</div>')
+
+def phrases(rows, size=9.6, lh=1.85):
+    """Lines of Dutch, one per row, as a reference card prints them."""
+    return f'<div style="font-size:{size}pt;line-height:{lh}">' + "<br>".join(rows) + '</div>'
+
+def example(inner, style=""):
+    """The "Example" box inside an exercise."""
+    st = f' style="{style}"' if style else ""
+    return f'<div class="example"{st}><div class="lbl">Example</div>{inner}</div>'
+
+def side_by_side(a, b):
+    """Two cells next to each other: a sentence and its variation."""
+    return (f'<div style="display:grid;grid-template-columns:1fr 1fr;gap:2mm">'
+            f'<div>{a}</div><div>{b}</div></div>')
+
+def bullets(rows):
+    return '<ul class="bullet">' + "".join(f'<li>{r}</li>' for r in rows) + '</ul>'
+
+def items(rows, lh=None, cls="items"):
+    """A numbered exercise list."""
+    st = f' style="line-height:{lh}"' if lh else ""
+    return f'<ol class="{cls}"{st}>' + "".join(f'<li>{r}</li>' for r in rows) + '</ol>'
+
+def blanks(text, width=None):
+    """Turn every ___ in an exercise item into a write-in blank."""
+    st = f' style="min-width:{width}mm"' if width else ""
+    return text.replace("___", f'<span class="blank"{st}></span>')
+
+def word_columns(cols, n=3, max_width=None, extra=""):
+    """Exercise words in `n` columns, each read top to bottom."""
+    mw = f"max-width:{max_width}mm" if max_width else ""
+    return (f'<div style="display:grid;grid-template-columns:repeat({n},1fr);gap:0 6mm;font-size:10pt;'
+            f'line-height:2.3;{extra}{mw}">'
+            + "".join('<div>' + "<br>".join(c) + '</div>' for c in cols) + '</div>')
+
+def word_rows(rows):
+    """Rows of words split by small squares, for listen-and-repeat drills."""
+    return ('<div style="font-size:10pt;line-height:2.4;margin-top:2mm">'
+            + "".join('<div class="wordrow">' + " &nbsp;<span>&#9642;</span>&nbsp; ".join(r) + '</div>'
+                      for r in rows) + '</div>')
+
+def tick_table(count, heads=("+", "–"), style="max-width:62mm;margin:3mm 0 0"):
+    """Numbered rows of empty boxes to tick while listening."""
+    head = '<th style="width:12mm"></th>' + "".join(f'<th>{h}</th>' for h in heads)
+    body = "".join(f'<tr><td>{i}</td>' + '<td></td>' * len(heads) + '</tr>'
+                   for i in range(1, count + 1))
+    return (f'<table class="grid tick" style="{style}">'
+            f'<thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>')
+
+def sentence_grid(rows, dutch_cols=(0, 2), size=9.6):
+    """Word-order table: subject | verb (orange) | … , one sentence per row."""
+    cells = ""
+    for row in rows:
+        for i, c in enumerate(row):
+            if i == 1:
+                cells += f'<div style="color:var(--orange);font-weight:600">{c}</div>'
+            elif i in dutch_cols:
+                cells += f'<div class="dutch">{c}</div>'
+            else:
+                cells += f'<div>{c}</div>'
+    return (f'<div style="display:grid;grid-template-columns:auto auto auto 1fr;'
+            f'gap:1.6mm 6mm;font-size:{size}pt">{cells}</div>')
+
+def data_table(heads, rows, first_width=30):
+    """A grammar table; the first column is the row label."""
+    th = f'<th style="width:{first_width}%">{heads[0]}</th>' + "".join(f'<th>{h}</th>' for h in heads[1:])
+    tr = "".join('<tr>' + "".join(f'<td>{c}</td>' for c in r) + '</tr>' for r in rows)
+    return f'<table class="grid"><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table>'
+
+def dialogue(rows, you=(), cls="dialogue"):
+    """Speaker turns. Speakers in `you` are set in the second colour."""
+    return (f'<dl class="{cls}">'
+            + "".join(f'<dt{" class=you" if s in you else ""}>{s}:</dt><dd>{t}</dd>' for s, t in rows)
+            + '</dl>')
+
+def scene_break(text):
+    """A stage direction between two scenes of a dialogue: (een poosje later)."""
+    return ('<div style="color:var(--ink-faint);font-style:italic;font-size:9pt;'
+            f'margin:2.6mm 0 2.6mm 25mm">{text}</div>')
+
+def audio_head(src, label, text, align="center"):
+    """The audio icon beside a dialogue's title line."""
+    return (f'<div style="display:flex;align-items:{align};gap:2.4mm;margin-bottom:3mm">\n'
+            f'  {audio_icon(src, label)}<div style="font-family:var(--disp);font-weight:700;'
+            f'font-size:10pt">{text}</div>\n</div>')
 
 
 class Chapter:
@@ -155,14 +269,18 @@ class Chapter:
         self.deck = []          # set by build.py; cards for the practice overlay
         self.answers = {}       # set by build.py; Opdracht number -> answer html
 
-    def page(self, body, variant="", head=True, foot=True, section="", nogloss=False):
+    def page(self, body, variant="", head=True, foot=True, section="", nogloss=False, toc=()):
         """nogloss=True excludes the page from hover translations.
 
         Used for the cover: its objectives list is a contents page, so letting it
         claim a word's first occurrence would rob the dialogue — where the learner
         actually meets the word in a sentence — of the tooltip.
+
+        toc=[(level, label), …] adds PDF bookmarks pointing at this page. The
+        page number is filled in here, so it can never go stale.
         """
         n = len(self.pages) + 1
+        self.toc += [[level, label, n] for level, label in toc]
         header = (f'<div class="rh"><span><span class="chap">Hoofdstuk {self.number}</span>'
                   f' &nbsp;·&nbsp; {self.title}</span><span>{section}</span></div>') if head else ""
         footer = (f'<div class="pf"><span class="w">{NUMBER_WORDS[n]}</span>'
@@ -171,6 +289,68 @@ class Chapter:
         self.pages.append(
             f'<section class="page {variant}"{mark}>{header}{body}{footer}</section>')
         return n
+
+    # ------------------------------------------------ pages every chapter has
+    def cover(self, objectives, crop="50% 22%", title_pt=40, title_lh=.88):
+        """Page 1: full-bleed opener with number, title and the objectives.
+
+        `crop` positions the opener image; `title_pt` shrinks a long title so it
+        stays on one line beside the number.
+        """
+        half = len(objectives)//2 + len(objectives) % 2
+        col = lambda rows: "".join(f'<li>{o}</li>' for o in rows)
+        return self.page(f'''
+<img src="art/opener.png" style="position:absolute;inset:0;width:100%;height:100%;
+     object-fit:cover;object-position:{crop}">
+<div style="position:absolute;left:0;right:0;bottom:0;height:130mm;
+     background:linear-gradient(180deg,rgba(253,250,244,0) 0%,rgba(253,250,244,.55) 26%,rgba(253,250,244,1) 46%)"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;padding:0 15mm 15mm">
+  <div class="kicker" style="color:var(--teal);margin-bottom:2.5mm">Nederlands in gang &nbsp;·&nbsp; Methode Nederlands</div>
+  <div style="display:flex;align-items:flex-end;gap:6mm;margin-bottom:7mm">
+    <div style="font-family:var(--disp);font-size:78pt;font-weight:800;color:var(--orange);
+                line-height:.72;letter-spacing:-.06em">{self.number}</div>
+    <div style="font-family:var(--disp);font-size:{title_pt}pt;font-weight:800;letter-spacing:-.035em;
+                line-height:{title_lh};color:var(--ink);padding-bottom:1mm">{self.title}</div>
+  </div>
+  <div style="height:.7pt;background:var(--rule);margin-bottom:5mm"></div>
+  <div class="kicker" style="margin-bottom:3mm">In this chapter you will learn</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 8mm">
+    <ul class="bullet" style="font-size:9.4pt">{col(objectives[:half])}</ul>
+    <ul class="bullet" style="font-size:9.4pt">{col(objectives[half:])}</ul>
+  </div>
+</div>''', variant="bleed", head=False, foot=False, nogloss=True,
+            toc=[(1, f"Hoofdstuk {self.number} — {self.title}")])
+
+    def eigen_vocabulaire(self):
+        """Two columns of blank lines for the learner's own words."""
+        wl = lines(22)
+        return self.page(f'''
+{kicker_head("Eigen vocabulaire", "Eigen vocabulaire")}
+<div style="margin-bottom:5mm">The theme of this chapter is <b>{self.title}</b>.
+Which words would you like to add? Write them below.</div>
+<div class="two" style="gap:0 8mm">{wl}{wl}</div>''', section="Eigen vocabulaire",
+            toc=[(2, "Eigen vocabulaire")])
+
+    def reflectie(self, checks, extras, img_mm=52):
+        """The closing self-check (yes / not yet) and the online extras."""
+        rr = "".join(f'<div class="fr" style="grid-template-columns:1fr 27mm">'
+          f'<div>{r}</div><div style="text-align:right"><span class="box"></span>'
+          f'<span class="note" style="font-style:normal;margin-right:3mm">yes</span>'
+          f'<span class="box"></span><span class="note" style="font-style:normal">not yet</span></div></div>'
+          for r in checks)
+        return self.page(f'''
+{kicker_head("Reflectie", "What can you do now?")}
+<div class="form" style="padding:5mm 6mm">{rr}</div>
+<div class="sp2"></div>
+<div style="display:flex;gap:5mm;align-items:flex-start">
+ <img src="art/reflectie.png" style="width:{img_mm}mm;height:{img_mm}mm;object-fit:cover;border-radius:3mm;flex:0 0 auto">
+ <div>
+  <div style="display:flex;gap:2.4mm;align-items:center;margin-bottom:2.5mm">{icon("web")}
+   <div style="font-family:var(--disp);font-weight:700;font-size:10.5pt">Verdiepingsmateriaal</div></div>
+  <div style="margin-bottom:2mm">At <b>coutinho.nl/nederlandsingang3</b> you can work on:</div>
+  {bullets(extras)}
+ </div>
+</div>''', section="Reflectie", toc=[(2, "Reflectie — wat kun je nu?")])
 
     PLAYER = """
 <script>

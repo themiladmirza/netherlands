@@ -4,7 +4,7 @@ Redesigning chapters of *Nederlands in gang* (Coutinho, 3rd revised edition 2017
 from the scan in `hard.pdf` into properly typeset PDFs with original illustrations.
 Personal study material, made alongside an owned copy of the book.
 
-Chapters 1–3 are done: ch1 20 pages (10 illustrations, 4 audio), ch2 25 pages
+Chapters 1–3 are done: ch1 20 pages (10 illustrations, 4 audio), ch2 24 pages
 (7 illustrations, 2 audio), ch3 20 pages (6 illustrations, 3 audio). The usual job
 in a new session is **"do chapter N"** — treat those as the reference for what
 finished looks like.
@@ -228,8 +228,8 @@ pack. `build.py` needs PyMuPDF (already present).
 ## Rules
 
 - **Transcribe, never invent — and that includes whole sections.** A card headed
-  "Who's who in the dialogue", summarising each speaker, shipped in chapters 2 and
-  3. It is nowhere in the book: every fact in it was true, lifted from the
+  "Who's who in the dialogue", summarising each speaker, shipped in all three
+  chapters (removed from ch1 last, where its bookmark had also gone stale). It is nowhere in the book: every fact in it was true, lifted from the
   dialogue, which is exactly why it survived review. The rule is not "is this
   accurate" but "is this on the page". Before shipping a chapter, list its
   headings and every `card()` title and check each one against the scan; an
@@ -268,13 +268,16 @@ problem — every file is already 44.1 kHz / 128 kbps.
 - **Audio text must match `content.py` word for word.** It is the book read
   aloud, not a paraphrase. Numbers and postcodes are spelled out in words in
   `audio_script.py` so the model reads them as Dutch, not as digits.
-- **Verify before claiming done.** `build.py` checks three things and exits 1 on
+- **Verify before claiming done.** `build.py` checks four things and exits 1 on
   any: content past the trim (`overflow`), a `keep()` block landing on two pages
-  (`keep-blocks`), and a page mixing two sections (`section mix`). It also prints
+  (`keep-blocks`), a page mixing two sections (`section mix`), and a `ch.toc`
+  bookmark whose page does not show its section number, Opdracht or name
+  (`bookmarks`) — the page numbers are typed by hand, and ch2's were all one off
+  for a while after a page was removed. It also prints
   a `glossary` line — *N first occurrences marked, M introduced earlier, K
   headwords*. Not a failure, but the numbers should only ever grow as chapters are
   added; a drop means an earlier chapter changed and took the words with it.
-  All three checks are structural: they cannot see ugliness, a page that opens
+  All four checks are structural: they cannot see ugliness, a page that opens
   mid-thought, a list reading the wrong direction, or half a page of white space.
   So also look at the output — **both** outputs. Render a few PDF pages to images,
   *and* open `index.html` in a browser. They are not the same document: for three
@@ -307,7 +310,7 @@ problem — every file is already 44.1 kHz / 128 kbps.
   will be measuring the old stylesheet.
 - Content must end above **877 px** (240 mm at 96 dpi, minus footer). In ch1 the
   fullest page sits at 822.
-- A 10–12-page original becomes 20–25 redesigned pages (ch1 20, ch2 25, ch3 20). Don't cram — the original's
+- A 10–12-page original becomes 20–25 redesigned pages (ch1 20, ch2 24, ch3 20). Don't cram — the original's
   worst trait was density. Pages at 60–70% full are fine — but 25–45% is a fault
   in the other direction: ch3 first came out with the word list split 26/25 and
   Rangtelwoorden filling a quarter of a page. Consolidating took it 22 → 20 pages
@@ -455,7 +458,14 @@ problem — every file is already 44.1 kHz / 128 kbps.
   SVG for the same reason as `clock()`. *zondag* and *maandag* carry no relative
   word because the book gives them none — do not invent *overovermorgen*.
 - Vocabulary: infinitive small and grey after the stem.
-- Set `ch.toc` in `pages.py` — `build.py` turns it into PDF bookmarks.
+- Bookmarks: pass `toc=[(level, label), …]` to `ch.page()` and the page number is
+  filled in for you (ch3 does this). ch1–2 still assign `ch.toc` by hand; the
+  `bookmarks` check in `build.py` catches a stale number either way.
+- `ch3/pages.py` is the reference for composing a chapter: `ch.cover()`,
+  `ch.eigen_vocabulaire()`, `ch.reflectie()` and the block helpers in `layout.py`
+  (`sec`, `phrases`, `example`, `items`, `blanks`, `word_columns`, `tick_table`, …).
+  Raw HTML is for one-offs only. Refactored from hand-written HTML with the PDF
+  pixel-identical on all 20 pages.
 
 ---
 
