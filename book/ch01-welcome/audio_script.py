@@ -10,6 +10,13 @@ teacher waves away the formal "u". In the zinsaccent drill every answer carries 
 contrastive correction, so the answers are tagged emphatic — that stress pattern
 is the entire point of the exercise.
 
+Tags here are capped at a few words. A long one gets voiced: ch2's Opdracht 16
+carried a fifteen-word tag and every take opened with an English fragment from its
+tail, swallowing the first Dutch word. These items were NOT re-recorded when the
+tags were shortened — their current takes verify clean, and re-rolling a good take
+of a word list is a bad bet. The shorter tag applies the next time they are
+generated.
+
 Generate:  python3 book/generate_audio.py ch01-welcome
 """
 
@@ -48,7 +55,7 @@ ITEMS = [
 
  # ---------------------------------------------------------------- 1.5 Telwoorden
  {"id": "telwoorden", "model": "eleven_v4", "kind": "speech", "voice": "docent", "label": "Telwoorden",
-  "text": "[clearly, slowly, leaving a pause after each number] "
+  "text": "[slowly, pausing] "
           "nul. één. twee. drie. vier. vijf. zes. zeven. acht. negen. tien. "
           "elf. twaalf. dertien. veertien. vijftien. zestien. zeventien. achttien. negentien. twintig. "
           "eenentwintig. tweeëntwintig. "

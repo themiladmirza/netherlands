@@ -129,11 +129,23 @@ ch2's Opdracht 16 carried a fifteen-word tag, *[clearly and slowly, leaving a
 pause after every word, contrasting the short and long a]*. v3 voiced its tail:
 all six takes measured opened with an English fragment ("Contrast", "De short en
 lang"), and several also swallowed the first Dutch word. Cutting it to `[slowly]`
-removed the leak in 3 of 3 takes. Two or three words is the ceiling for a list of
-short tokens; whatever the exercise teaches is in the words themselves, not in
-something the reader needs to be told. Check the FIRST word of a new recording
-specifically — a leaked tag sits in front of the content, where a similarity
-score barely notices it.
+removed the leak in 3 of 3 takes.
+
+**Cap a tag at about four words, keeping the one direction that matters** — not a
+blanket `[slowly]`. ch3's Opdracht 11 is *about* word stress, so its tag is
+`[stressing each accent]`; flattening that would have stripped the exercise's
+whole point. A bracketed cue is a cue; fifteen words inside brackets is prose, and
+the model sometimes reads prose.
+
+Long tags do not fail reliably, which is the trap: ch3's Opdracht 13 carried a tag
+as long as the broken one and recorded clean every time. So **do not re-record a
+working take just to apply a shorter tag** — shorten it and let it take effect the
+next time that item is generated for some other reason. Chapter 1's alphabet keeps
+its twelve-word tag outright: that take verifies at 100% on the most
+failure-prone content in the book, and a re-roll came back at 99%.
+
+Check the FIRST word of a new recording specifically — a leaked tag sits in front
+of the content, where a similarity score barely notices it.
 
 **Audio verification scores wobble.** `generate_audio.py` transcribes each file
 back and diffs it against the script. The same untouched files scored 89 % and

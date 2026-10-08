@@ -18,6 +18,13 @@ accuracy but came out ~1.5 dB duller above 8 kHz and 30 % faster, which is the
 wrong direction for a chapter learners listen to. Don't re-pin v4 without
 re-measuring.
 
+Tags here are capped at a few words. A long one gets voiced: ch2's Opdracht 16
+carried a fifteen-word tag and every take opened with an English fragment from its
+tail, swallowing the first Dutch word. These items were NOT re-recorded when the
+tags were shortened — their current takes verify clean, and re-rolling a good take
+of a word list is a bad bet. The shorter tag applies the next time they are
+generated.
+
 Generate:  python3 book/generate_audio.py ch03-in-the-cafe
 """
 
@@ -53,13 +60,13 @@ ITEMS = [
   ]},
 
  {"id": "opdracht11", "kind": "speech", "voice": "docent", "label": "Opdracht 11 — woordaccent",
-  "text": "[clearly, pausing after each word, stressing the accented syllable strongly] "
+  "text": "[stressing each accent] "
           "voornaam. docent. Nederlands. adres. pauze. familie. "
           "vandaag. minuut. februari. moment. vakantie. gezin. "
           "verjaardag. rondje. bestellen. afrekenen. gefeliciteerd. bladzijde."},
 
  {"id": "opdracht13", "kind": "speech", "voice": "docent", "label": "Opdracht 13 — o / oo",
-  "text": "[clearly and slowly, leaving a pause after every word, contrasting the short and long o] "
+  "text": "[slowly, pausing] "
           "blond. donderdag. donker. welkom. stoppen. jong. koffie. kopje. morgen. nog. "
           "hoor. voor. ook. woon. voorjaar. zomer. docent. komen. zo. wonen. "
           "blond. ook. donker. docent. koffie. kopje. zomer. woon. wonen. stoppen."},
