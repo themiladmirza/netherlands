@@ -26,9 +26,7 @@ ch.page(f'''{keep("dialoog-2.1", f"""
 {audio_head("audio/dialoog.mp3", "Susy en Edit in de kantine",
             "Susy en Edit hebben pauze en zitten in de kantine.")}
 {dialogue(DIALOOG, {"Susy"})}""")}
-{img("dialoog", 36, "-top:4mm")}
-{web_note("Listen to this dialogue at <b>coutinho.nl/nederlandsingang3</b> and repeat the sentences. "
-          "Each time you listen you will understand more.", "teal", title="Listening")}''',
+{img("dialoog", 60, "-top:4mm")}''',
  section="2.1 Dialoog", toc=[(2, "2.1  Dialoog — in de kantine")])
 
 # ---------------------------------------------------------------- 3-4  WOORDENLIJST

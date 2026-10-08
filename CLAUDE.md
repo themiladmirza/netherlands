@@ -99,7 +99,6 @@ both outputs: render PDF pages to images *and* open `index.html` in a browser.
 - **Transcribe, never invent — including whole sections.** The test is "is it on
   the page", not "is it accurate". Before shipping, list every heading and `card()`
   title and check each against the scan; an English card title is the tell.
-  Outstanding: the "Listening" card in all three chapters is not in the book.
 - `scan-text.txt` is an OCR draft with real errors. Read the cleaned scan images.
 - Colour-only cues are lost in the greyscale scan, and its apparent **bold** is
   not the book's emphasis. Reconstruct on grammatical grounds, note it in NOTES.md,

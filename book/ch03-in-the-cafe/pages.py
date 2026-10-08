@@ -32,12 +32,9 @@ ch.page(keep("dialoog-3.1", f'''
 {dialogue(DIALOOG_3, YOU, "dialogue tight")}'''), section="3.1 Dialoog",
  toc=[(2, "3.1  Dialoog — Edit viert haar verjaardag")])
 
-# ---------------------------------------------------------------- 3  illustration + luisteren
-ch.page(f'''
-{img("dialoog", 112, "-bottom:7mm")}
-<div class="sp"></div>
-{web_note("Listen to this dialogue at <b>coutinho.nl/nederlandsingang3</b> and repeat the sentences. "
-          "Each time you listen you will understand more.", "teal", title="Listening")}''', section="3.1 Dialoog")
+# ---------------------------------------------------------------- 3  illustration
+# The dialogue page has no room for it, so it gets a page of its own, uncropped.
+ch.page(img("dialoog"), variant="plate", section="3.1 Dialoog")
 
 # ---------------------------------------------------------------- 4-5  WOORDENLIJST
 # 51 entries need two pages; Opdracht 1 joins the continuation so neither runs thin

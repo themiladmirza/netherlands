@@ -20,6 +20,9 @@ body{ font-family:var(--body); color:var(--ink); background:var(--paper);
        background:var(--paper); page-break-after:always; padding:17mm 15mm 14mm; }
 .page:last-child{ page-break-after:auto; }
 .page.bleed{ padding:0; }
+/* a page holding one illustration, centred in the type area (header and footer
+   are absolutely positioned, so they stay put) */
+.page.plate{ display:flex; flex-direction:column; justify-content:center; }
 
 /* ---------- running head / foot ---------- */
 .rh{ position:absolute; top:8mm; left:15mm; right:15mm; display:flex;

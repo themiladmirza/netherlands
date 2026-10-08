@@ -171,9 +171,11 @@ pack. `build.py` needs PyMuPDF (already present).
   accurate" but "is this on the page". Before shipping a chapter, list its
   headings and every `card()` title and check each one against the scan; an
   English title on a card is the tell, because the book's own cards are Dutch.
-  (Still outstanding: the "Listening — listen at coutinho.nl" card in all three
-  chapters is also not in the book. The book points at the site from its
-  Verdiepingsmateriaal section instead.)
+  A second invented card, "Listening — listen at coutinho.nl", sat on every
+  chapter's dialogue spread until 2026-10-08. The book points at the site from
+  its Verdiepingsmateriaal section instead. Its removal left ch1's and ch3's
+  page 3 holding only the dialogue illustration, now shown uncropped and centred
+  (`variant="plate"`); ch2's illustration grew into the freed space.
 - **Transcribe, never invent.** Every word must match the book. Read the cleaned
   scan images; `scan-text.txt` is an OCR draft with real errors (`naarde`,
   `jüj/je`, lone `I` → `[`). Verify counts against the original.

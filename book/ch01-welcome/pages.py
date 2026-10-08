@@ -32,13 +32,9 @@ ch.page(keep("dialoog-1.1", f'''
 {dialogue(DIALOOG_END)}'''), section="1.1 Dialoog",
  toc=[(2, "1.1  Dialoog — De cursus begint")])
 
-# ---------------------------------------------------------------- 3  illustration + luisteren
-ch.page(f'''
-{img("dialoog", 112, "-bottom:7mm")}
-<div class="sp"></div>
-{web_note("Listen to this dialogue at <b>coutinho.nl/nederlandsingang3</b> and repeat the sentences. "
-          "Each time you listen you will understand more.", "teal", title="Listening")}''',
- section="1.1 Dialoog")
+# ---------------------------------------------------------------- 3  illustration
+# The dialogue page has no room for it, so it gets a page of its own, uncropped.
+ch.page(img("dialoog"), variant="plate", section="1.1 Dialoog")
 
 # ---------------------------------------------------------------- 4-5  WOORDENLIJST
 half = 48

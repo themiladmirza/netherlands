@@ -154,8 +154,10 @@ def kicker_head(kicker, title):
     return (f'<div class="kicker">{kicker}</div>\n'
             f'<h2 class="sec" style="font-size:15pt">{title}</h2>')
 
-def img(name, height, margin=""):
-    """A chapter illustration from art/, cropped to `height` mm."""
+def img(name, height=None, margin=""):
+    """A chapter illustration from art/, cropped to `height` mm (None: uncropped)."""
+    if height is None:
+        return f'<img src="art/{name}.png" class="img">'
     m = f";margin{margin}" if margin else ""
     return f'<img src="art/{name}.png" class="img" style="height:{height}mm;object-fit:cover{m}">'
 
