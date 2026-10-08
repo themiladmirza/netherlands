@@ -9,16 +9,12 @@ Reads each chapter's content.py (ch01-…, ch02-…) and turns words, phrases,
 greetings and numerals into short cards. One line per card, because the
 spinner shows them on a single line.
 """
-import argparse, glob, importlib.util, json, os, sys
+import argparse, glob, json, os, sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "shared", "lib"))
 from text import plain, slugify
-
-def load(path, name):
-    spec = importlib.util.spec_from_file_location(name, path)
-    mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
-    return mod
+from modules import load   # practice.py uses make_cards.load
 
 def cards_from(mod, chapter):
     out = []

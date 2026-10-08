@@ -10,17 +10,13 @@ Reads the scenes from <chapter>/art_prompts.py and the shared style from
 shared/lib/art_style.py. Writes <chapter>/art/<name>.png.
 The API allows 5 images per minute; on a rate limit this waits and retries.
 """
-import base64, importlib.util, json, os, sys, time, urllib.request
+import base64, json, os, sys, time, urllib.request
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "shared", "lib"))
 from env import load_env; load_env()
 import art_style
-
-def load(path, name):
-    spec = importlib.util.spec_from_file_location(name, path)
-    mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
-    return mod
+from modules import load
 
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]

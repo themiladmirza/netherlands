@@ -13,9 +13,11 @@ ignored). Any difference fails the build and names the page.
 Pipeline: pages.py -> index.html -> Chrome (print-to-pdf) -> bookmarks + metadata.
 Afterwards it checks every page for content spilling outside the trim size.
 """
-import glob, importlib.util, json, os, re, subprocess, sys, tempfile
+import glob, json, os, re, subprocess, sys, tempfile
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(ROOT, "shared", "lib"))
+from modules import load
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 PAGE_HEIGHT_PX = 907     # 240 mm at 96 dpi
 FOOTER_MARGIN  = 30      # space reserved at the bottom for the running foot
@@ -59,11 +61,7 @@ def load_chapter(cdir):
     for stale in ("content", "pages"):
         sys.modules.pop(stale, None)
     try:
-        spec = importlib.util.spec_from_file_location("pages", os.path.join(cdir, "pages.py"))
-        mod = importlib.util.module_from_spec(spec)
-        sys.modules["pages"] = mod
-        spec.loader.exec_module(mod)
-        return mod.ch
+        return load(os.path.join(cdir, "pages.py"), "pages", register=True).ch
     finally:
         sys.path[:] = saved
 
@@ -112,19 +110,14 @@ def build_deck(cdir, ch):
     tpath = os.path.join(cdir, "translations.py")
     translations = {}
     if os.path.exists(tpath):
-        spec = importlib.util.spec_from_file_location("translations", tpath)
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        translations = getattr(mod, "SENTENCES", {})
+        translations = getattr(load(tpath, "translations"), "SENTENCES", {})
     missing = cloze.attach_meaning(ch.deck, translations)
 
     # <chapter>/answers.py is the book's own Bijlage 8, transcribed. It is
     # optional: most exercises have no printed answer and must stay that way.
     apath = os.path.join(cdir, "answers.py")
     if os.path.exists(apath):
-        spec = importlib.util.spec_from_file_location("answers", apath)
-        amod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(amod)
+        amod = load(apath, "answers")
         ch.answers = {str(k): v for k, v in getattr(amod, "ANSWERS", {}).items()}
         # column answers keep the book's down-the-column reading order
         for num, cols in getattr(amod, "ANSWER_COLUMNS", {}).items():

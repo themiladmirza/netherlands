@@ -19,19 +19,15 @@ Every file is verified by transcribing it back (speech-to-text) and comparing to
 the script with the emotion tags stripped. That catches a voice mangling Dutch or
 reading a tag aloud — it will not catch a merely ugly read, so listen too.
 """
-import argparse, difflib, importlib.util, json, os, re, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request
+import argparse, difflib, json, os, re, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "shared", "lib"))
 from env import load_env; load_env()
 import voices as cast
+from modules import load
 
 API = "https://api.elevenlabs.io/v1"
-
-def load(path, name):
-    spec = importlib.util.spec_from_file_location(name, path)
-    mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
-    return mod
 
 def post(url, payload, key, tries=6):
     """POST with backoff, so a single 429 never ends a run."""

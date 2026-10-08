@@ -20,10 +20,13 @@ Print is unaffected: style.css removes the underline under @media print, so the
 PDF looks exactly as it did.
 """
 import html as _html
-import importlib.util
 import os
 import re
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from modules import load   # noqa: E402
+from text import plain     # noqa: E402
 
 # elements whose subtree is never glossed
 SKIP_CLASSES = {"vocab", "rh", "pf"}
@@ -35,23 +38,11 @@ _CLOSE = re.compile(r"^<\s*/\s*([a-zA-Z][\w-]*)")
 _CLASS = re.compile(r'class\s*=\s*"([^"]*)"')
 
 
-def _strip(markup):
-    """Visible text of a glossary cell: no tags, no entities, collapsed spaces."""
-    text = re.sub(r"<[^>]+>", "", markup)
-    text = _html.unescape(text.replace("&nbsp;", " "))
-    return re.sub(r"\s+", " ", text).strip()
-
-
 def load_chapter_content(chapter_dir):
     """Import one chapter's content.py in isolation and hand back the module."""
     for stale in ("content", "pages"):
         sys.modules.pop(stale, None)
-    path = os.path.join(chapter_dir, "content.py")
-    spec = importlib.util.spec_from_file_location("content", path)
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules["content"] = mod
-    spec.loader.exec_module(mod)
-    return mod
+    return load(os.path.join(chapter_dir, "content.py"), "content", register=True)
 
 
 def build_glossary(chapter_dirs):
@@ -67,7 +58,7 @@ def build_glossary(chapter_dirs):
     for cdir in chapter_dirs:
         voc = getattr(load_chapter_content(cdir), "VOC", [])
         for dutch, english in voc:
-            head = _strip(dutch)
+            head = plain(dutch)
             # drop the parenthesised infinitive/singular: "ben (zijn)" -> "ben"
             head = re.sub(r"\s*\([^)]*\)\s*$", "", head).strip()
             head = head.rstrip("?").strip()
@@ -81,7 +72,7 @@ def build_glossary(chapter_dirs):
             if bare.lower() != head.lower() and " " not in bare:
                 forms.append(bare)
             for form in forms:
-                glossary.setdefault(form.lower(), (canonical, head, _strip(english)))
+                glossary.setdefault(form.lower(), (canonical, head, plain(english)))
     return glossary
 
 
