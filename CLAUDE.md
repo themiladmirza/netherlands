@@ -98,9 +98,28 @@ for any token rename across files.
 **Image API rate limit: 5 per minute.** `generate_art.py` catches it, waits 35 s
 and retries up to six times. Expect a chapter's art to take a few minutes.
 
-**Audio: only `eleven_v3` interprets emotion tags.** On the other models
-`[warmly]` risks being read aloud. Verified on v3: tagged and untagged renders
-come out the same length, so the bracket is acted on, not spoken.
+**Audio: emotion tags need v3 or v4.** On the older models `[warmly]` risks
+being read aloud. Verified on both v3 and v4: the tag is acted on, never spoken.
+
+**`eleven_v4` is not a drop-in upgrade — choose it per item.** v4 exists, does
+Dutch, costs the same as v3, honours `[emotion]` tags (verified: not read aloud)
+and works on `/v1/text-to-dialogue`. But on chapter 1 it was mixed, so
+`audio_script.py` items may carry their own `"model"` and `generate_audio.py`
+takes `--model`:
+
+| item | v3 | v4 | kept |
+|---|---|---|---|
+| telwoorden | 99% | **100%**, 29% smaller | v4 |
+| zinsaccent | 89% (said *jij* for *je*) | 89%, word correct | v4 |
+| dialoog | **99%** | 95%, ~54 characters dropped | v3 |
+| alfabet | **100%** | 86-87%, broken | v3 |
+
+The alphabet failure is reproducible, not a wobble: across two renders v4
+duplicated runs of letters ("A B C D E F G A B C D E F G…") and read both *ij*
+and *ei* as "Y", destroying the one thing that track teaches. Twenty-six
+single letters after a long instruction tag is the shape it cannot handle.
+Before switching any chapter to v4, diff the transcript against the script —
+the match percentage alone called the broken alphabet "ok" at 87%.
 
 **Audio verification scores wobble.** `generate_audio.py` transcribes each file
 back and diffs it against the script. The same untouched files scored 89 % and

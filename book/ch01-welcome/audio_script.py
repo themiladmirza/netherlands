@@ -47,7 +47,7 @@ ITEMS = [
   ]},
 
  # ---------------------------------------------------------------- 1.5 Telwoorden
- {"id": "telwoorden", "kind": "speech", "voice": "docent", "label": "Telwoorden",
+ {"id": "telwoorden", "model": "eleven_v4", "kind": "speech", "voice": "docent", "label": "Telwoorden",
   "text": "[clearly, slowly, leaving a pause after each number] "
           "nul. één. twee. drie. vier. vijf. zes. zeven. acht. negen. tien. "
           "elf. twaalf. dertien. veertien. vijftien. zestien. zeventien. achttien. negentien. twintig. "
@@ -63,7 +63,7 @@ ITEMS = [
           "[explaining] ij, de lange ij. ei, de korte ei. y, de Griekse ij."},
 
  # ---------------------------------------------------------------- Opdracht 12
- {"id": "zinsaccent", "kind": "dialogue", "label": "Opdracht 12 — Zinsaccent",
+ {"id": "zinsaccent", "model": "eleven_v4", "kind": "dialogue", "label": "Opdracht 12 — Zinsaccent",
   "lines": [
    ("vraag",    "[asking] Kom je uit Nederland?"),
    ("antwoord", "[emphatic correction] Nee, ik kom uit Hongarije."),

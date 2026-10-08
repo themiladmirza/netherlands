@@ -6,6 +6,7 @@
     python3 book/generate_audio.py ch01-welcome          # only what's missing
     python3 book/generate_audio.py ch01-welcome --all    # everything again
     python3 book/generate_audio.py ch01-welcome --check  # verify existing files only
+    python3 book/generate_audio.py ch01-welcome --all --model eleven_v4
 
 Reads <chapter>/audio_script.py (what is said, by whom, with what delivery) and
 shared/lib/voices.py (the cast). Writes <chapter>/audio/<id>.mp3.
@@ -81,6 +82,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("chapter"); ap.add_argument("--all", action="store_true")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--model", default=cast.MODEL,
+                    help=f"TTS model id (default {cast.MODEL}). Lets one chapter "
+                         "try a new model without recasting the whole book.")
     a = ap.parse_args()
 
     key = os.environ.get("ELEVENLABS_API_KEY") or sys.exit("ELEVENLABS_API_KEY is not set")
@@ -89,18 +93,22 @@ def main():
     outdir = os.path.join(cdir, "audio"); os.makedirs(outdir, exist_ok=True)
 
     for item in script.ITEMS:
+        # An item may pin its own model. Chapter 1 does: v4 reads the numerals
+        # and the sentence-stress drill better, but mangles the alphabet —
+        # it duplicates runs of letters and says "Y" for both ij and ei.
+        model = item.get("model", a.model)
         path = os.path.join(outdir, item["id"] + ".mp3")
         expected = (" ".join(spoken(t) for _, t in item["lines"])
                     if item["kind"] == "dialogue" else spoken(item["text"]))
         if not a.check and (a.all or not os.path.exists(path)):
             if item["kind"] == "dialogue":
                 data = post(f"{API}/text-to-dialogue", {
-                    "model_id": cast.MODEL,
+                    "model_id": model,
                     "inputs": [{"voice_id": cast.VOICES[role], "text": text}
                                for role, text in item["lines"]]}, key)
             else:
                 data = post(f"{API}/text-to-speech/{cast.VOICES[item['voice']]}", {
-                    "model_id": cast.MODEL, "text": item["text"],
+                    "model_id": model, "text": item["text"],
                     "voice_settings": cast.SETTINGS}, key)
             open(path, "wb").write(data)
         if not os.path.exists(path):
