@@ -75,12 +75,13 @@ transcribed and diffed word by word against the script:
 | ch2 `opdracht16` (a/aa words) | 30/30 | 30/30 ×3 | v4 |
 | ch3 `opdracht13` (o/oo words) | 30/30 | 30/30 ×3 | v4 |
 | ch3 `opdracht11` (word stress) | 18/18 | 17/18 ×3 — *pauze* missing | v3 |
-| ch1 `alfabet` | 38/38 | one duplicated "a…g", two complete | v3 |
+| ch1 `alfabet` | 38/38 | one duplicated "a…g", two complete | v4 take 2, approved by ear |
 
 *pauze* was not a transcription miss: word timestamps put 0.65 s between
 "adres" and "familie", the same as every other gap, so the word was never
 spoken. Three of three is a pattern, not noise. The alphabet's complete takes
-still hit the ij / y blind spot below, so they need an ear before adoption.
+still hit the ij / y blind spot below, so take 2 was played to the user before
+adoption — it passed.
 
 **Do not judge a take by the match score alone** — it called a broken alphabet
 "ok" at 87%. Diff the transcript against the script word by word. Doing that

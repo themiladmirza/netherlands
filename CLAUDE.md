@@ -117,9 +117,9 @@ both outputs: render PDF pages to images *and* open `index.html` in a browser.
 - Never recast a recurring character (`shared/lib/voices.py`). Check a new voice's
   clarity first: energy above 8 kHz vs full band; past about -30 dB is muffled.
 - Everything is `eleven_v4` (the default in `voices.py`); dialogues add `"gap": 0.45`.
-  Two items pin `eleven_v3` because v4 failed them: ch1 `alfabet` (repeats letters)
-  and ch3 `opdracht11` (skips *pauze*). For a list of short tokens, record 3 takes
-  and diff each word by word before trusting v4.
+  One item pins `eleven_v3` because v4 failed it: ch3 `opdracht11` (skips *pauze*).
+  For a list of short tokens, record 3+ takes and diff each word by word — ch1's
+  alphabet repeated letters in 7 of 9 v4 takes; the clean one was approved by ear.
 - Emotion tags: at most about four words, keeping the one direction that matters.
   Don't re-record a working take just to shorten a tag.
 - Never judge a take by its match score alone — diff the words, check the FIRST

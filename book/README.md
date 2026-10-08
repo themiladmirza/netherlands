@@ -304,9 +304,9 @@ The key loads from `.env` automatically; export one only to override it.
 eighteen chapters so the teacher always sounds like the teacher.
 
 **Models.** Everything uses `eleven_v4` (`voices.MODEL`), which reads Dutch far
-more naturally. An `audio_script.py` entry can pin its own `"model"`, and two do:
-ch1's alphabet and ch3's Opdracht 11 stay on `eleven_v3`, because v4 repeated
-letters in one and dropped a word from the other. Why, with the numbers: `LESSONS.md`.
+more naturally. An `audio_script.py` entry can pin its own `"model"`, and one does:
+ch3's Opdracht 11 stays on `eleven_v3`, because v4 dropped a word from it. ch1's
+alphabet is v4, but only after picking the one clean take out of nine. Why, with the numbers: `LESSONS.md`.
 
 **Emotion tags.** Both models interpret tags: writing `[warmly] Goedemorgen`
 shapes the delivery and is not read aloud (verified — tagged and untagged renders
