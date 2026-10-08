@@ -1,6 +1,6 @@
 # Chapter 2 — In de kantine
 
-Original: book pp. 32–45 (14 pages) → redesign: 25 pages.
+Original: book pp. 32–45 (14 pages) → redesign: 24 pages.
 
 ## Content
 Everything carried over: 20 dialogue turns, 76 vocabulary entries, 16 exercises,

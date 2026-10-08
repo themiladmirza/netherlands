@@ -7,13 +7,14 @@ Everything carried over: 89 vocabulary entries, 18 dialogue turns, 12 exercises,
 33 numerals, 19 greetings/farewells, 10 sentence-stress pairs, the personal
 details form, the surname top 10, Cultuur, Reflectie.
 
-## Two deliberate departures from the original
-1. **The word list reads top-to-bottom per column** (the original used six
-   columns read across — the weakest page in the book). The infinitive is set
-   small and grey after the stem.
-2. **"Wie is wie in de dialoog?" card on p. 3** — no new material, just a summary
-   of who Karin, Paul, Susy and Ning are according to the dialogue. It fills an
-   otherwise half-empty page. Safe to drop; it stands alone in `pages.py`.
+## A deliberate departure from the original
+**The word list reads top-to-bottom per column** (the original used six
+columns read across — the weakest page in the book). The infinitive is set
+small and grey after the stem.
+
+A "Who's who in the dialogue" card used to fill p. 3. It is not in the book, so
+it was removed (2026-10-08); the dialogue illustration grew to 112 mm in its
+place, matching ch3's p. 3.
 
 ## Illustrations
 10 of them, `gpt-image-2.5-flare`, 2026-09-12. Prompts in `art_prompts.py`.

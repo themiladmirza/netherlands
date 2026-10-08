@@ -225,6 +225,27 @@ def main():
 
     if getattr(ch, "toc", None):
         doc.set_toc(ch.toc)
+        # Bookmark page numbers are typed by hand, so they go stale when a page
+        # is added or removed — ch2's were all one off after its page 3 went.
+        # Each bookmark's page must show its section number, its Opdracht, or
+        # (for Cultuur, Reflectie, …) its name.
+        stale = []
+        for level, label, pno in ch.toc:
+            if level == 1:
+                continue
+            m = re.match(r"(\d+\.\d+)|Opdracht (\d+)", label)
+            if m and m.group(1):
+                key = r"(?<![\d.])" + re.escape(m.group(1)) + r"(?!\d)"
+            elif m:
+                key = r"opdracht\s*" + m.group(2) + r"(?!\d)"
+            else:
+                key = re.escape(re.sub(r"\s+", "", label.split("—")[0]).lower())
+            text = doc[pno - 1].get_text() if 0 < pno <= doc.page_count else ""
+            if not re.search(key, re.sub(r"\s+", "", text).lower() if not m else text.lower()):
+                stale.append(f"{label.strip()}@p{pno}")
+        print("  bookmarks :", "clean" if not stale
+              else "PROBLEM, not on their page: " + ", ".join(stale))
+        problems = problems or bool(stale)
     doc.set_metadata({
         "title": f"Nederlands in gang — Hoofdstuk {ch.number}: {ch.title} (redesigned)",
         "author": "Berna de Boer, Margaret van der Kamp, Birgit Lijmbach",

@@ -55,20 +55,9 @@ ch.page(keep("dialoog-1.1", f'''
             font-size:12pt;letter-spacing:.3em;margin:3.5mm 0">(…)</div>
 <dl class="dialogue">{dl3}</dl>'''), section="1.1 Dialoog")
 
-# ---------------------------------------------------------------- 3  DIALOOG — wie & luisteren
+# ---------------------------------------------------------------- 3  illustration + luisteren
 ch.page(f'''
-<img src="art/dialoog.png" class="img" style="height:52mm;object-fit:cover;margin-bottom:6mm">
-{card("Who\'s who in the dialogue",
- '<div style="display:grid;grid-template-columns:auto 1fr;gap:2.2mm 5mm;font-size:9.3pt">'
- '<div class="dutch" style="color:var(--orange)">Karin Dijkstra</div>'
- '<div>de docent &nbsp;·&nbsp; woont al twintig jaar in Utrecht</div>'
- '<div class="dutch" style="color:var(--orange)">Paul de Vries</div>'
- '<div>de andere docent &nbsp;·&nbsp; geeft twee dagen les</div>'
- '<div class="dutch" style="color:var(--orange)">Susy Wall</div>'
- '<div>cursist &nbsp;·&nbsp; komt uit Engeland</div>'
- '<div class="dutch" style="color:var(--orange)">Ning</div>'
- '<div>cursist &nbsp;·&nbsp; komt uit China &nbsp;·&nbsp; Hofstraat 22, 3581 TW Utrecht</div>'
- '</div>')}
+<img src="art/dialoog.png" class="img" style="height:112mm;object-fit:cover;margin-bottom:7mm">
 <div class="sp"></div>
 {card("Listening", '<div style="display:flex;gap:3mm;align-items:flex-start">'+icon("web")+
  '<div>Listen to this dialogue at <b>coutinho.nl/nederlandsingang3</b> and repeat the sentences. '
@@ -309,7 +298,6 @@ ch.page(f'''
 ch.toc = [
  [1,"Hoofdstuk 1 — Welkom",1],
  [2,"1.1  Dialoog — De cursus begint",2],
- [3,"Wie is wie in de dialoog?",3],
  [2,"1.2  Woordenlijst",4],
  [2,"1.3  Zich voorstellen / informatie vragen / landen",6],
  [3,"Opdracht 1",7],
@@ -317,7 +305,7 @@ ch.toc = [
  [3,"Opdracht 2",9],
  [3,"Opdracht 3",10],
  [2,"1.5  Telwoorden",11],
- [3,"Opdracht 4–5",12],
+ [3,"Opdracht 4–5",11],
  [2,"1.6  Het alfabet",12],
  [3,"Opdracht 6–7",12],
  [2,"1.7  Spellen",13],
