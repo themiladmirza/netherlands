@@ -10,6 +10,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path[:0] = [HERE, os.path.join(HERE, "..", "shared", "lib")]
 
 from layout import (Chapter, icon, audio_icon, task, card, qa, vocab_rows, pairs,
+                    family_tree,
                     numbers, number_columns, lines, keep, clock)
 from content import *
 
@@ -83,7 +84,9 @@ ch.page(keep("familie-2.3", f'''
            f'<div class="dutch">{c}</div><div style="color:var(--teal)">{d}</div>'
            for (a, b), (c, d) in zip(FAMILIE_A + [("", "")], FAMILIE_B))
  + '</div>')}
-<img src="art/familie.png" class="img" style="height:62mm;object-fit:cover;margin-top:2mm">'''),
+<div class="note" style="margin:4mm 0 1mm">How the words fit together. The book
+lists them; the tree is ours.</div>
+{family_tree()}'''),
  section="2.3 Familierelaties")
 
 # ---------------------------------------------------------------- 8  2.4 + opdracht 2

@@ -299,3 +299,122 @@ class Chapter:
     def write(self, path):
         open(path, "w", encoding="utf-8").write(self.html())
         return len(self.pages)
+
+
+def family_tree():
+    """A family tree drawn from chapter 2's own Familierelaties words.
+
+    Drawn as SVG rather than generated art for the same reason as clock(): a tree
+    is nothing but labels, and image models render letterforms unreliably.
+
+    Every one of the chapter's 21 family words appears, and each is placed rather
+    than defined — the spouses hang off their partner, *het kleinkind* is a dotted
+    link back to the grandparents, and *het gezin* / *de familie* are nested
+    outlines. Showing a relationship beats writing a definition for it, which
+    would be inventing Dutch the book never printed.
+
+    NOTE: the book prints no family tree. This is a study aid, like the sentence
+    translations, not transcribed content.
+    """
+    ink, teal, orange, rule, soft = "#1E2A2E", "#14616B", "#E8632A", "#D9CFBC", "#B9AC95"
+
+    def node(cx, cy, nl, en, lead=False, small=False):
+        fs, sub, h = (4.3, 3.4, 13) if small else (4.9, 3.8, 14.5)
+        w = max(27, len(nl) * (2.0 if small else 2.25) + 8)
+        fill = "#FBEDE6" if lead else "#FFFFFF"
+        edge = orange if lead else (soft if small else rule)
+        return (f'<rect x="{cx - w / 2:.1f}" y="{cy - h / 2:.1f}" width="{w:.1f}" '
+                f'height="{h}" rx="3.2" fill="{fill}" stroke="{edge}" '
+                f'stroke-width="{0.9 if lead else 0.6}"/>'
+                f'<text x="{cx:.1f}" y="{cy - 0.8:.1f}" text-anchor="middle" '
+                f'font-size="{fs}" font-weight="700" fill="{ink}">{nl}</text>'
+                f'<text x="{cx:.1f}" y="{cy + 4.4:.1f}" text-anchor="middle" '
+                f'font-size="{sub}" fill="{teal}">{en}</text>')
+
+    def couple(x1, x2, y):
+        return "".join(
+            f'<line x1="{x1:.1f}" y1="{y + d:.1f}" x2="{x2:.1f}" y2="{y + d:.1f}" '
+            f'stroke="{rule}" stroke-width="0.7"/>' for d in (-1, 1))
+
+    def descend(px, py, kids, kid_y):
+        mid = (py + kid_y) / 2
+        out = [f'<line x1="{px:.1f}" y1="{py:.1f}" x2="{px:.1f}" y2="{mid:.1f}" '
+               f'stroke="{rule}" stroke-width="0.7"/>',
+               f'<line x1="{min(kids):.1f}" y1="{mid:.1f}" x2="{max(kids):.1f}" '
+               f'y2="{mid:.1f}" stroke="{rule}" stroke-width="0.7"/>']
+        for k in kids:
+            out.append(f'<line x1="{k:.1f}" y1="{mid:.1f}" x2="{k:.1f}" '
+                       f'y2="{kid_y:.1f}" stroke="{rule}" stroke-width="0.7"/>')
+        return "".join(out)
+
+    def band(x1, y1, x2, y2, label, dash="3 2.2", colour=None):
+        c = colour or orange
+        return (f'<rect x="{x1:.1f}" y="{y1:.1f}" width="{x2 - x1:.1f}" '
+                f'height="{y2 - y1:.1f}" rx="4" fill="none" stroke="{c}" '
+                f'stroke-width="0.6" stroke-dasharray="{dash}"/>'
+                f'<text x="{x1 + 3:.1f}" y="{y1 - 1.8:.1f}" font-size="4" '
+                f'font-weight="700" fill="{c}">{label}</text>')
+
+    OPA, OMA       = 112, 152
+    OOM, TANTE     = 28, 68
+    NEEF, NICHT    = 28, 68
+    BROER, IK, ZUS = 104, 152, 200
+    ZOON, DOCHTER  = 130, 174
+    yA, yB, yC, yD = 18, 56, 96, 136
+
+    s = []
+    # de familie: everyone on the chart
+    s.append(band(8, 10, 240, 152, "de familie", dash="1.6 2.4", colour=soft))
+    # het gezin: the household the learner grew up in
+    # het gezin is the household: parents and their children, no in-laws,
+    # and clear of the cousins on the left
+    s.append(band(88, 38, 212, 108, "het gezin"))
+
+    # generation 1 -> their two children: de oom and de vader
+    s.append(couple(OPA + 14, OMA - 14, yA))
+    s.append(descend((OPA + OMA) / 2, yA + 8, [OOM, 112], yB - 8))
+    s.append(node(OPA, yA, "de opa", "grandfather"))
+    s.append(node(OMA, yA, "de oma", "grandmother"))
+
+    # generation 2
+    s.append(couple(OOM + 14, TANTE - 14, yB))
+    s.append(couple(112 + 15, 152 - 15, yB))
+    s.append(descend((OOM + TANTE) / 2, yB + 8, [NEEF, NICHT], yC - 8))
+    s.append(descend(132, yB + 8, [BROER, IK, ZUS], yC - 8))
+    s.append(node(OOM, yB, "de oom", "uncle"))
+    s.append(node(TANTE, yB, "de tante", "aunt"))
+    s.append(node(112, yB, "de vader", "father"))
+    s.append(node(152, yB, "de moeder", "mother"))
+    s.append(f'<text x="132" y="{yB - 11}" text-anchor="middle" font-size="4" '
+             f'font-weight="700" fill="{orange}">de ouders</text>')
+
+    # generation 3, each with the partner the chapter names
+    s.append(node(NEEF, yC, "de neef", "nephew / cousin"))
+    s.append(node(NICHT, yC, "de nicht", "niece / cousin"))
+    for cx, nl, en, partner, pen in (
+            (BROER, "de broer", "brother", "de schoonzus", "sister in law"),
+            (IK, "ik", "me", "de man / de vrouw", "husband / wife"),
+            (ZUS, "de zus", "sister", "de zwager", "brother in law")):
+        s.append(f'<line x1="{cx:.1f}" y1="{yC + 7.5:.1f}" x2="{cx:.1f}" '
+                 f'y2="{yC + 13:.1f}" stroke="{soft}" stroke-width="0.6"/>')
+        s.append(node(cx, yC + 19, partner, pen, small=True))
+        s.append(node(cx, yC, nl, en, lead=(nl == "ik")))
+
+    # generation 4 — and what they are to the grandparents
+    s.append(descend(IK, yC + 26, [ZOON, DOCHTER], yD - 8))
+    s.append(node(ZOON, yD, "de zoon", "son"))
+    s.append(node(DOCHTER, yD, "de dochter", "daughter"))
+    s.append(f'<text x="152" y="{yD + 12.5}" text-anchor="middle" font-size="4" '
+             f'font-weight="700" fill="{orange}">het kind</text>')
+    # het kleinkind: what de zoon and de dochter are to MY parents. Running this
+    # line up to de opa / de oma would be a generation out — to them these two are
+    # achterkleinkinderen, a word this chapter does not teach.
+    s.append(f'<path d="M {DOCHTER + 16} {yD} H 226 V {yB} H 172" fill="none" '
+             f'stroke="{teal}" stroke-width="0.6" stroke-dasharray="2 2"/>')
+    s.append(f'<text x="231" y="{(yB + yD) / 2:.1f}" text-anchor="middle" '
+             f'font-size="4" font-weight="700" fill="{teal}" '
+             f'transform="rotate(90 231 {(yB + yD) / 2:.1f})">het kleinkind</text>')
+
+    return ('<svg class="tree" viewBox="0 0 256 162" role="img" '
+            'aria-label="Family tree built from this chapter\'s words">'
+            + "".join(s) + "</svg>")
