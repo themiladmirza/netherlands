@@ -366,13 +366,30 @@ problem — every file is already 44.1 kHz / 128 kbps.
   `practice.py` no longer owns it. The component re-reads before every round so two
   chapter tabs can't clobber each other, and falls back to memory (saying so on the
   summary screen) if storage is blocked, which Chrome does on some `file://` setups.
-- **Answers come from Bijlage 8 and are screen-only.** `<chapter>/answers.py` holds
-  the book's own key, keyed by Opdracht number; `layout.py` tags each exercise
-  `data-opdracht`, and `shared/answers.js` attaches the answers at runtime behind
-  a fixed toggle (press **a** anywhere). Built at runtime on purpose: an answer
-  printed into the PDF would spoil the workbook. `build.py` reports "N of M
-  Opdrachten"; the leak test is to search the built PDF for a six-word run of any
-  answer and find nothing.
+- **Answers come from Bijlage 8 and land ON the question.** `<chapter>/answers.py`
+  holds the book's own key by Opdracht number; `layout.py` tags each exercise
+  `data-opdracht`, and `shared/answers.js` puts each answer where the question
+  asks for it, behind a fixed toggle (press **a** anywhere). It handles five
+  shapes, and falls back to a block only for the two that genuinely are prose:
+
+  | shape | where the answer goes |
+  |---|---|
+  | `ol.items` with `.blank` | into each blank, in order |
+  | `.choice` ("Hebben / hebt") | the right form, after the pair |
+  | `ol.choice-items` a/b | the correct `.opt` is marked |
+  | a/b/c grid, or photo labels | the right letter is marked |
+  | bare nouns in a grid | *de* / *het* in front of each |
+  | "Mogelijke antwoorden: …" | a block underneath — correct for prose |
+
+  A comma inside one item's answer means that item has several blanks
+  ("1 op, om"); a slash does not ("jij / je" is one answer). An exercise's
+  illustration can sit *after* the `.task` div, so the search runs to the next
+  exercise, not just inside the task.
+- **Hide every runtime node outside all media queries.** Styling `.answer-fill`
+  only inside `@media screen` put the answers in the PDF: print had no rule, so
+  they rendered. It showed up as the searchable word count moving 2002 → 2026 —
+  which is exactly why build.py prints it. Leak test: search the built PDF for a
+  six-word run of every answer and find nothing.
 - **Most exercises have no answer, and that is correct.** The book answers 2 of
   chapter 1's 12, 5 of chapter 2's 16, 4 of chapter 3's 13. Speaking and open
   writing tasks have none. Leave them with no block at all — do not write one,

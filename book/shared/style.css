@@ -297,11 +297,29 @@ ol.choice-items .opt span{ font-family:var(--disp); font-weight:700; color:var(-
  * Hidden in EVERY medium by default and switched on only under @media screen,
  * the same rule the practice deck follows: print-to-pdf runs the script too, and
  * an unstyled answer block would land in the PDF and spoil the workbook. */
-.answers-toggle, .answer{ display:none; }
+.answers-toggle, .answer, .answer-fill, .answer-article{ display:none; }
 
 @media screen{
-  /* the answer sits inside its exercise, revealed by a class on <html> so one
-     toggle flips every exercise on the page at once */
+  /* Answers sit ON the question: in the blank, on the chosen option, in front of
+     the noun. One class on <html> reveals them all, so the toggle is pure CSS and
+     nothing has to be re-rendered or undone. */
+  html.answers-on .answer-fill{ display:inline; color:#3F6B4A; font-weight:600; }
+  html.answers-on .answer-article{ display:inline; color:#3F6B4A; font-weight:600; }
+
+  /* a filled blank keeps its rule but no longer needs the empty minimum width */
+  html.answers-on .blank{ min-width:0; border-bottom-color:#9BBCA4;
+    padding:0 .8mm; }
+
+  .opt.is-answer, .dutch.is-answer, .dutch.is-answer + div{ /* off by default */ }
+  html.answers-on .opt.is-answer{ background:#EAF1EA; border-radius:1.4mm;
+    box-shadow:0 0 0 .7mm #EAF1EA; color:#2F5138; font-weight:600; }
+  html.answers-on .opt.is-answer span{ color:#3F6B4A; }
+  html.answers-on .dutch.is-answer,
+  html.answers-on .dutch.is-answer + div{ color:#2F5138; font-weight:600; }
+  /* the lettered label on a photograph */
+  html.answers-on .photolabels span.is-answer{ background:#3F6B4A; color:#fff; }
+
+  /* the fallback block, for model answers that have nowhere to sit in the question */
   .answer{ display:none; margin-top:3mm; padding:3mm 4mm;
     background:var(--tint2); border-left:1.2mm solid var(--sage);
     border-radius:0 2mm 2mm 0; }
