@@ -299,3 +299,36 @@ class Chapter:
     def write(self, path):
         open(path, "w", encoding="utf-8").write(self.html())
         return len(self.pages)
+
+
+def timeline(points, today=None):
+    """A small horizontal time line: [(relative word, day), …].
+
+    Drawn as SVG rather than generated art for the same reason as clock(): it is
+    nothing but labels. Pass today= to mark one point as the present.
+
+    NOTE: the book prints its days as a plain list. This is a study aid, like the
+    sentence translations, not transcribed content — every pairing shown is one
+    the book states, nothing is inferred.
+    """
+    ink, teal, orange, rule = "#1E2A2E", "#14616B", "#E8632A", "#D9CFBC"
+    n = len(points)
+    x0, x1, y = 16, 232, 26          # the arrow needs room past the last tick
+    step = (x1 - x0) / (n - 1) if n > 1 else 0
+
+    s = [f'<line x1="{x0 - 8}" y1="{y}" x2="{x1 + 20}" y2="{y}" stroke="{rule}" '
+         f'stroke-width="0.8"/>',
+         f'<path d="M {x1 + 20} {y} l -3.4 -2 v 4 Z" fill="{rule}"/>']
+    for i, (word, day) in enumerate(points):
+        cx = x0 + step * i
+        now = (today is not None and i == today)
+        s.append(f'<circle cx="{cx:.1f}" cy="{y}" r="{2.6 if now else 1.6:.1f}" '
+                 f'fill="{orange if now else rule}"/>')
+        if word:
+            s.append(f'<text x="{cx:.1f}" y="{y - 6.5:.1f}" text-anchor="middle" '
+                     f'font-size="{5.0 if now else 4.5}" font-weight="700" '
+                     f'fill="{orange if now else ink}">{word}</text>')
+        s.append(f'<text x="{cx:.1f}" y="{y + 10:.1f}" text-anchor="middle" '
+                 f'font-size="4.3" fill="{teal}">{day}</text>')
+    return ('<svg class="tline" viewBox="0 0 260 40" role="img" '
+            'aria-label="Time line of the days">' + "".join(s) + "</svg>")

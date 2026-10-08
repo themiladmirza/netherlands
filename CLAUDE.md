@@ -434,6 +434,12 @@ problem — every file is already 44.1 kHz / 128 kbps.
   chapter 1's 12, 5 of chapter 2's 16, 4 of chapter 3's 13. Speaking and open
   writing tasks have none. Leave them with no block at all — do not write one,
   and do not add a "no answer" placeholder.
+- **`timeline()` (ch2 §2.10) is a drawn aid, not book content.** The book prints
+  its days as a plain list with an arrow at *Vandaag*. The line shows the same
+  seven days in order with the five relative words above them; every pairing is
+  one the book states outright (*Eergisteren was het dinsdag*), none is inferred.
+  SVG for the same reason as `clock()`. *zondag* and *maandag* carry no relative
+  word because the book gives them none — do not invent *overovermorgen*.
 - Vocabulary: infinitive small and grey after the stem.
 - Set `ch.toc` in `pages.py` — `build.py` turns it into PDF bookmarks.
 

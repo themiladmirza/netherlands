@@ -10,7 +10,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path[:0] = [HERE, os.path.join(HERE, "..", "shared", "lib")]
 
 from layout import (Chapter, icon, audio_icon, task, card, qa, vocab_rows, pairs,
-                    numbers, number_columns, lines, keep, clock)
+                    numbers, number_columns, lines, keep, clock, timeline)
 from content import *
 
 ch = Chapter(2, "In de kantine")
@@ -169,6 +169,10 @@ ch.page(keep("dagen-2.10", f'''
 <h2 class="sec"><span class="num">2.10</span> De dagen van de week</h2>
 {card('dagen &nbsp;<em>days</em>',
  '<div style="font-size:9.6pt;line-height:1.9">' + "<br>".join(DAGEN) + '</div>')}
+<div class="note" style="margin:3.5mm 0 0">The same week on a line. Ours, not the book's.</div>
+{timeline([("eergisteren","dinsdag"), ("gisteren","woensdag"),
+           ("vandaag","donderdag"), ("morgen","vrijdag"),
+           ("overmorgen","zaterdag"), ("","zondag"), ("","maandag")], today=2)}
 <div class="sp"></div>
 {task(7,"speak",None,"Ask the person next to you.", f'<ul class="bullet">{o7}</ul>')}'''),
  section="2.10 De dagen van de week")
