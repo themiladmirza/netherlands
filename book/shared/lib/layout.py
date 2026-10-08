@@ -159,17 +159,43 @@ def img(name, height, margin=""):
     m = f";margin{margin}" if margin else ""
     return f'<img src="art/{name}.png" class="img" style="height:{height}mm;object-fit:cover{m}">'
 
-def web_note(html, variant="", title=None):
+def web_note(html, variant="", title=None, align="flex-start"):
     """A card pointing at the publisher's site, with the globe icon."""
-    return card(title, '<div style="display:flex;gap:3mm;align-items:flex-start">'
+    return card(title, f'<div style="display:flex;gap:3mm;align-items:{align}">'
                 + icon("web") + f'<div>{html}</div></div>', variant)
 
 WORDLIST_NOTE = ('<div class="note" style="margin-bottom:3.5mm">The words appear in the order '
                  'they occur in the dialogue.\nThe infinitive or singular form is given in brackets.</div>')
 
 def phrases(rows, size=9.6, lh=1.85):
-    """Lines of Dutch, one per row, as a reference card prints them."""
-    return f'<div style="font-size:{size}pt;line-height:{lh}">' + "<br>".join(rows) + '</div>'
+    """Lines of Dutch, one per row, as a reference card prints them.
+
+    `rows` may be a single string; lh=None leaves the line height alone."""
+    rows = [rows] if isinstance(rows, str) else rows
+    l = f";line-height:{lh}" if lh else ""
+    return f'<div style="font-size:{size}pt{l}">' + "<br>".join(rows) + '</div>'
+
+def term_grid(rows, size=9.4, gap="1.2mm 5mm", second="", first="", per_row=1, style=""):
+    """Term | gloss pairs in a grid. second="teal" colours the gloss,
+    first="orange" the term; per_row=2 sets two pairs side by side."""
+    c1 = f' style="color:var(--{first})"' if first else ""
+    c2 = f' style="color:var(--{second})"' if second else ""
+    cols = " ".join(["auto 1fr"] * per_row)
+    cells = "".join(f'<div class="dutch"{c1}>{a}</div><div{c2}>{b}</div>' for a, b in rows)
+    return (f'<div style="display:grid;grid-template-columns:{cols};gap:{gap};'
+            f'font-size:{size}pt{";" + style if style else ""}">{cells}</div>')
+
+def lettered(rows, gap="1.6mm 2mm", size=9.4):
+    """Sub-tasks or options labelled A / B / C (or a / b / c) in the margin."""
+    cells = "".join(f'<div class="dutch" style="color:var(--orange)">{k}</div><div>{v}</div>'
+                    for k, v in rows)
+    return (f'<div style="display:grid;grid-template-columns:6mm 1fr;gap:{gap};'
+            f'font-size:{size}pt">{cells}</div>')
+
+def audio_note(src, label, text, mb=3.5):
+    """The audio icon with a direction beside it: "Listen and repeat." """
+    return (f'<div style="display:flex;gap:2.4mm;align-items:center;margin-bottom:{mb}mm">'
+            f'{audio_icon(src, label)}\n<div class="note" style="font-style:normal">{text}</div></div>')
 
 def example(inner, style=""):
     """The "Example" box inside an exercise."""
@@ -194,11 +220,12 @@ def blanks(text, width=None):
     st = f' style="min-width:{width}mm"' if width else ""
     return text.replace("___", f'<span class="blank"{st}></span>')
 
-def word_columns(cols, n=3, max_width=None, extra=""):
-    """Exercise words in `n` columns, each read top to bottom."""
+def word_columns(cols, n=3, max_width=None, extra="", gap="0 6mm", size=10, lh=2.3):
+    """Words in `n` columns, each read top to bottom — never across."""
     mw = f"max-width:{max_width}mm" if max_width else ""
-    return (f'<div style="display:grid;grid-template-columns:repeat({n},1fr);gap:0 6mm;font-size:10pt;'
-            f'line-height:2.3;{extra}{mw}">'
+    l = f"line-height:{lh};" if lh else ""
+    return (f'<div style="display:grid;grid-template-columns:repeat({n},1fr);gap:{gap};font-size:{size}pt;'
+            f'{l}{extra}{mw}">'
             + "".join('<div>' + "<br>".join(c) + '</div>' for c in cols) + '</div>')
 
 def word_rows(rows):
@@ -207,13 +234,19 @@ def word_rows(rows):
             + "".join('<div class="wordrow">' + " &nbsp;<span>&#9642;</span>&nbsp; ".join(r) + '</div>'
                       for r in rows) + '</div>')
 
-def tick_table(count, heads=("+", "–"), style="max-width:62mm;margin:3mm 0 0"):
-    """Numbered rows of empty boxes to tick while listening."""
-    head = '<th style="width:12mm"></th>' + "".join(f'<th>{h}</th>' for h in heads)
+def tick_table(count, heads=("+", "–"), style="max-width:62mm;margin:3mm 0 0", head=True):
+    """Numbered rows of empty boxes to tick while listening. head=False drops
+    the header row, for a table whose columns the example above explains."""
+    th = '<th style="width:12mm"></th>' + "".join(f'<th>{h}</th>' for h in heads)
     body = "".join(f'<tr><td>{i}</td>' + '<td></td>' * len(heads) + '</tr>'
                    for i in range(1, count + 1))
-    return (f'<table class="grid tick" style="{style}">'
-            f'<thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>')
+    thead = f'<thead><tr>{th}</tr></thead>' if head else ""
+    return f'<table class="grid tick" style="{style}">{thead}<tbody>{body}</tbody></table>'
+
+def two_columns(cols, size=9.4, gap="1.2mm 6mm"):
+    """Lines of Dutch in two side-by-side columns."""
+    return (f'<div style="display:grid;grid-template-columns:1fr 1fr;gap:{gap};font-size:{size}pt">'
+            + "".join('<div>' + "<br>".join(c) + '</div>' for c in cols) + '</div>')
 
 def sentence_grid(rows, dutch_cols=(0, 2), size=9.6):
     """Word-order table: subject | verb (orange) | … , one sentence per row."""
@@ -291,7 +324,7 @@ class Chapter:
         return n
 
     # ------------------------------------------------ pages every chapter has
-    def cover(self, objectives, crop="50% 22%", title_pt=40, title_lh=.88):
+    def cover(self, objectives, crop="50% 22%", title_pt=40, title_lh=".88"):
         """Page 1: full-bleed opener with number, title and the objectives.
 
         `crop` positions the opener image; `title_pt` shrinks a long title so it
