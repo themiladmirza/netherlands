@@ -293,9 +293,6 @@ ol.choice-items .opt span{ font-family:var(--disp); font-weight:700; color:var(-
   }
 }
 
-/* a family tree drawn from the chapter's own words (ch2 §2.3) */
-.tree{ display:block; width:100%; height:auto; margin:1mm 0 0; }
-
 /* ---------- answer key (screen only; built at runtime, never in print) ----------
  * Hidden in EVERY medium by default and switched on only under @media screen,
  * the same rule the practice deck follows: print-to-pdf runs the script too, and

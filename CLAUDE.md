@@ -434,17 +434,6 @@ problem — every file is already 44.1 kHz / 128 kbps.
   chapter 1's 12, 5 of chapter 2's 16, 4 of chapter 3's 13. Speaking and open
   writing tasks have none. Leave them with no block at all — do not write one,
   and do not add a "no answer" placeholder.
-- **`family_tree()` (ch2 §2.3) is a drawn aid, not book content.** The book prints
-  two word lists and no diagram. The tree is SVG for the same reason as `clock()`:
-  it is nothing but labels, and image models render letterforms unreliably. Every
-  one of the chapter's 21 family words is *placed* rather than defined — spouses
-  hang off their partner, `het gezin` and `de familie` are nested outlines —
-  because showing a relationship avoids writing Dutch the book never printed.
-  Two traps found while drawing it: `het kleinkind` belongs to **de vader / de
-  moeder**, not to de opa / de oma (to them a grandchild's child is an
-  *achterkleinkind*, which this chapter does not teach); and `de neef` / `de nicht`
-  mean both *cousin* and *nephew/niece*, so one position in the tree can only show
-  half the word — the book's own gloss carries the rest.
 - Vocabulary: infinitive small and grey after the stem.
 - Set `ch.toc` in `pages.py` — `build.py` turns it into PDF bookmarks.
 
