@@ -7,6 +7,7 @@
     python3 book/generate_audio.py ch01-welcome --all    # everything again
     python3 book/generate_audio.py ch01-welcome --check  # verify existing files only
     python3 book/generate_audio.py ch01-welcome --all --model eleven_v4
+    python3 book/generate_audio.py ch01-welcome --cards  # flashcard sentences
 
 Reads <chapter>/audio_script.py (what is said, by whom, with what delivery) and
 shared/lib/voices.py (the cast). Writes <chapter>/audio/<id>.mp3.
@@ -78,10 +79,64 @@ def verify(path, expected, key):
     ratio = difflib.SequenceMatcher(None, norm(expected), norm(got)).ratio()
     return ratio, got
 
+def cards(cdir, key, redo, check_only):
+    """Record the sentence a flashcard quotes, one clip per distinct sentence.
+
+    The cards play the sentence rather than the bare word, so the learner hears
+    the word used. Sentences are deduped: several cards quote the same line.
+    Recorded with eleven_v4 and one narrator for the whole book — these are
+    reference recordings, so clarity matters more than character.
+    """
+    sys.path.insert(0, os.path.join(ROOT, "shared", "lib"))
+    from glossary import load_chapter_content
+    import cloze as cloze_mod
+
+    number = int(os.path.basename(cdir.rstrip("/"))[2:4])
+    deck = cloze_mod.deck(load_chapter_content(cdir), number)
+    clips = cloze_mod.sentence_clips(deck)
+    os.makedirs(os.path.join(cdir, "audio", "cards"), exist_ok=True)
+
+    todo = [(rel, text) for rel, text in clips
+            if redo or not os.path.exists(os.path.join(cdir, rel))]
+    print(f"  {len(clips)} sentences, {len(todo)} to record "
+          f"({sum(len(t) for _, t in todo):,} characters)")
+
+    made = 0
+    for rel, text in todo:
+        if check_only:
+            break
+        data = post(f"{API}/text-to-speech/{cast.VOICES['kaart']}", {
+            "model_id": "eleven_v4", "text": text,
+            "voice_settings": cast.CARD_SETTINGS}, key)
+        open(os.path.join(cdir, rel), "wb").write(data)
+        made += 1
+        if made % 20 == 0:
+            print(f"        {made}/{len(todo)}", flush=True)
+
+    # Sentences are whole phrases, which is what speech-to-text handles well, so
+    # every one is verified -- unlike the single words, which it cannot score.
+    bad = 0
+    for rel, text in clips:
+        path = os.path.join(cdir, rel)
+        if not os.path.exists(path):
+            continue
+        ratio, got = verify(path, text, key)
+        if ratio is not None and ratio < 0.85:
+            bad += 1
+            print(f"  CHECK {rel}  match {ratio:.0%}")
+            print(f"        expected: {text[:80]}")
+            print(f"        heard   : {got[:80]}")
+    missing = [r for r, _ in clips if not os.path.exists(os.path.join(cdir, r))]
+    print(f"  recorded {made}, {len(missing)} missing, "
+          f"{len(clips) - bad - len(missing)}/{len(clips) - len(missing)} verified")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("chapter"); ap.add_argument("--all", action="store_true")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--cards", action="store_true",
+                    help="record the sentences the flashcards quote")
     ap.add_argument("--model", default=cast.MODEL,
                     help=f"TTS model id (default {cast.MODEL}). Lets one chapter "
                          "try a new model without recasting the whole book.")
@@ -89,6 +144,8 @@ def main():
 
     key = os.environ.get("ELEVENLABS_API_KEY") or sys.exit("ELEVENLABS_API_KEY is not set")
     cdir = os.path.join(ROOT, a.chapter.rstrip("/"))
+    if a.cards:
+        return cards(cdir, key, a.all, a.check)
     script = load(os.path.join(cdir, "audio_script.py"), "audio_script")
     outdir = os.path.join(cdir, "audio"); os.makedirs(outdir, exist_ok=True)
 

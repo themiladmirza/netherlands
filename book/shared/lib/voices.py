@@ -29,8 +29,15 @@ VOICES = {
     "andres":   "Pk1wM1jtot5sJaptlRWQ",  # Robin  — Edit's brother, ch3: male, young
     "ober":     "HGg2c3eDR1tMpbtDRAzL",  # Pieter — the waiter, ch3: male, middle-aged (was Jan, -34.3 dB)
     "vraag":    "3fjjbhBA9yI42Aoj0o18",  # Ariel  — asks in the drills (same as docent)
+    "kaart":    "MkRWZTk4OBui6Jb2lgK0",  # Ruben  — reads the flashcard sentences
     "antwoord": "MkRWZTk4OBui6Jb2lgK0",  # Ruben  — answers: male, clearest measured (was Remko, -30.1 dB)
 }
+
+# The flashcard sentences use ONE voice for the whole book: a card is a reference
+# recording, so diction matters more than character, and the same sentence must
+# not change speaker between chapters. Ruben measured clearest of the 18 Dutch
+# voices tested (-17.9 dB above 8 kHz).
+CARD_SETTINGS = {"stability": 0.6, "similarity_boost": 0.8, "style": 0.0}
 
 # Low stability keeps the emotion tags expressive; raising it flattens the read
 # but makes it more predictable. Style adds delivery variation.

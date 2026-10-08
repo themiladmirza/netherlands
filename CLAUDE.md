@@ -371,13 +371,17 @@ problem — every file is already 44.1 kHz / 128 kbps.
 - **`flashcards.js` is linked, not inlined.** That is the whole point of the
   component — edit it once and all eighteen chapters change on reload, with no
   rebuild. Only new *cards* need `build.py`. Don't inline it "for convenience".
-- **The cards speak with the browser, not ElevenLabs.** `flashcards.js` uses
-  `speechSynthesis`, preferring a *local* nl-NL voice (macOS ships Xander) over a
-  network one, and nl-BE last — this book teaches Netherlands Dutch. That means no
-  clips to generate, nothing to ship, and chapter 18 speaks the day it is written.
-  ElevenLabs still does the **page** audio (dialogues, Opdracht recordings); only
-  the cards changed. Speech never fires before the reader clicks, and never speaks
-  an answer that is still hidden — a produce card is silent until it is revealed.
+- **A card plays the SENTENCE it quotes, not the bare word.** You learn the word
+  in use. `generate_audio.py <chapter> --cards` records one clip per distinct
+  sentence with `eleven_v4` and the `kaart` narrator; several cards quoting the
+  same line share a recording, so chapters 1-3 need only 84 clips for 212 cards.
+  v4 is right here — its weakness is lists of short tokens, and these are prose:
+  all 84 verified at 100%.
+  The ~1 word in 6 the book never uses in a sentence falls back to the browser's
+  `speechSynthesis` saying the word, preferring a *local* nl-NL voice (macOS ships
+  Xander), nl-BE last. Audio never fires before the reader acts — and **a keypress
+  counts as acting**, not just a click, or driving by space leaves the first card
+  silent. A production card stays silent until checked: its sentence is the answer.
 - **The quoted sentence gets one English translation, in `<chapter>/translations.py`.**
   This is the ONLY text in the project that is not the book's: the book prints no
   English for its dialogue, so these are written for the cards. That is why they

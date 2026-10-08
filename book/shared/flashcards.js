@@ -160,22 +160,39 @@
     });
   }
 
-  var sayText = "";
-  function say(text) {
-    sayText = text || "";
-    el.say.hidden = !sayText;
-    if (armed) speak(sayText);           // never speak before the reader acts
+  /* What a card plays is the SENTENCE it quotes, recorded with ElevenLabs, so you
+   * hear the word used rather than said in isolation. The ~1 word in 6 that the
+   * book never puts in a sentence falls back to the browser voice saying the word,
+   * which beats silence. */
+  var sound = null, sayClip = "", sayText = "";
+
+  function cue(card, allow) {
+    sayClip = allow && card && card.audio_s ? card.audio_s : "";
+    sayText = allow && !sayClip && card ? card.dutch : "";
+    el.say.hidden = !(sayClip || sayText);
+    if (armed) playCue();
+  }
+
+  function playCue() {
+    if (sayClip) {
+      try {
+        if (sound) sound.pause();
+        sound = new Audio(sayClip);
+        sound.play().catch(function () {});   // a blocked autoplay is not an error
+      } catch (e) { /* no recording for this chapter yet */ }
+      return;
+    }
+    if (sayText) speak(sayText);
   }
 
   function speak(text) {
     if (!window.speechSynthesis || !text) return;
     try {
       speechSynthesis.cancel();
-      // "luister · heb · ben" reads better as a list than as one run-on word
       var u = new SpeechSynthesisUtterance(String(text).replace(/\s*·\s*/g, ", "));
       if (voice) u.voice = voice;
       u.lang = voice ? voice.lang : "nl-NL";
-      u.rate = 0.9;                      // a shade under natural: this is a drill
+      u.rate = 0.9;
       speechSynthesis.speak(u);
     } catch (e) { /* no speech available; the cards still work */ }
   }
@@ -286,7 +303,7 @@
         ? "include the article · enter to check"
         : "enter to check";
       button("Check", "go", judge);
-      say("");        // the sentence contains the answer — silent until checked
+      cue(card, false);   // the sentence IS the answer here — silent until checked
       el.input.focus();
       return;
     }
@@ -298,7 +315,7 @@
       ? '<span class="deck-sentence">' + esc(card.sentence) + "</span>" : "";
     el.hint.textContent = "recall it, then space to flip";
     button("Flip", "go", flip, "space");
-    say(card.dutch);
+    cue(card, true);
   }
 
   function flip() {
@@ -311,7 +328,7 @@
     el.hint.textContent = "did you know it? \u00b7 space = yes";
     button("Not yet", "no", function () { score(false); }, "1");
     button("Got it", "yes", function () { score(true); }, "space");
-    say(card.dutch);
+    cue(card, true);
   }
 
   function judge() {
@@ -337,7 +354,7 @@
     el.hint.textContent = "enter for the next one";
     el.actions.innerHTML = "";
     button("Next", "go", next);
-    say(card.dutch);
+    cue(card, true);
     record(right);
   }
 
@@ -356,7 +373,7 @@
     show();
   }
 
-  el.say.addEventListener("click", function () { armed = true; speak(sayText); });
+  el.say.addEventListener("click", function () { armed = true; playCue(); });
   // the first click anywhere in the deck counts as consent to speak
   mount.addEventListener("click", function () { armed = true; });
 
@@ -384,6 +401,9 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
+    armed = true;          // a keypress is interaction too; clicking is not the
+                           // only way to reach the deck, and space-only use left
+                           // the very first card silent
     var t = e.target;
     var typing = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable);
 

@@ -18,6 +18,7 @@ never written for the occasion — transcribe-never-invent governs study materia
 exactly as it governs the page. A word the book never uses in running text gets
 recognition only.
 """
+import hashlib
 import os
 import re
 import sys
@@ -117,6 +118,7 @@ def _card(chapter, kind, front, back, dutch):
         "sentence": None,
         "cloze":    None,
         "blank":    None,
+        "audio_s":  None,
         "meaning":  None,
     }
 
@@ -167,6 +169,7 @@ def deck(mod, chapter):
                 # Where the sentence does carry the article, the blank carries
                 # it too, and the de/het drill survives on exactly those cards.
                 card["blank"] = candidate[m.start():m.end()]
+                card["audio_s"] = f"audio/cards/s-{sentence_id(candidate)}.mp3"
                 break
         cards.append(card)
 
@@ -195,3 +198,17 @@ def attach_meaning(cards, translations):
         else:
             missing.append(sentence)
     return sorted(set(missing))
+
+
+def sentence_id(sentence):
+    """Stable short name, so one recording serves every card quoting that line."""
+    return hashlib.sha1(sentence.encode("utf-8")).hexdigest()[:10]
+
+
+def sentence_clips(cards):
+    """The distinct sentence recordings this chapter needs: [(path, text), …]."""
+    out = {}
+    for c in cards:
+        if c.get("sentence"):
+            out.setdefault(c["audio_s"], c["sentence"])
+    return sorted(out.items())
