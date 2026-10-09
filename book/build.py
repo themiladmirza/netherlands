@@ -61,7 +61,9 @@ def load_chapter(cdir):
     for stale in ("content", "pages"):
         sys.modules.pop(stale, None)
     try:
-        return load(os.path.join(cdir, "pages.py"), "pages", register=True).ch
+        ch = load(os.path.join(cdir, "pages.py"), "pages", register=True).ch
+        ch.folder = cdir
+        return ch
     finally:
         sys.path[:] = saved
 

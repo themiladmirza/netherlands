@@ -146,6 +146,8 @@ both outputs: render PDF pages to images *and* open `index.html` in a browser.
 - Anything the book marks with a speaker icon gets `audio_icon(...)` or
   `task(..., audio=...)`. Vocabulary: infinitive small and grey after the stem.
 - Screen-only fixes go in the `@media screen` block at the foot of `style.css`.
+- Styling or behaviour for ONE chapter goes in that chapter's `extra.css` / `extra.js`
+  (linked automatically when present), not in `shared/`.
 - Runtime-built UI (deck, answers): `display:none` outside every media query, then
   reveal inside `@media screen`. Never the reverse, or it prints.
 

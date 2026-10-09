@@ -55,6 +55,7 @@ text, the words on the page, the titles printed in the PDF.
         ├── index.html      generated — do not hand-edit
         ├── ch01-welcome.pdf the finished chapter
         ├── NOTES.md        decisions specific to this chapter
+        ├── extra.css/.js   optional: styling or behaviour for this chapter only
         └── source/         the scan this redesign was based on
 
 **Why `shared/` is separate:** palette, typography and illustration style should
@@ -105,6 +106,15 @@ Two rules do most of the work:
 
 The API allows **5 images per minute**. The script catches the limit, waits 35 s
 and retries (up to six times per image).
+
+## Chapter-only styling and behaviour
+
+Drop `extra.css` and/or `extra.js` into a chapter folder and only that chapter's
+`index.html` links them (after `style.css` and the shared scripts). Use them for
+things that belong to one chapter, so `shared/` stays untouched and deleting the
+file removes the feature. `extra.css` reaches the PDF too. `extra.js` also runs during
+print-to-PDF, so build any screen-only UI hidden and reveal it under
+`@media screen`. Then run `build.py <other chapter> --compare` to prove nothing else moved.
 
 ## A new chapter
 

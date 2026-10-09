@@ -4,7 +4,7 @@
 A chapter composes its pages with Chapter.page(...) plus the helpers below.
 All visual styling lives in shared/style.css — this file only builds structure.
 """
-import json, re
+import json, os, re
 
 
 # Page numbers spelled out in Dutch, for the footer (book content, stays Dutch)
@@ -327,6 +327,7 @@ class Chapter:
         self.deck = []          # set by build.py; cards for the practice overlay
         self.answers = {}       # set by build.py; Opdracht number -> answer html
         self.articles = []      # set by build.py; de/het nouns [{article, noun, en}]
+        self.folder = None      # set by build.py; finds this chapter's extra.css / extra.js
 
     def page(self, body, variant="", head=True, foot=True, section="", nogloss=False, toc=()):
         """nogloss=True excludes the page from hover translations.
@@ -551,6 +552,21 @@ Which words would you like to add? Write them below.</div>
                 + payload.replace("</", "<\\/") + "</script>"
                 + f'<script src="{self.articles_js}" defer></script>')
 
+    def extras(self):
+        """This chapter's own extra.css and extra.js, if its folder has them.
+
+        The one place for styling or behaviour that belongs to a single chapter:
+        nothing in shared/ changes, and deleting the file removes the feature.
+        extra.css loads after style.css, so it can override it, and it reaches the
+        PDF too. extra.js runs in print as well: build any screen-only UI hidden
+        and reveal it under @media screen, like the deck.
+        """
+        if not self.folder:
+            return "", ""
+        has = lambda name: os.path.exists(os.path.join(self.folder, name))
+        return ('<link rel="stylesheet" href="extra.css">' if has("extra.css") else "",
+                '<script src="extra.js" defer></script>' if has("extra.js") else "")
+
     def body(self):
         """Pages, with the practice panel sitting straight after the word list.
 
@@ -578,12 +594,13 @@ Which words would you like to add? Write them below.</div>
         # Without the viewport meta a phone lays the page out at ~980px and then
         # zooms the whole thing out — the sheet is legible only by pinching. It
         # costs nothing in print, where @page decides the size.
+        css, js = self.extras()
         return (f'<meta charset="utf-8">'
                 f'<meta name="viewport" content="width=device-width, initial-scale=1">'
                 f'<title>Nederlands in gang — Hoofdstuk {self.number}: {self.title}</title>'
-                f'<link rel="stylesheet" href="{self.css}">'
+                f'<link rel="stylesheet" href="{self.css}">' + css
                 + self.body() + self.PLAYER + self.deck_html() + self.answers_html()
-                + self.articles_html())
+                + self.articles_html() + js)
 
     def write(self, path):
         open(path, "w", encoding="utf-8").write(self.html())
