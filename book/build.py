@@ -125,10 +125,9 @@ def build_deck(cdir, ch):
             ch.answers[str(num)] = f'<div class="answer-cols">{cells}</div>'
 
     voc = len(getattr(load_chapter_content(cdir), "VOC", []) or [])
-    if ch.drill_articles:
-        import articles
-        ch.articles = articles.nouns(getattr(content, "VOC", []) or [])
-        print(f"  articles  : {len(ch.articles)} de/het nouns for the typing drill")
+    import articles
+    ch.articles = articles.nouns(getattr(content, "VOC", []) or [])
+    print(f"  articles  : {len(ch.articles)} de/het nouns for the typing drill")
     produce = sum(1 for c in ch.deck if c["cloze"])
     # A production card is answered with the text taken out of the sentence.
     # If `blank` ever drifts from what the cloze actually removed, the card

@@ -157,7 +157,9 @@ both outputs: render PDF pages to images *and* open `index.html` in a browser.
 - `translations.py` is the ONLY non-book text: whole-sentence English, kept out of
   `content.py`. Never invent one at render time.
 - Recognition flips, production types (and flips past two words).
-- `flashcards.js` and `answers.js` are linked, not inlined.
+- `flashcards.js`, `answers.js` and `articles.js` are linked, not inlined.
+- The de/het drill takes only nouns the Woordenlijst prints with their article;
+  a non-noun starting with de/het ("het is") goes in `articles.NOT_NOUNS`.
 - Answers come from Bijlage 8 (`answers.py`) and land ON the question;
   `answers.js` knows the shapes. A new shape fails the build — teach `answers.js`
   the shape rather than falling back to a block.

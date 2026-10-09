@@ -28,10 +28,12 @@ text, the words on the page, the titles printed in the PDF.
     │   ├── style.css       design system: palette, type, components
     │   ├── flashcards.js   the practice deck (screen only)
     │   ├── answers.js      the answer key toggle (screen only)
+    │   ├── articles.js     the de/het typing drill (screen only)
     │   ├── fonts/          Bricolage Grotesque + Source Sans 3 (SIL OFL)
     │   └── lib/
     │       ├── layout.py   Chapter + page blocks (sec, card, task, items, …)
     │       ├── cloze.py    Woordenlijst -> practice cards
+    │       ├── articles.py Woordenlijst -> de/het nouns for the drill
     │       ├── glossary.py first-occurrence hover translations
     │       ├── art_style.py shared illustration preamble + model choice
     │       ├── voices.py   the voice cast for all eighteen chapters
@@ -236,6 +238,16 @@ Cards come from `shared/lib/cloze.py`: the words from `VOC`, the sentences from 
 `content.py` names listed in `cloze.PROSE`. Every other name must be listed in
 `cloze.NOT_PROSE`, or the build fails — so a new chapter's prose cannot be skipped
 silently (ch1's `DIALOOG_END` was, until this check existed).
+
+### 2b. de of het? (typing drill, under the deck)
+
+Every noun the Woordenlijst prints with its article (`shared/lib/articles.py`;
+`biertje (het bier)` counts as *het bier*). The bare noun is shown and you type it
+whole, `het café`. The article turns green or red as soon as the space after it
+goes in, and Enter checks the word. A miss returns three cards later, and the round ends
+with a first-try score. It needs nothing per chapter: `build.py` collects the
+nouns. Add an entry that starts with *de*/*het* but isn't a noun ("het is") to
+`articles.NOT_NOUNS`. Screen only, from `shared/articles.js`.
 
 ### 3. Terminal trainer (`practice.py`)
 

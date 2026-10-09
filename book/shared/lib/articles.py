@@ -7,13 +7,16 @@ without an article stays out — the drill must never guess one.
 """
 import html, re
 
+# Word-list entries that start with "de"/"het" but are not article + noun.
+NOT_NOUNS = {"het is"}      # ch1: "it is"
+
 def nouns(voc):
     """[{"article", "noun", "en"}] in word-list order, each noun once."""
     out, seen = [], set()
     for head, en in voc:
         m = (re.match(r"^(de|het) ([^<(]+?)\s*$", head)
              or re.search(r"<small>\((de|het) ([^)]+)\)</small>", head))
-        if not m:
+        if not m or f"{m.group(1)} {m.group(2).strip()}" in NOT_NOUNS:
             continue
         noun = html.unescape(m.group(2)).strip()
         if noun in seen:

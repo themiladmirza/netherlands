@@ -326,8 +326,7 @@ class Chapter:
         self.pages, self.toc = [], []
         self.deck = []          # set by build.py; cards for the practice overlay
         self.answers = {}       # set by build.py; Opdracht number -> answer html
-        self.drill_articles = False   # pages.py opts in to the de/het drill
-        self.articles = []      # set by build.py when it does; [{article, noun, en}]
+        self.articles = []      # set by build.py; de/het nouns [{article, noun, en}]
 
     def page(self, body, variant="", head=True, foot=True, section="", nogloss=False, toc=()):
         """nogloss=True excludes the page from hover translations.

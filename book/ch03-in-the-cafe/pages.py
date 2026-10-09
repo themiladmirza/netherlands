@@ -17,7 +17,6 @@ from content import *
 
 ch = Chapter(3, "In het café")
 YOU = {"Susy", "Andres", "Susy en Andres", "Ober"}
-ch.drill_articles = True    # trial of the de/het typing drill (shared/articles.js)
 
 # ---------------------------------------------------------------- 1  COVER
 ch.cover(OBJECTIVES, crop="50% 40%", title_pt=36)
