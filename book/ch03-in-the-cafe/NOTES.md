@@ -38,3 +38,11 @@ one page overflowed by 55 px, and splitting it evenly left both halves half-empt
 so it is split 34/17 with Opdracht 1 joining the continuation. Likewise §3.8
 keeps its own Opdracht 7, and Opdrachten 8–9 share the following page. That took
 the chapter from 22 pages to 20 with no page running thin.
+
+## Rangtelwoorden drill (screen only)
+
+`extra.js` / `extra.css` add a typing drill straight after the 3.8 page: the card
+shows "2e", you type "tweede", and Enter checks it and plays the word
+(`audio/rang-<n>.mp3`, 22 clips, docent voice, card settings, approved by ear on
+2026-10-09). The pairs are read from the printed Rangtelwoorden card, so
+`content.py` stays the only copy. Chapter-only, so nothing in `shared/` changed.

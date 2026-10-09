@@ -230,7 +230,10 @@ def main():
             else:
                 data = post(f"{API}/text-to-speech/{cast.VOICES[item['voice']]}", {
                     "model_id": model, "text": item["text"],
-                    "voice_settings": cast.SETTINGS}, key)
+                    # "settings": "card" = the steadier settings of the card
+                    # sentences, for isolated words read as a reference
+                    "voice_settings": cast.CARD_SETTINGS if item.get("settings") == "card"
+                                      else cast.SETTINGS}, key)
             open(path, "wb").write(data)
             if item.get("gap"):
                 pad_gaps(path, item["gap"])

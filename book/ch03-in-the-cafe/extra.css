@@ -1,0 +1,23 @@
+/* Chapter 3 only — the Rangtelwoorden drill built by extra.js.
+ * Hidden in every medium, revealed for screen: extra.js also runs during
+ * print-to-pdf, and the panel must never reach the PDF. Inside, it borrows the
+ * practice deck's classes from shared/style.css. */
+#nl-rang{ display:none; }
+
+@media screen{
+  #nl-rang.deck{ display:block; width:170mm; margin:0 auto 7mm; padding:12mm 15mm 14mm;
+    background:var(--paper); box-shadow:0 1mm 3.5mm rgba(60,44,26,.18);
+    border-top:2.4mm solid var(--teal); }
+
+  #nl-rang .deck-card:focus{ outline:none; }
+
+  /* the answer, clickable to hear it again */
+  .rang-say{ font:inherit; color:inherit; background:none; border:0; padding:0 1mm;
+    border-radius:1mm; cursor:pointer; }
+  .rang-say:hover{ background:#fff; color:var(--teal); }
+  .deck-card.is-right .rang-say{ color:#3F7A3C; }
+
+  @media (max-width:176mm){
+    #nl-rang.deck{ width:auto; margin:0 0 4mm; padding:8mm 5mm 10mm; box-shadow:none; }
+  }
+}

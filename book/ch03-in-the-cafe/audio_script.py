@@ -72,4 +72,18 @@ ITEMS = [
           "blond. donderdag. donker. welkom. stoppen. jong. koffie. kopje. morgen. nog. "
           "hoor. voor. ook. woon. voorjaar. zomer. docent. komen. zo. wonen. "
           "blond. ook. donker. docent. koffie. kopje. zomer. woon. wonen. stoppen."},
-]
+ # ---------------------------------------------------------------- 3.8 Rangtelwoorden
+ # One clip per ordinal for the screen-only drill (extra.js): it plays the word
+ # after you type it. Each word alone, steady card settings; all 22 approved by ear
+ # (2026-10-09). Speech-to-text writes "eenentwintigste" as "21e", so --check flags
+ # that one; the audio is right.
+] + [
+ {"id": f"rang-{num}", "kind": "speech", "voice": "docent", "settings": "card",
+  "label": f"Rangtelwoord {num}", "text": word + "."}
+ for num, word in [
+  ("1e","eerste"),("2e","tweede"),("3e","derde"),("4e","vierde"),("5e","vijfde"),
+  ("6e","zesde"),("7e","zevende"),("8e","achtste"),("9e","negende"),("10e","tiende"),
+  ("11e","elfde"),("12e","twaalfde"),("13e","dertiende"),("14e","veertiende"),
+  ("15e","vijftiende"),("16e","zestiende"),("17e","zeventiende"),
+  ("18e","achttiende"),("19e","negentiende"),("20e","twintigste"),
+  ("21e","eenentwintigste"),("100e","honderdste")]]
