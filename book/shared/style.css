@@ -192,7 +192,8 @@ table.grid.tick.noindex td:first-child{ width:auto; color:var(--ink); background
 table.grid.tick th{ text-align:center; border:.6pt solid var(--teal); }
 table.grid.tick tbody tr:nth-child(even){ background:transparent; }
 /* ---------- word rows (ch2 Opdracht 16) ---------- */
-.wordrow span{ color:var(--coral); }
+/* the ▪ separators only — a hover translation is a span too, and must keep the ink colour */
+.wordrow span:not(.gloss){ color:var(--coral); }
 
 /* ---------- ch3: multiple-choice items ---------- */
 ol.choice-items>li{ margin-bottom:3mm; }

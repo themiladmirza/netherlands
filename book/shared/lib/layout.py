@@ -146,13 +146,17 @@ def lines(count, style=""):
 # left only for what is genuinely one of a kind (a clock, a word cloud, a form).
 
 def sec(num, title):
-    """A numbered section heading: `3.1 Dialoog`."""
-    return f'<h2 class="sec"><span class="num">{num}</span> {title}</h2>'
+    """A numbered section heading: `3.1 Dialoog`.
+
+    The title sits in one span: h2.sec is a flex row, so any element loose inside
+    it (a <b>, or a hover translation glossary.py wraps round "de week") would
+    become its own flex item and open a gap in the printed heading."""
+    return f'<h2 class="sec"><span class="num">{num}</span> <span class="t">{title}</span></h2>'
 
 def kicker_head(kicker, title):
     """The heading of an unnumbered closing section: Cultuur, In de praktijk, …"""
     return (f'<div class="kicker">{kicker}</div>\n'
-            f'<h2 class="sec" style="font-size:15pt">{title}</h2>')
+            f'<h2 class="sec" style="font-size:15pt"><span class="t">{title}</span></h2>')
 
 def img(name, height=None, margin=""):
     """A chapter illustration from art/, cropped to `height` mm (None: uncropped)."""

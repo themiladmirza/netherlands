@@ -55,7 +55,7 @@ ch.page(keep("familie-2.3", f'''
 # ---------------------------------------------------------------- 7  2.4 + opdracht 2
 ch.page(f'''
 {sec("2.4", 'Beschrijven van mensen '
-     '<span style="font-size:10pt;color:var(--ink-faint);font-weight:600">describing people</span>')}
+     '<span style="font-size:10pt;color:var(--ink-faint);font-weight:600;margin-left:2.15mm">describing people</span>')}
 {card(None, phrases(BESCHRIJVEN))}
 <div class="sp"></div>
 {task(2, "speak", None, "You will see photos of families. Work in pairs. Choose one person from a family.",

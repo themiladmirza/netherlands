@@ -28,7 +28,8 @@ VOICES = {
     "ning":     "awkQxhhcMytABHFHH3TX",  # Devin  — cursist from China: male, young (was Dean, -30.2 dB)
     "edit":     "p4efl2GlWK0o6sAQEEkp",  # Fenna  — cursist, ch2: female, young
     "andres":   "Pk1wM1jtot5sJaptlRWQ",  # Robin  — Edit's brother, ch3: male, young
-    "ober":     "HGg2c3eDR1tMpbtDRAzL",  # Pieter — the waiter, ch3: male, middle-aged (was Jan, -34.3 dB)
+    "ober":     "HGg2c3eDR1tMpbtDRAzL",  # Pieter — the waiter (Bert from ch4 on), ch3: male, middle-aged (was Jan, -34.3 dB)
+    "hans":     "DuGBHZQRdhfc7aC5qK8x",  # Simon  — Bert's friend, ch4: male, middle-aged (-24.9 dB; chosen by ear)
     "vraag":    "3fjjbhBA9yI42Aoj0o18",  # Ariel  — asks in the drills (same as docent)
     "kaart":    "MkRWZTk4OBui6Jb2lgK0",  # Ruben  — reads the flashcard sentences
     "antwoord": "MkRWZTk4OBui6Jb2lgK0",  # Ruben  — answers: male, clearest measured (was Remko, -30.1 dB)

@@ -4,8 +4,9 @@ Redesigning chapters of *Nederlands in gang* (Coutinho, 3rd revised edition 2017
 from the scan in `hard.pdf` into properly typeset PDFs with original illustrations.
 Personal study material, made alongside an owned copy of the book.
 
-Chapters 1–3 are done: ch1 20 pages (10 illustrations, 4 audio), ch2 24 pages
-(7 illustrations, 2 audio), ch3 20 pages (6 illustrations, 3 audio). The usual job
+Chapters 1–4 are done: ch1 20 pages (10 illustrations, 4 audio), ch2 24 pages
+(7 illustrations, 2 audio), ch3 20 pages (6 illustrations, 3 audio), ch4 15 pages
+(5 illustrations, 2 audio). The usual job
 in a new session is **"do chapter N"** — treat those as the reference for what
 finished looks like; `ch03-in-the-cafe/pages.py` is the cleanest model to copy.
 
@@ -201,7 +202,7 @@ both outputs: render PDF pages to images *and* open `index.html` in a browser.
 | 1 | Welkom | 20–31 ✅ | | 10 | Bij de fietsenmaker | 142–155 |
 | 2 | In de kantine | 32–45 ✅ | | 11 | Op een verjaardag | 158–171 |
 | 3 | In het café | 46–57 ✅ | | 12 | Naar de Evenementenhal | 172–181 |
-| 4 | Op straat | 58–67 | | 13 | Bij vrienden | 182–193 |
+| 4 | Op straat | 58–67 ✅ | | 13 | Bij vrienden | 182–193 |
 | 5 | Op de markt | 70–83 | | 14 | In de sportschool | 194–207 |
 | 6 | In een restaurant | 84–95 | | 15 | In de trein | 208–221 |
 | 7 | In een kledingzaak | 96–109 | | 16 | Naar de bioscoop | 222–231 |
@@ -212,7 +213,7 @@ Standalone *Taalbiografie* pages sit at 68, 156 and 232 — not part of any chap
 Appendices run 261–319: 1 = CEFR checklist, 2 = grammar overview, 3 = irregular
 verbs, 4 = sources, 6 = map, 7 = Register (thematic word list, 296–309),
 **8 = Antwoorden bij de opdrachten, 310 to the end** — selective: ch1 answers
-Opdracht 2, 3; ch2 1, 3, 4, 10, 13; ch3 1, 5, 6, 10. (The key runs in two
+Opdracht 2, 3; ch2 1, 3, 4, 10, 13; ch3 1, 5, 6, 10; ch4 1, 3, 6, 8. (The key runs in two
 columns per page; a heading at the top of the right column usually continues the
 previous chapter — ch2's Opdracht 13 was once misread as ch1's.) *Mogelijke antwoorden* is a
 sample, not the answer.

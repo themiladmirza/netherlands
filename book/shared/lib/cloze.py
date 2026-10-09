@@ -30,7 +30,7 @@ from text import plain, slugify                        # noqa: E402
 # prompts and grammar tables are excluded: a cloze wants a sentence someone says.
 PROSE = ("DIALOOG", "DIALOOG_INTRO", "DIALOOG_2", "DIALOOG_3", "DIALOOG_END", "TEKST",
          "CULTUUR", "PRAKTIJK", "DATING", "BESTELLEN", "AFREKENEN", "BEDANKEN",
-         "BESCHRIJVEN")
+         "BESCHRIJVEN", "VRAGEN", "ZULLEN", "AFSPRAAK", "REAGEREN_1", "REAGEREN_2")
 
 # Everything in a content.py that is deliberately NOT mined: word lists, tables,
 # reference cards, page furniture. Exercises (OPD1, OPD4_INTRO, …) are excluded
@@ -47,6 +47,8 @@ NOT_PROSE = {
     # ch3
     "ARTIKEL", "ARTIKEL_EX", "CULTUUR_VRAAG", "DIMINUTIEF", "INVERSIE",
     "RANG_A", "RANG_B", "RANG_C", "WOORDWOLK",
+    # ch4
+    "VERTELLEN", "SAMEN", "TEKST_GROET", "TEKST_ADRES", "TEKST_TIJDEN",
 }
 _EXERCISE = re.compile(r"^OPD\d+(?:_[A-Z]+)?$")
 

@@ -12,6 +12,7 @@
  *   a / b items   ol.choice-items                mark the correct .opt
  *   one choice    a grid of a/b/c rows           mark the right row
  *   article list  bare words in a grid           prefix each with de / het
+ *   write-in line .lines under the question      write the one answer on it
  *   model answers "Mogelijke antwoorden: ..."    a block underneath, which is
  *                                                what those genuinely are
  *
@@ -183,6 +184,17 @@
     return false;
   }
 
+  /* ---------- shape: one answer, written on the question's line ----------
+   * "When can you go?" with a single write-in line (ch4's Opdracht 8): the
+   * answer is one unnumbered phrase, and the line is where you would write it. */
+  function writeOnLine(task, raw) {
+    if (numbered(raw)) return false;
+    var ln = task.querySelector(".lines .ln");
+    if (!ln) return false;
+    ln.appendChild(el("span", "answer-fill", raw));
+    return true;
+  }
+
   /* ---------- shape 4: put the article in front of each noun ---------- */
   function prefixArticles(task, raw) {
     var spans = decoded(raw).querySelectorAll(".answer-cols span");
@@ -229,7 +241,8 @@
                (items && markChoices(task, items)) ||
                (items && answerPerItem(task, items)) ||
                markSingle(task, raw) ||
-               prefixArticles(task, raw);
+               prefixArticles(task, raw) ||
+               writeOnLine(task, raw);
 
     if (done) { inline++; report.inline.push(num); }
     else {

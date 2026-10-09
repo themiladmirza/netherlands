@@ -8,7 +8,9 @@ without an article stays out — the drill must never guess one.
 import html, re
 
 # Word-list entries that start with "de"/"het" but are not article + noun.
-NOT_NOUNS = {"het is"}      # ch1: "it is"
+NOT_NOUNS = {"het is",               # ch1: "it is"
+             "het gaat wel",          # ch4: "all right"
+             "de groeten doen aan"}  # ch4: an expression, not a noun
 
 def nouns(voc):
     """[{"article", "noun", "en"}] in word-list order, each noun once."""
