@@ -26,10 +26,10 @@ ch.cover(OBJECTIVES, crop="50% 22%", title_pt=40, title_lh=".86")
 ch.page(keep("dialoog-1.1", f'''
 {sec("1.1", "Dialoog")}
 {audio_head("audio/dialoog.mp3", "De cursus begint", "De cursus begint.")}
-{dialogue(DIALOOG, {s for s, _ in DIALOOG} - {"Docent"})}
+{dialogue(DIALOOG, {s for s, _ in DIALOOG} - {"Docent"}, audio="audio/dialoog.mp3")}
 <div style="text-align:center;color:var(--ink-faint);font-family:var(--disp);
             font-size:12pt;letter-spacing:.3em;margin:3.5mm 0">(…)</div>
-{dialogue(DIALOOG_END)}'''), section="1.1 Dialoog",
+{dialogue(DIALOOG_END, audio="audio/dialoog.mp3")}'''), section="1.1 Dialoog",
  toc=[(2, "1.1  Dialoog — De cursus begint")])
 
 # ---------------------------------------------------------------- 3  illustration

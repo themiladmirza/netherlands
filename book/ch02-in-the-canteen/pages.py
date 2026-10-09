@@ -25,7 +25,7 @@ ch.page(f'''{keep("dialoog-2.1", f"""
 {sec("2.1", "Dialoog")}
 {audio_head("audio/dialoog.mp3", "Susy en Edit in de kantine",
             "Susy en Edit hebben pauze en zitten in de kantine.")}
-{dialogue(DIALOOG, {"Susy"})}""")}
+{dialogue(DIALOOG, {"Susy"}, audio="audio/dialoog.mp3")}""")}
 {img("dialoog", 60, "-top:4mm")}''',
  section="2.1 Dialoog", toc=[(2, "2.1  Dialoog — in de kantine")])
 

@@ -25,7 +25,7 @@ ch.cover(OBJECTIVES)
 # ch.page(keep("dialoog-{{NUMBER}}.1", f'''
 # {sec("{{NUMBER}}.1", "Dialoog")}
 # {audio_head("audio/dialoog.mp3", "…", "…")}
-# {dialogue(DIALOOG, {"…"})}'''), section="{{NUMBER}}.1 Dialoog",
+# {dialogue(DIALOOG, {"…"}, audio="audio/dialoog.mp3")}'''), section="{{NUMBER}}.1 Dialoog",
 #  toc=[(2, "{{NUMBER}}.1  Dialoog — …")])
 
 # ---------------------------------------------------------------- closing pages

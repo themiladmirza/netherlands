@@ -25,11 +25,11 @@ ch.cover(OBJECTIVES, crop="50% 40%", title_pt=36)
 ch.page(keep("dialoog-3.1", f'''
 {sec("3.1", "Dialoog")}
 {audio_head("audio/dialoog.mp3", "Edit viert haar verjaardag", DIALOOG_INTRO, align="flex-start")}
-{dialogue(DIALOOG, YOU, "dialogue tight")}
+{dialogue(DIALOOG, YOU, "dialogue tight", "audio/dialoog.mp3")}
 {scene_break("(een poosje later)")}
-{dialogue(DIALOOG_2, YOU, "dialogue tight")}
+{dialogue(DIALOOG_2, YOU, "dialogue tight", "audio/dialoog.mp3")}
 {scene_break("(nog weer later)")}
-{dialogue(DIALOOG_3, YOU, "dialogue tight")}'''), section="3.1 Dialoog",
+{dialogue(DIALOOG_3, YOU, "dialogue tight", "audio/dialoog.mp3")}'''), section="3.1 Dialoog",
  toc=[(2, "3.1  Dialoog — Edit viert haar verjaardag")])
 
 # ---------------------------------------------------------------- 3  illustration

@@ -15,6 +15,10 @@ shared/lib/voices.py (the cast). Writes <chapter>/audio/<id>.mp3.
 Multi-speaker items go to /v1/text-to-dialogue so the voices answer each other in
 one take. Single-speaker items go to /v1/text-to-speech.
 
+Dialogues also get <id>.words.json (word timings from that transcription), which
+build.py uses to make each sentence on the page replayable. `--check` refreshes
+them without recording anything.
+
 Every file is verified by transcribing it back (speech-to-text) and comparing to
 the script with the emotion tags stripped. That catches a voice mangling Dutch or
 reading a tag aloud — it will not catch a merely ugly read, so listen too.
@@ -107,24 +111,37 @@ def transcribe(path, key):
     # Pin the language. Everything recorded here is Dutch, and on short clips
     # ("En u, mevrouw?") auto-detect guessed Swedish and scored a good file at 51%.
     body += f"--{boundary}\r\nContent-Disposition: form-data; name=\"language_code\"\r\n\r\nnld\r\n".encode()
+    # Word timings let build.py find where each dialogue sentence starts and ends.
+    body += f"--{boundary}\r\nContent-Disposition: form-data; name=\"timestamps_granularity\"\r\n\r\nword\r\n".encode()
     body += (f"--{boundary}\r\nContent-Disposition: form-data; name=\"file\"; "
              f"filename=\"a.mp3\"\r\nContent-Type: audio/mpeg\r\n\r\n").encode()
     body += open(path, "rb").read() + f"\r\n--{boundary}--\r\n".encode()
     req = urllib.request.Request(f"{API}/speech-to-text", data=body,
         headers={"xi-api-key": key, "Content-Type": f"multipart/form-data; boundary={boundary}"})
     with urllib.request.urlopen(req, timeout=600) as r:
-        return json.load(r).get("text", "")
+        return json.load(r)
 
 def norm(s):
     return re.sub(r"[^a-zà-ÿ0-9 ]", "", s.lower()).strip()
 
 def verify(path, expected, key):
+    """(match ratio, transcript, words) — words are [text, start, end] in seconds."""
     try:
-        got = transcribe(path, key)
+        heard = transcribe(path, key)
     except Exception as e:
-        return None, f"transcription failed: {e}"
+        return None, f"transcription failed: {e}", []
+    got = heard.get("text", "")
+    words = [[w["text"], w["start"], w["end"]] for w in heard.get("words", [])
+             if w.get("type") == "word"]
     ratio = difflib.SequenceMatcher(None, norm(expected), norm(got)).ratio()
-    return ratio, got
+    return ratio, got, words
+
+def save_words(path, words):
+    """<id>.words.json beside the mp3: build.py aligns the page's sentences to it,
+    so a dialogue line can be replayed on its own. Rewritten with every check,
+    so it always describes the take that is actually in audio/."""
+    with open(path[:-4] + ".words.json", "w", encoding="utf-8") as f:
+        f.write("[\n" + ",\n".join(json.dumps(w, ensure_ascii=False) for w in words) + "\n]\n")
 
 def cards(cdir, key, redo, check_only):
     """Record the sentence a flashcard quotes, one clip per distinct sentence.
@@ -167,7 +184,7 @@ def cards(cdir, key, redo, check_only):
         path = os.path.join(cdir, rel)
         if not os.path.exists(path):
             continue
-        ratio, got = verify(path, text, key)
+        ratio, got, _ = verify(path, text, key)
         if ratio is not None and ratio < 0.85:
             bad += 1
             print(f"  CHECK {rel}  match {ratio:.0%}")
@@ -220,7 +237,9 @@ def main():
         if not os.path.exists(path):
             print(f"  {item['id']:<12} missing"); continue
         kb = os.path.getsize(path)//1024
-        ratio, got = verify(path, expected, key)
+        ratio, got, words = verify(path, expected, key)
+        if item["kind"] == "dialogue" and words:
+            save_words(path, words)
         flag = "ok  " if (ratio or 0) >= 0.85 else "CHECK"
         print(f"  {flag} {item['id']:<12} {kb:>4} KB   match {ratio:.0%}" if ratio
               else f"  ?    {item['id']:<12} {kb:>4} KB   {got}")

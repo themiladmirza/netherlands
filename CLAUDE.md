@@ -76,7 +76,8 @@ Both API keys load from `.env` automatically (`shared/lib/env.py`).
 
 ## What build.py enforces (exit 1 on any)
 
-overflow past the trim · a `keep()` block split across pages · a page mixing two
+overflow past the trim · a `keep()` block split across pages · a dialogue sentence
+that cannot be placed in its recording (missing `audio/<id>.words.json`) · a page mixing two
 sections · a bookmark not on its page · an answer not placed on its question (or
 its Opdracht missing) · a `content.py` name in neither `cloze.PROSE` nor
 `cloze.NOT_PROSE` · a card sentence without a translation · a cloze whose answer is
@@ -120,6 +121,9 @@ both outputs: render PDF pages to images *and* open `index.html` in a browser.
   One item pins `eleven_v3` because v4 failed it: ch3 `opdracht11` (skips *pauze*).
   For a list of short tokens, record 3+ takes and diff each word by word — ch1's
   alphabet repeated letters in 7 of 9 v4 takes; the clean one was approved by ear.
+- Pass the recording to `dialogue(..., audio="audio/dialoog.mp3")` so each sentence
+  replays on its own. After recording a dialogue, rebuild: `generate_audio.py` saves
+  the word timings (`--check` refreshes them) and `build.py` places each sentence.
 - Emotion tags: at most about four words, keeping the one direction that matters.
   Don't re-record a working take just to shorten a tag.
 - Never judge a take by its match score alone — diff the words, check the FIRST

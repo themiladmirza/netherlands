@@ -10,7 +10,7 @@ pages.py, layout.py or style.css. Every page is rendered and compared pixel for
 pixel with the PDF committed at HEAD, and index.html with HEAD's (whitespace
 ignored). Any difference fails the build and names the page.
 
-Pipeline: pages.py -> index.html -> Chrome (print-to-pdf) -> bookmarks + metadata.
+Pipeline: pages.py -> sentence timings -> index.html -> Chrome (print-to-pdf) -> bookmarks + metadata.
 Afterwards it checks every page for content spilling outside the trim size.
 """
 import glob, json, os, re, subprocess, sys, tempfile
@@ -250,6 +250,15 @@ def main():
     ch = load_chapter(cdir)
     _, deck_problem = build_deck(cdir, ch)
     problems = problems or deck_problem
+    # Each dialogue sentence gets its place in the recording, so it can be replayed
+    # alone. A sentence that cannot be placed would play the wrong words.
+    import timings
+    ch.pages, said, unplaced = timings.attach(cdir, ch.pages)
+    if unplaced:
+        print("  sentences : PROBLEM, " + "; ".join(unplaced))
+        problems = True
+    elif not said.startswith("0 "):
+        print(f"  sentences : {said} timed for replay")
     page_html = glossed_html(cdir, ch)
     html = os.path.join(cdir, "index.html")
     open(html, "w", encoding="utf-8").write(page_html)

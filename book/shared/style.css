@@ -239,6 +239,11 @@ ol.choice-items .opt span{ font-family:var(--disp); font-weight:700; color:var(-
   body{ background:var(--desk); padding:7mm 0; }
   .page{ margin:0 auto 7mm; box-shadow:0 1mm 3.5mm rgba(60,44,26,.18); }
   .page:last-child{ margin-bottom:0; }
+  /* a dialogue sentence you can click to hear again — colour only, never a box
+     change, so the screen layout build.py measures stays the print layout */
+  .say[data-t]{ cursor:pointer; border-radius:1mm; transition:background .15s; }
+  .say[data-t]:hover{ background:rgba(20,97,107,.08); }
+  .say.speaking{ background:rgba(233,180,76,.35); }
   /* ---------- phones: the sheet becomes a column ----------
    * A .page is a rigid 170x240mm box, which is right for print and wrong for a
    * 390px screen — it simply overflowed sideways. Below one sheet's width the

@@ -4,7 +4,7 @@
 A chapter composes its pages with Chapter.page(...) plus the helpers below.
 All visual styling lives in shared/style.css — this file only builds structure.
 """
-import json
+import json, re
 
 
 # Page numbers spelled out in Dutch, for the footer (book content, stays Dutch)
@@ -270,10 +270,31 @@ def data_table(heads, rows, first_width=30):
     tr = "".join('<tr>' + "".join(f'<td>{c}</td>' for c in r) + '</tr>' for r in rows)
     return f'<table class="grid"><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table>'
 
-def dialogue(rows, you=(), cls="dialogue"):
-    """Speaker turns. Speakers in `you` are set in the second colour."""
-    return (f'<dl class="{cls}">'
-            + "".join(f'<dt{" class=you" if s in you else ""}>{s}:</dt><dd>{t}</dd>' for s, t in rows)
+def sentences(text):
+    """Wrap each sentence of a dialogue turn in <span class="say">.
+
+    build.py gives every span its start and end in the recording (timings.py),
+    and the player lets you click one to hear just that sentence. The spans are
+    unstyled in print, so the PDF does not change.
+    """
+    out = []
+    for part in re.split(r"(<br>)", text):
+        if part == "<br>":
+            out.append(part); continue
+        out.append(" ".join(f'<span class="say">{s}</span>'
+                            for s in re.split(r"(?<=[.?!])\s+", part.strip()) if s))
+    return "".join(out)
+
+def dialogue(rows, you=(), cls="dialogue", audio=None):
+    """Speaker turns. Speakers in `you` are set in the second colour.
+
+    Pass audio="audio/dialoog.mp3" (the recording of these turns) to make every
+    sentence replayable on screen. Several dialogue() calls may share one file;
+    they are aligned to it in page order.
+    """
+    say = sentences if audio else (lambda t: t)
+    return (f'<dl class="{cls}"' + (f' data-audio="{audio}"' if audio else '') + '>'
+            + "".join(f'<dt{" class=you" if s in you else ""}>{s}:</dt><dd>{say(t)}</dd>' for s, t in rows)
             + '</dl>')
 
 def scene_break(text):
@@ -391,17 +412,52 @@ Which words would you like to add? Write them below.</div>
 <script>
 (function () {
   // ---- audio: click an icon to play, click again to stop ----
-  var audio = new Audio(), current = null;
-  function reset() { if (current) current.classList.remove("playing"); current = null; }
+  // A dialogue sentence (span.say with data-t="start,end", from build.py) plays
+  // just that stretch of the recording: click to hear it, click again to hear it
+  // again, Shift-click to loop it until the next click.
+  var audio = new Audio(), current = null, until = 0, from = 0, loop = false;
+  function reset() {
+    if (current) current.classList.remove("playing", "speaking");
+    current = null; until = 0; loop = false;
+  }
   audio.addEventListener("ended", reset);
-  document.addEventListener("click", function (e) {
-    var btn = e.target.closest("a.i-audio"); if (!btn) return;
-    e.preventDefault();
-    if (current === btn) { audio.pause(); reset(); return; }
+  function watch() {                     // timeupdate is too coarse to stop on a word
+    if (!until || !current) return;
+    if (audio.currentTime >= until) {
+      if (loop) audio.currentTime = from;
+      else { audio.pause(); reset(); return; }
+    }
+    requestAnimationFrame(watch);
+  }
+  function start(el, src, a, b, cls) {
     reset();
-    audio.src = btn.dataset.src; audio.currentTime = 0;
-    audio.play().then(function () { current = btn; btn.classList.add("playing"); })
-                .catch(function () { btn.classList.add("failed"); });
+    if (audio.getAttribute("src") !== src) audio.src = src;
+    audio.currentTime = a;
+    audio.play().then(function () {
+      current = el; el.classList.add(cls); from = a; until = b;
+      if (b) requestAnimationFrame(watch);
+    }).catch(function () { el.classList.add("failed"); });
+  }
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest("a.i-audio");
+    if (btn) {
+      e.preventDefault();
+      if (current === btn) { audio.pause(); reset(); return; }
+      start(btn, btn.dataset.src, 0, 0, "playing");
+      return;
+    }
+    var say = e.target.closest(".say[data-t]");
+    // on a touch screen a tap on a glossed word opens its translation instead
+    if (!say || (touched && e.target.closest(".gloss"))) return;
+    if (current === say && loop) { audio.pause(); reset(); return; }
+    var t = say.dataset.t.split(",").map(Number);
+    start(say, say.closest("dl").dataset.audio, t[0], t[1], "speaking");
+    loop = e.shiftKey;
+  });
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".say[data-t]").forEach(function (s) {
+      s.title = "Click to hear this sentence (Shift-click to loop it)";
+    });
   });
 
   // ---- first-occurrence translations ----

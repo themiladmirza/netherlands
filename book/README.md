@@ -17,7 +17,7 @@ text, the words on the page, the titles printed in the PDF.
     ├── build.py            build one chapter: index.html + PDF, with checks
     ├── extract_source.py   cut a chapter out of hard.pdf, clean it, OCR it
     ├── generate_art.py     generate a chapter's illustrations
-    ├── generate_audio.py   record a chapter's audio and card sentences
+    ├── generate_audio.py   record a chapter's audio and card sentences (+ dialogue word timings)
     ├── new_chapter.py      scaffold a new chapter folder
     ├── make_cards.py       spinner tips from every chapter
     ├── practice.py         terminal flashcard trainer
@@ -35,6 +35,7 @@ text, the words on the page, the titles printed in the PDF.
     │       ├── glossary.py first-occurrence hover translations
     │       ├── art_style.py shared illustration preamble + model choice
     │       ├── voices.py   the voice cast for all eighteen chapters
+    │       ├── timings.py  where each dialogue sentence sits in its recording
     │       ├── modules.py  load a chapter file by path
     │       ├── text.py     plain() and slugify()
     │       └── env.py      loads the API keys from .env
@@ -48,7 +49,7 @@ text, the words on the page, the titles printed in the PDF.
         ├── audio_script.py what is spoken, by whom, how
         ├── answers.py      the book's answer key (Bijlage 8)
         ├── translations.py English for the card sentences (NOT the book's)
-        ├── art/ audio/     generated illustrations and recordings
+        ├── art/ audio/     generated illustrations and recordings (+ <id>.words.json)
         ├── index.html      generated — do not hand-edit
         ├── ch01-welcome.pdf the finished chapter
         ├── NOTES.md        decisions specific to this chapter
@@ -321,6 +322,18 @@ to its script with the tags stripped. Chapter 1 scores 99 / 99 / 100 / 89 %; the
 89 % is spelling noise (`t w` heard as `tw`, `Sara` as `Sarah`), not bad audio.
 This catches mangled Dutch or a tag being read aloud — it cannot catch a merely
 ugly read, so listen before shipping a chapter.
+
+**Replaying one sentence.** In `index.html` every dialogue sentence is clickable:
+click to hear just that sentence, click again to repeat it, Shift-click to loop it
+until the next click. `dialogue(rows, …, audio="audio/dialoog.mp3")` wraps each
+sentence in `<span class="say">`. The verification transcript also saves word
+timings to `audio/<id>.words.json`, and `--check` refreshes them without recording.
+`build.py` matches the page's sentences to those words (`shared/lib/timings.py`),
+cutting in the longest pause between two sentences so a word the transcript spells
+differently ("22" vs. *tweeëntwintig*) still lands in the right one. It fails if
+the timings are missing or a sentence cannot be placed. **Re-record a dialogue,
+rebuild**, because the old timings would cut the new take in the wrong places.
+The PDF is unchanged: the spans have no print styling.
 
 Chapter 1 audio: dialogue 1:38 · numbers 0:48 · alphabet 0:31 · zinsaccent 0:42.
 
