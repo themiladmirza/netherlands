@@ -382,10 +382,10 @@ ol.choice-items .opt span{ font-family:var(--disp); font-weight:700; color:var(-
  * The script builds these nodes at runtime, so print-to-pdf runs it too: styling
  * them only inside @media screen once left an unstyled <button> in the print flow
  * and chapter 1 came out 21 pages. Hide first, reveal for screen — not the reverse. */
-#nl-deck{ display:none; }
+#nl-deck, #nl-articles{ display:none; }
 
 @media screen{
-  #nl-deck.deck{ display:block; width:170mm; margin:0 auto 7mm; padding:12mm 15mm 14mm;
+  #nl-deck.deck, #nl-articles.deck{ display:block; width:170mm; margin:0 auto 7mm; padding:12mm 15mm 14mm;
     background:var(--paper); box-shadow:0 1mm 3.5mm rgba(60,44,26,.18);
     border-top:2.4mm solid var(--teal); }
 
@@ -482,8 +482,23 @@ ol.choice-items .opt span{ font-family:var(--disp); font-weight:700; color:var(-
     color:var(--teal); line-height:1.4; margin-top:2.5mm; padding-top:2.5mm;
     border-top:.5pt solid var(--rule); }
 
+  /* de of het? — the input's own text is transparent and a mirror underneath
+     draws the same characters, so the typed article can turn green or red */
+  .art-field{ position:relative; }
+  .art-input{ position:relative; z-index:1; background:transparent;
+    color:transparent; caret-color:var(--ink); }
+  .art-mirror{ position:absolute; inset:0; z-index:0; background:#fff;
+    border:.6pt solid transparent; border-radius:2mm; padding:2.6mm 3mm;
+    font-family:var(--body); font-size:13pt; text-align:center; color:var(--ink);
+    white-space:pre; overflow:hidden; line-height:normal; }
+  .art-mirror[hidden]{ display:none; }
+  /* colour only: a bolder weight would widen the word and pull the caret off it */
+  .art-ok{ color:#3F7A3C; }
+  .art-bad{ color:#C0442A; text-decoration:line-through; }
+  .deck-back .art-ok{ text-decoration:none; }
+
   @media (max-width:176mm){
-    #nl-deck.deck{ width:auto; margin:0 0 4mm; padding:8mm 5mm 10mm; box-shadow:none; }
+    #nl-deck.deck, #nl-articles.deck{ width:auto; margin:0 0 4mm; padding:8mm 5mm 10mm; box-shadow:none; }
     .deck-nl{ font-size:20pt; } .deck-cue{ font-size:18pt; }
   }
 }

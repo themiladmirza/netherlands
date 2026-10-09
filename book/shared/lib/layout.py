@@ -317,13 +317,17 @@ class Chapter:
     """
     def __init__(self, number, title, css="../shared/style.css",
                  deck_js="../shared/flashcards.js",
-                 answers_js="../shared/answers.js"):
+                 answers_js="../shared/answers.js",
+                 articles_js="../shared/articles.js"):
         self.number, self.title, self.css = number, title, css
         self.deck_js = deck_js
         self.answers_js = answers_js
+        self.articles_js = articles_js
         self.pages, self.toc = [], []
         self.deck = []          # set by build.py; cards for the practice overlay
         self.answers = {}       # set by build.py; Opdracht number -> answer html
+        self.drill_articles = False   # pages.py opts in to the de/het drill
+        self.articles = []      # set by build.py when it does; [{article, noun, en}]
 
     def page(self, body, variant="", head=True, foot=True, section="", nogloss=False, toc=()):
         """nogloss=True excludes the page from hover translations.
@@ -536,6 +540,18 @@ Which words would you like to add? Write them below.</div>
                 + payload.replace("</", "<\\/") + "</script>"
                 + f'<script src="{self.answers_js}" defer></script>')
 
+    def articles_html(self):
+        """The de/het nouns as data, plus the typing drill that uses them.
+
+        Same shape as the deck: linked script, DOM built at runtime, screen only.
+        """
+        if not self.articles:
+            return ""
+        payload = json.dumps(self.articles, ensure_ascii=False, separators=(",", ":"))
+        return ('<script type="application/json" id="nl-articles-data">'
+                + payload.replace("</", "<\\/") + "</script>"
+                + f'<script src="{self.articles_js}" defer></script>')
+
     def body(self):
         """Pages, with the practice panel sitting straight after the word list.
 
@@ -552,6 +568,8 @@ Which words would you like to add? Write them below.</div>
             if 'class="vocab' in page:
                 last = i
         panel = '<div id="nl-deck"></div>'
+        if self.articles:
+            panel += '<div id="nl-articles"></div>'
         if last < 0:                       # no word list: put it at the end
             return "".join(self.pages) + panel
         return ("".join(self.pages[:last + 1]) + panel
@@ -565,7 +583,8 @@ Which words would you like to add? Write them below.</div>
                 f'<meta name="viewport" content="width=device-width, initial-scale=1">'
                 f'<title>Nederlands in gang — Hoofdstuk {self.number}: {self.title}</title>'
                 f'<link rel="stylesheet" href="{self.css}">'
-                + self.body() + self.PLAYER + self.deck_html() + self.answers_html())
+                + self.body() + self.PLAYER + self.deck_html() + self.answers_html()
+                + self.articles_html())
 
     def write(self, path):
         open(path, "w", encoding="utf-8").write(self.html())
