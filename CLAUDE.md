@@ -160,7 +160,10 @@ both outputs: render PDF pages to images *and* open `index.html` in a browser.
 - `translations.py` is the ONLY non-book text: whole-sentence English, kept out of
   `content.py`. Never invent one at render time.
 - Recognition flips, production types (and flips past two words).
-- `flashcards.js`, `answers.js` and `articles.js` are linked, not inlined.
+- `flashcards.js`, `answers.js`, `articles.js` and `talk.js` are linked, not inlined.
+- Speak-the-dialogue: `ch.talk("audio/dialoog.mp3")` after the dialogue page;
+  `same={label: person}` when the book labels one person two ways. Nothing
+  chapter-specific goes in `talk.js`.
 - The de/het drill takes only nouns the Woordenlijst prints with their article;
   a non-noun starting with de/het ("het is") goes in `articles.NOT_NOUNS`.
 - Answers come from Bijlage 8 (`answers.py`) and land ON the question;

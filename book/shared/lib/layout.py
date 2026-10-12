@@ -322,16 +322,19 @@ class Chapter:
     def __init__(self, number, title, css="../shared/style.css",
                  deck_js="../shared/flashcards.js",
                  answers_js="../shared/answers.js",
-                 articles_js="../shared/articles.js"):
+                 articles_js="../shared/articles.js",
+                 talk_js="../shared/talk.js"):
         self.number, self.title, self.css = number, title, css
         self.deck_js = deck_js
         self.answers_js = answers_js
         self.articles_js = articles_js
+        self.talk_js = talk_js
         self.pages, self.toc = [], []
         self.deck = []          # set by build.py; cards for the practice overlay
         self.answers = {}       # set by build.py; Opdracht number -> answer html
         self.articles = []      # set by build.py; de/het nouns [{article, noun, en}]
         self.folder = None      # set by build.py; finds this chapter's extra.css / extra.js
+        self.talks = []         # set by talk(); recordings with a speak-the-dialogue drill
 
     def page(self, body, variant="", head=True, foot=True, section="", nogloss=False, toc=()):
         """nogloss=True excludes the page from hover translations.
@@ -556,6 +559,24 @@ Which words would you like to add? Write them below.</div>
                 + payload.replace("</", "<\\/") + "</script>"
                 + f'<script src="{self.articles_js}" defer></script>')
 
+    def talk(self, audio, same=None):
+        """Add a speak-the-dialogue drill for one dialogue recording.
+
+        The drill (shared/talk.js) reads every dialogue() printed with this
+        audio=, in page order. `same` merges book labels that name one person,
+        so the learner picks a person, not a label: {"Cursist": "Susy"}.
+        """
+        self.talks.append({"audio": audio, "same": same or {}})
+
+    def talk_html(self):
+        """The drills as data, plus the script that builds them. Screen only."""
+        if not self.talks:
+            return ""
+        payload = json.dumps(self.talks, ensure_ascii=False, separators=(",", ":"))
+        return ('<script type="application/json" id="nl-talk-data">'
+                + payload.replace("</", "<\\/") + "</script>"
+                + f'<script src="{self.talk_js}" defer></script>')
+
     def extras(self):
         """This chapter's own extra.css and extra.js, if its folder has them.
 
@@ -604,7 +625,7 @@ Which words would you like to add? Write them below.</div>
                 f'<title>Nederlands in gang — Hoofdstuk {self.number}: {self.title}</title>'
                 f'<link rel="stylesheet" href="{self.css}">' + css
                 + self.body() + self.PLAYER + self.deck_html() + self.answers_html()
-                + self.articles_html() + js)
+                + self.articles_html() + self.talk_html() + js)
 
     def write(self, path):
         open(path, "w", encoding="utf-8").write(self.html())

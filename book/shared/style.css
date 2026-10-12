@@ -383,10 +383,10 @@ ol.choice-items .opt span{ font-family:var(--disp); font-weight:700; color:var(-
  * The script builds these nodes at runtime, so print-to-pdf runs it too: styling
  * them only inside @media screen once left an unstyled <button> in the print flow
  * and chapter 1 came out 21 pages. Hide first, reveal for screen — not the reverse. */
-#nl-deck, #nl-articles{ display:none; }
+#nl-deck, #nl-articles, .nl-talk{ display:none; }
 
 @media screen{
-  #nl-deck.deck, #nl-articles.deck{ display:block; width:170mm; margin:0 auto 7mm; padding:12mm 15mm 14mm;
+  #nl-deck.deck, #nl-articles.deck, .nl-talk.deck{ display:block; width:170mm; margin:0 auto 7mm; padding:12mm 15mm 14mm;
     background:var(--paper); box-shadow:0 1mm 3.5mm rgba(60,44,26,.18);
     border-top:2.4mm solid var(--teal); }
 
@@ -498,8 +498,31 @@ ol.choice-items .opt span{ font-family:var(--disp); font-weight:700; color:var(-
   .art-bad{ color:#C0442A; text-decoration:line-through; }
   .deck-back .art-ok{ text-decoration:none; }
 
+  /* speak the dialogue (talk.js) — the conversation so far, then the card */
+  .nl-talk:focus{ outline:none; }
+  .talk-log{ max-height:60mm; overflow-y:auto; font-size:10pt; line-height:1.5;
+    color:var(--ink-soft); margin-bottom:4mm; }
+  .talk-log:empty{ display:none; }
+  .talk-row{ margin-bottom:1.2mm; }
+  .talk-row.is-mine{ color:var(--ink); }
+  .talk-row .is-helped{ color:var(--mustard); }
+  .talk-line{ font-family:var(--body); font-size:15pt; line-height:1.45;
+    color:var(--ink); min-height:12mm; margin:2mm 0 1mm; }
+  .talk-line.is-other{ color:var(--ink-soft); font-size:12pt; }
+  .talk-line.deck-done{ font-family:var(--disp); font-weight:800; }
+  .talk-line .w{ transition:color .15s; }
+  .talk-line .is-faded{ color:var(--ink); opacity:.35; letter-spacing:.02em; }
+  .talk-line .is-hidden{ color:transparent; }
+  .talk-line .is-got{ color:#3F7A3C; }
+  .talk-heard{ font-size:8.6pt; color:var(--ink-faint); min-height:4mm; }
+  /* a quiet pulse on the card's edge while the microphone is open */
+  .talk-card.is-listening{ border-color:var(--teal);
+    animation:talk-pulse 1.6s ease-in-out infinite; }
+  @keyframes talk-pulse{ 50%{ box-shadow:0 0 0 1.2mm rgba(19,94,104,.12); } }
+
   @media (max-width:176mm){
-    #nl-deck.deck, #nl-articles.deck{ width:auto; margin:0 0 4mm; padding:8mm 5mm 10mm; box-shadow:none; }
+    #nl-deck.deck, #nl-articles.deck, .nl-talk.deck{ width:auto; margin:0 0 4mm; padding:8mm 5mm 10mm; box-shadow:none; }
     .deck-nl{ font-size:20pt; } .deck-cue{ font-size:18pt; }
+    .talk-line{ font-size:13pt; }
   }
 }

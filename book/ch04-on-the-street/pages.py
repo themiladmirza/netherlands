@@ -30,6 +30,8 @@ ch.page(keep("dialoog-4.1", f'''
 {dialogue(DIALOOG, {"Bert"}, audio="audio/dialoog.mp3")}'''), section="4.1 Dialoog",
  toc=[(2, "4.1  Dialoog — Bert en Hans op straat")])
 
+ch.talk("audio/dialoog.mp3")
+
 # ---------------------------------------------------------------- 3  illustration
 ch.page(img("dialoog"), variant="plate", section="4.1 Dialoog")
 

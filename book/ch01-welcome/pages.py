@@ -32,6 +32,10 @@ ch.page(keep("dialoog-1.1", f'''
 {dialogue(DIALOOG_END, audio="audio/dialoog.mp3")}'''), section="1.1 Dialoog",
  toc=[(2, "1.1  Dialoog — De cursus begint")])
 
+# "Cursist" and "Buurman" are the book's labels for Susy and Ning before they
+# give their names; the drill lets you be the person, not the label.
+ch.talk("audio/dialoog.mp3", same={"Cursist": "Susy", "Buurman": "Ning"})
+
 # ---------------------------------------------------------------- 3  illustration
 # The dialogue page has no room for it, so it gets a page of its own, uncropped.
 ch.page(img("dialoog"), variant="plate", section="1.1 Dialoog")

@@ -29,6 +29,8 @@ ch.page(f'''{keep("dialoog-2.1", f"""
 {img("dialoog", 60, "-top:4mm")}''',
  section="2.1 Dialoog", toc=[(2, "2.1  Dialoog — in de kantine")])
 
+ch.talk("audio/dialoog.mp3")
+
 # ---------------------------------------------------------------- 3-4  WOORDENLIJST
 half = 38
 ch.page(keep("woordenlijst-a", f'''

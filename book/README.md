@@ -29,6 +29,7 @@ text, the words on the page, the titles printed in the PDF.
     │   ├── flashcards.js   the practice deck (screen only)
     │   ├── answers.js      the answer key toggle (screen only)
     │   ├── articles.js     the de/het typing drill (screen only)
+    │   ├── talk.js         speak-the-dialogue drill (screen only, opt-in: ch.talk)
     │   ├── fonts/          Bricolage Grotesque + Source Sans 3 (SIL OFL)
     │   └── lib/
     │       ├── layout.py   Chapter + page blocks (sec, card, task, items, …)
@@ -258,6 +259,24 @@ goes in, and Enter checks the word. A miss returns three cards later, and the ro
 with a first-try score. It needs nothing per chapter: `build.py` collects the
 nouns. Add an entry that starts with *de*/*het* but isn't a noun ("het is") to
 `articles.NOT_NOUNS`. Screen only, from `shared/articles.js`.
+
+### 2c. Speak the dialogue (under the dialogue)
+
+`ch.talk("audio/dialoog.mp3")` in `pages.py`, after the dialogue page, turns it
+on for that recording. You pick a person; the others' turns play from the
+recording (sentence timings), and you say your lines one sentence at a time.
+Chrome's speech recognition (`nl-NL`; the audio goes to Google) checks them:
+80% of the words, names excluded, and **Accept** always passes. Hints fade over
+three rounds — faded sentence after 3 s, first letters, nothing — and a miss,
+Hint or Hear it drops one step. Numbers match as digits or Dutch words.
+
+Common and variable parts are kept apart. Everything that is the same in every
+chapter lives in `shared/talk.js` (+ `.talk-*` in `style.css`): the panel, the
+rounds, the matching, the number words, recogniser spellings (`SPELLED`). What
+varies is only data in `pages.py`: which recording, and `same={...}` when the
+book labels one person two ways (ch1: `{"Cursist": "Susy", "Buurman": "Ning"}`).
+The recording is fetched once into a blob, because `python -m http.server` has
+no Range support and Chrome would otherwise replay from the start on every seek.
 
 ### 3. Terminal trainer (`practice.py`)
 

@@ -1,57 +1,111 @@
-/* Chapter 4 only — speak the dialogue (proof of concept). Screen only.
+/* Speak the dialogue — shared by every chapter that asks for it. Screen only.
  *
- * You pick a role. The other speaker's turns play from audio/dialoog.mp3, cut
- * with the same sentence timings the click-to-replay uses (data-t). Your turns
- * are spoken one sentence at a time and checked by the browser's speech
- * recognition (nl-NL): words light up as they are recognised, and a sentence
- * passes at 80% of its words. Recognition is unreliable on a learner's accent,
- * so "Accept" always lets a sentence through.
+ * pages.py turns it on per recording:   ch.talk("audio/dialoog.mp3")
+ * and may merge book labels that name one person:
+ *                                       ch.talk(..., same={"Cursist": "Susy"})
+ * Layout writes that as JSON (#nl-talk-data); everything else lives here.
  *
- * Hints fade over three rounds (retrieval first, then diminishing cues):
+ * You pick a part. The other speakers' turns play from the recording, cut with
+ * the same sentence timings the click-to-replay uses (data-t). Your turns are
+ * spoken one sentence at a time and checked by the browser's speech recognition
+ * (nl-NL, Chrome; the audio goes to Google): words light up as they are heard,
+ * and a sentence passes at 80% of its words (names don't count). Recognition is unreliable on a
+ * learner's accent, so "Accept" always lets a sentence through.
+ *
+ * Hints fade over three rounds (retrieval first, then diminishing cues —
+ * Karpicke & Roediger 2008; Finley et al. 2011):
  *   round 1  the sentence appears faded after 3 s
  *   round 2  first letters only
  *   round 3  nothing
  * A miss, "Hint" or "Hear it" drops that sentence back one step.
  *
- * Everything is read from the printed dialogue, so content.py stays the only
- * copy. The panel goes straight after the dialogue page.
+ * The text is read from the printed dialogue (every <dl data-audio> sharing the
+ * recording, in page order), so content.py stays the only copy. The panel goes
+ * straight after the page holding the last of them. Hidden by default in
+ * style.css and revealed under @media screen: this script runs in print too.
  */
 (function () {
   "use strict";
 
   var PASS = 0.8, DELAY = 3000;
-  var LEVELS = ["full", "letters", "none"];
   var ROUND_NAMES = ["the sentence, faded", "first letters", "no hints"];
-  // what the recogniser may write for a word on the page: numbers as words,
-  // and "wauw", which it spells the English way
-  var SAME = { negenentwintigste: "29", dertig: "30", zestien: "16", wow: "wauw" };
+  // words the recogniser spells its own way, mapped to the book's spelling
+  var SPELLED = { wow: "wauw" };
 
   document.addEventListener("DOMContentLoaded", function () {
-    var dl = document.querySelector("dl.dialogue[data-audio]");
-    if (!dl) return;
-    var turns = [], who = null;
-    [].forEach.call(dl.children, function (n) {
-      if (n.tagName === "DT") who = n.textContent.replace(/:\s*$/, "").trim();
-      else if (n.tagName === "DD" && who) {
-        var says = [].map.call(n.querySelectorAll(".say[data-t]"), function (s) {
-          var t = s.dataset.t.split(",").map(Number);
-          return { text: s.textContent.replace(/\s+/g, " ").trim(), a: t[0], b: t[1] };
-        });
-        if (says.length) turns.push({ who: who, says: says });
-      }
+    var data = document.getElementById("nl-talk-data");
+    if (!data) return;
+    JSON.parse(data.textContent).forEach(function (cfg) {
+      var dls = [].filter.call(document.querySelectorAll("dl.dialogue[data-audio]"),
+                               function (d) { return d.dataset.audio === cfg.audio; });
+      var turns = read(dls, cfg.same || {});
+      if (!turns.length) return;
+      var mount = document.createElement("div");
+      dls[dls.length - 1].closest(".page").insertAdjacentElement("afterend", mount);
+      build(mount, turns, cfg.audio);
     });
-    if (!turns.length) return;
-    var mount = document.createElement("div");
-    mount.id = "nl-talk";
-    dl.closest(".page").insertAdjacentElement("afterend", mount);
-    build(mount, turns, dl.dataset.audio);
   });
+
+  // the turns of one recording; a blank label continues the previous speaker
+  function read(dls, same) {
+    var turns = [], who = null;
+    dls.forEach(function (dl) {
+      [].forEach.call(dl.children, function (n) {
+        if (n.tagName === "DT") {
+          var label = n.textContent.replace(/:\s*$/, "").trim();
+          if (label) who = same[label] || label;
+        } else if (n.tagName === "DD" && who) {
+          var says = [].map.call(n.querySelectorAll(".say[data-t]"), function (s) {
+            var t = s.dataset.t.split(",").map(Number);
+            return { text: s.textContent.replace(/\s+/g, " ").trim(), a: t[0], b: t[1] };
+          });
+          if (!says.length) return;
+          var last = turns[turns.length - 1];
+          if (last && last.who === who) last.says = last.says.concat(says);
+          else turns.push({ who: who, says: says });
+        }
+      });
+    });
+    return turns;
+  }
+
+  // ---- Dutch numbers: the page prints digits, the recogniser may write words ----
+  var UNITS = { nul: 0, een: 1, twee: 2, drie: 3, vier: 4, vijf: 5, zes: 6, zeven: 7,
+    acht: 8, negen: 9, tien: 10, elf: 11, twaalf: 12, dertien: 13, veertien: 14,
+    vijftien: 15, zestien: 16, zeventien: 17, achttien: 18, negentien: 19 };
+  var TENS = { twintig: 20, dertig: 30, veertig: 40, vijftig: 50, zestig: 60,
+    zeventig: 70, tachtig: 80, negentig: 90 };
+  function cardinal(w) {
+    if (w in UNITS) return UNITS[w];
+    if (w in TENS) return TENS[w];
+    for (var t in TENS) {                              // negenentwintig (ë already gone)
+      var u = w.slice(0, -(t.length + 2));
+      if (w === u + "en" + t && UNITS[u] > 0 && UNITS[u] < 10) return UNITS[u] + TENS[t];
+    }
+    var m = w.match(/^(\w*)honderd(\w*)$/);
+    if (m) {
+      var h = m[1] ? cardinal(m[1]) : 1, r = m[2] ? cardinal(m[2]) : 0;
+      if (h != null && r != null) return h * 100 + r;
+    }
+    return null;
+  }
+  function number(w) {
+    if (w === "eerste") return 1;
+    if (w === "derde") return 3;
+    var n = cardinal(w);
+    if (n == null && /ste$/.test(w)) n = cardinal(w.slice(0, -3));
+    if (n == null && /de$/.test(w)) n = cardinal(w.slice(0, -2));
+    return n;
+  }
 
   // ---- matching ------------------------------------------------------------
   function canon(w) {
     w = w.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
          .replace(/[’'`]/g, "").replace(/[^a-z0-9]/g, "");
-    if (SAME[w]) w = SAME[w];
+    if (SPELLED[w]) w = SPELLED[w];
+    var n = number(w);
+    if (n != null) return String(n);
+    // 29ste, 2e -> 29, 2; 16.00 -> 16
     if (/\d/.test(w)) w = w.replace(/\D/g, "").replace(/^(\d{1,2})00$/, "$1");
     return w;
   }
@@ -88,11 +142,11 @@
     var people = turns.reduce(function (a, t) {
       if (a.indexOf(t.who) < 0) a.push(t.who); return a; }, []);
 
-    mount.className = "deck";
+    mount.className = "deck nl-talk";
     mount.innerHTML =
       '<div class="deck-head">' +
         '<h2 class="sec deck-title">Speak the dialogue</h2>' +
-        '<p class="deck-sub">Take one part. The other speaker talks; you answer out loud. ' +
+        '<p class="deck-sub">Take one part. The others talk; you answer out loud. ' +
         'Hints fade over three rounds, then swap parts.' +
         (Rec ? '' : ' <b>This browser has no speech recognition (use Chrome): ' +
                     'say each line, then press Accept.</b>') + '</p>' +
@@ -123,7 +177,7 @@
       .then(function (b) { audio.src = URL.createObjectURL(b); })
       .catch(function () { audio.src = src; });
     // state of one run through the dialogue
-    var me, round, steps, pos, level, words, got, timer, listening, clean, total, token = 0;
+    var me, round, steps, pos, level, words, names, got, timer, listening, clean, total, token = 0;
 
     function button(label, cls, fn) {
       var b = document.createElement("button");
@@ -237,6 +291,9 @@
       el.kicker.textContent = me + " — your turn · round " + (round + 1) + ": " + ROUND_NAMES[round];
       words = st.s.text.split(" ");
       got = words.map(function () { return false; });
+      // names (capitalised after the first word) come back spelled any old way —
+      // Susy as "Suzie" — so they turn green when heard but never block a pass
+      names = words.map(function (w, i) { return i > 0 && /^[A-ZÀ-Þ]/.test(w); });
       level = round;
       st.helped = false;
       el.line.className = "talk-line is-mine";
@@ -259,8 +316,10 @@
     }
 
     function score() {
-      var n = 0; got.forEach(function (g) { if (g) n++; });
-      return n / got.length;
+      var n = 0, d = 0;
+      got.forEach(function (g, i) { if (!names[i]) { d++; if (g) n++; } });
+      if (!d) got.forEach(function (g) { d++; if (g) n++; });   // a sentence of names only
+      return n / d;
     }
     function render() {
       el.line.innerHTML = words.map(function (w, i) {
@@ -329,9 +388,10 @@
       if (round < 2)
         button("Round " + (round + 2) + ": " + ROUND_NAMES[round + 1], "deck-btn--go",
                function () { start(me, round + 1); });
-      var other = people.filter(function (p) { return p !== me; })[0];
-      if (other) button("Swap: be " + other, round === 2 ? "deck-btn--go" : "",
-                        function () { start(other, 0); });
+      people.forEach(function (p) {
+        if (p !== me) button("Swap: be " + p, round === 2 ? "deck-btn--go" : "",
+                             function () { start(p, 0); });
+      });
       button("Again", "", function () { start(me, round); });
     }
 
