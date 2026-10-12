@@ -1,0 +1,41 @@
+/* Chapter 4 only — the speak-the-dialogue panel built by extra.js.
+ * Hidden in every medium, revealed for screen: extra.js also runs during
+ * print-to-pdf, and the panel must never reach the PDF. Inside, it borrows the
+ * practice deck's classes from shared/style.css. */
+#nl-talk{ display:none; }
+
+@media screen{
+  #nl-talk.deck{ display:block; width:170mm; margin:0 auto 7mm; padding:12mm 15mm 14mm;
+    background:var(--paper); box-shadow:0 1mm 3.5mm rgba(60,44,26,.18);
+    border-top:2.4mm solid var(--teal); }
+  #nl-talk:focus{ outline:none; }
+
+  /* the conversation so far */
+  .talk-log{ max-height:60mm; overflow-y:auto; font-size:10pt; line-height:1.5;
+    color:var(--ink-soft); margin-bottom:4mm; }
+  .talk-log:empty{ display:none; }
+  .talk-row{ margin-bottom:1.2mm; }
+  .talk-row.is-mine{ color:var(--ink); }
+  .talk-row .is-helped{ color:var(--mustard); }
+
+  .talk-line{ font-family:var(--body); font-size:15pt; line-height:1.45;
+    color:var(--ink); min-height:12mm; margin:2mm 0 1mm; }
+  .talk-line.is-other{ color:var(--ink-soft); font-size:12pt; }
+  .talk-line.deck-done{ font-family:var(--disp); font-weight:800; }
+  .talk-line .w{ transition:color .15s; }
+  .talk-line .is-faded{ color:var(--ink); opacity:.35; letter-spacing:.02em; }
+  .talk-line .is-hidden{ color:transparent; }
+  .talk-line .is-got{ color:#3F7A3C; }
+
+  .talk-heard{ font-size:8.6pt; color:var(--ink-faint); min-height:4mm; }
+
+  /* a quiet pulse on the card's edge while the microphone is open */
+  .talk-card.is-listening{ border-color:var(--teal);
+    animation:talk-pulse 1.6s ease-in-out infinite; }
+  @keyframes talk-pulse{ 50%{ box-shadow:0 0 0 1.2mm rgba(19,94,104,.12); } }
+
+  @media (max-width:176mm){
+    #nl-talk.deck{ width:auto; margin:0 0 4mm; padding:8mm 5mm 10mm; box-shadow:none; }
+    .talk-line{ font-size:13pt; }
+  }
+}

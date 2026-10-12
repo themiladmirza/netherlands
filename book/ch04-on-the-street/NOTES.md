@@ -30,3 +30,15 @@ In de praktijk, Reflectie. Answers from Bijlage 8 (pp. 310–311): Opdracht 1, 3
 The dialogue scores 65 % on the character match, but a word diff shows all 204
 words present; the gap is spelling only (*hé* → "hey", 29ste/30/16.00 as digits).
 All 41 replayable sentences were cut and transcribed back individually.
+
+## Speak the dialogue (extra.js, proof of concept)
+
+A screen-only panel after the dialogue page: pick Bert or Hans, the other part
+plays from `audio/dialoog.mp3` (cut by the sentence timings), and you say your
+lines one sentence at a time. Chrome's speech recognition (`nl-NL`, audio goes
+to Google) checks them: words turn green as heard, 80% passes, "Accept" always
+lets a line through. Hints fade by round — faded sentence after 3 s, then first
+letters, then nothing — and a miss, Hint or Hear it drops one step. Design from
+retrieval-practice and diminishing-cue research (Karpicke & Roediger 2008;
+Finley et al. 2011). `SAME` maps recogniser spellings to the page (numbers as
+words, "wow"). If it works, move it to `shared/` for every chapter.
