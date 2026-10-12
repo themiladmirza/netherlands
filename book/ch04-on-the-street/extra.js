@@ -115,7 +115,13 @@
       heard:   mount.querySelector(".talk-heard"),
       actions: mount.querySelector(".deck-actions")
     };
-    var audio = new Audio(src), rec = null, watchId = 0;
+    // The recording is loaded into memory once: a local server without Range
+    // support (python -m http.server) makes Chrome ignore a seek and replay the
+    // dialogue from the start. A blob URL is always seekable.
+    var audio = new Audio(), rec = null, watchId = 0;
+    var ready = fetch(src).then(function (r) { return r.blob(); })
+      .then(function (b) { audio.src = URL.createObjectURL(b); })
+      .catch(function () { audio.src = src; });
     // state of one run through the dialogue
     var me, round, steps, pos, level, words, got, timer, listening, clean, total, token = 0;
 
@@ -131,14 +137,17 @@
     function play(a, b, then) {
       stopAudio();
       var id = ++watchId;
-      audio.currentTime = a;
       var done = function () { if (id === watchId) { watchId++; audio.pause(); if (then) then(); } };
-      (function watch() {
+      ready.then(function () {
         if (id !== watchId) return;
-        if (audio.currentTime >= b || audio.ended) return done();
-        requestAnimationFrame(watch);
-      })();
-      audio.play().catch(function () { setTimeout(done, (b - a) * 1000); });
+        audio.currentTime = a;
+        (function watch() {
+          if (id !== watchId) return;
+          if (audio.currentTime >= b || audio.ended) return done();
+          requestAnimationFrame(watch);
+        })();
+        audio.play().catch(function () { setTimeout(done, (b - a) * 1000); });
+      });
     }
     function stopAudio() { watchId++; audio.pause(); }
 
